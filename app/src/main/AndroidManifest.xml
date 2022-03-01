@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Telemedicine">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.atharianr.telemedicine.ui.main.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
