@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/box_top_rounded_corner"
         app:itemIconTint="#2B95F6"
         app:itemTextColor="#979797"
         app:labelVisibilityMode="labeled"

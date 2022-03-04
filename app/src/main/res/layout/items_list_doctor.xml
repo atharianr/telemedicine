@@ -25,7 +25,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:src="@android:color/darker_gray"
+                android:src="@color/grey_A6A6A6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +48,7 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="@string/category"
-                android:textColor="#A6A6A6"
+                android:textColor="@color/grey_A6A6A6"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
                 android:text="@string/percentage"
-                android:textColor="#2B95F6"
+                android:textColor="@color/blue_2B95F6"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_category"
                 app:layout_constraintTop_toBottomOf="@+id/tv_category" />
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:backgroundTint="#8883F0"
+                android:backgroundTint="@color/purple_8883F0"
                 android:fontFamily="@font/poppins"
                 android:text="Rp 30.000"
                 android:textAllCaps="false"
