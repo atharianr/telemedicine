@@ -12,4 +12,5 @@
     <string name="time">Waktu</string>
     <string name="percentage">Persentase</string>
     <string name="find_doctor">Cari Dokter</string>
+    <string name="category">Kategori</string>
 </resources>
