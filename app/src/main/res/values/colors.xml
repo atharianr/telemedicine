@@ -4,7 +4,9 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="blue_2B95F6">#2B95F6</color>
+    <color name="blue_407CD4">#407CD4</color>
     <color name="purple_8883F0">#8883F0</color>
     <color name="grey_A6A6A6">#A6A6A6</color>
     <color name="grey_F9F6F4">#F9F6F4</color>
+    <color name="pink_D44090">#D44090</color>
 </resources>

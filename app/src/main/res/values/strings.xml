@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">telemedicine</string>
+    <string name="app_name">Telemedicine</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="message">Pesan</string>
@@ -14,4 +14,10 @@
     <string name="find_doctor">Cari Dokter</string>
     <string name="category">Kategori</string>
     <string name="price">Harga</string>
+    <string name="password">Kata Sandi</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="asking_account">Belum punya akun? Daftar</string>
+    <string name="email">Email</string>
+    <string name="password_confirmation">Konfirmasi Kata Sandi</string>
 </resources>

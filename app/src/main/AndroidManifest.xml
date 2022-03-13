@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Telemedicine">
         <activity
+            android:name=".ui.loginregister.LoginRegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.landing.LandingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
