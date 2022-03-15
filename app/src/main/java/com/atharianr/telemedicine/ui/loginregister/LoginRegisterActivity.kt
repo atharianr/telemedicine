@@ -13,6 +13,7 @@ class LoginRegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityLoginRegisterBinding.inflate(layoutInflater)
+        setTheme(R.style.Theme_Telemedicine)
         setContentView(binding.root)
 
         when (intent.getIntExtra(Constant.TYPE, 0)) {

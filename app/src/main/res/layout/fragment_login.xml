@@ -7,6 +7,7 @@
     android:padding="24dp">
 
     <ImageButton
+        android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
@@ -46,16 +47,20 @@
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatButton
-        style="@style/LoginButtonStyle"
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_button_8"
         android:backgroundTint="@color/blue_2B95F6"
-        android:text="@string/login" />
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <TextView
+        android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
