@@ -28,7 +28,7 @@ class LandingActivity : AppCompatActivity() {
             }
 
             btnLogin.setOnClickListener {
-                intent.putExtra(Constant.TYPE, Constant.TYPE_REGISTER)
+                intent.putExtra(Constant.TYPE, Constant.TYPE_LOGIN)
                 startActivity(intent)
             }
 

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/poppins_bold"
@@ -18,7 +19,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="0dp"
+        android:layout_above="@id/btn_register"
+        android:layout_below="@id/tv_app_name"
         android:src="@drawable/get_started"
         tools:ignore="ContentDescription" />
 
@@ -27,6 +30,7 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/btn_login"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="48dp"
         android:background="@drawable/rounded_button_8"
@@ -41,12 +45,14 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_button_border_8"
         android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/blue_2B95F6"
         android:textSize="18sp" />
 
-</LinearLayout>
+</RelativeLayout>

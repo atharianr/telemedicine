@@ -1,10 +1,13 @@
 package com.atharianr.telemedicine.ui.main.consultation.message
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.atharianr.telemedicine.data.source.local.entity.MessageEntity
 import com.atharianr.telemedicine.databinding.ItemsListMessageBinding
+import com.atharianr.telemedicine.ui.main.consultation.message.chatroom.ChatActivity
+import com.atharianr.telemedicine.utils.Constant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
@@ -43,6 +46,12 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
                 tvName.text = data.name
                 tvMessage.text = data.message
                 tvTime.text = data.time
+            }
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, ChatActivity::class.java)
+                intent.putExtra(Constant.NAME, data.name)
+                itemView.context.startActivity(intent)
             }
         }
     }

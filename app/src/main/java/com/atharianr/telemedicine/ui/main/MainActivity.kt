@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
+        setTheme(R.style.Theme_Telemedicine)
         setContentView(binding.root)
 
         integerDeque.push(R.id.home)
