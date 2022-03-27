@@ -20,4 +20,6 @@
     <string name="asking_account">Belum punya akun? Daftar</string>
     <string name="email">Email</string>
     <string name="password_confirmation">Konfirmasi Kata Sandi</string>
+    <string name="title">Judul</string>
+    <string name="description">Deskripsi</string>
 </resources>
