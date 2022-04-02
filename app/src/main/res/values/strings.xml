@@ -23,4 +23,8 @@
     <string name="title">Judul</string>
     <string name="description">Deskripsi</string>
     <string name="find_disease">Cari Penyakit</string>
+    <string name="see_profile">Lihat Profil</string>
+    <string name="order_history">Riwayat Pesanan</string>
+    <string name="patient_profile">Profil Pasien</string>
+    <string name="settings">Pengaturan</string>
 </resources>
