@@ -22,4 +22,5 @@
     <string name="password_confirmation">Konfirmasi Kata Sandi</string>
     <string name="title">Judul</string>
     <string name="description">Deskripsi</string>
+    <string name="find_disease">Cari Penyakit</string>
 </resources>
