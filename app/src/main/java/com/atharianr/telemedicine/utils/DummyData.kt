@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.utils
 
+import com.atharianr.telemedicine.data.source.local.entity.ArticleEntity
 import com.atharianr.telemedicine.data.source.local.entity.DoctorEntity
 import com.atharianr.telemedicine.data.source.local.entity.MessageEntity
 
@@ -37,6 +38,14 @@ object DummyData {
                 35000,
                 "https://image.cnbcfm.com/api/v1/image/106926995-1628885360355-elon2.jpg?v=1641217650"
             )
+        )
+    }
+
+    fun getArticle(): List<ArticleEntity> {
+        return listOf(
+            ArticleEntity("AIDS"),
+            ArticleEntity("Amnesia"),
+            ArticleEntity("Batu Ginjal"),
         )
     }
 }

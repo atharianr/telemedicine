@@ -40,6 +40,7 @@
         tools:ignore="ContentDescription" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_article"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
@@ -47,6 +48,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:listitem="@layout/items_list_desease" />
+        tools:listitem="@layout/items_list_article" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

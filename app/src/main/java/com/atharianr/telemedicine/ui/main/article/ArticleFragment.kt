@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.atharianr.telemedicine.databinding.FragmentArticleBinding
+import com.atharianr.telemedicine.utils.DummyData
 
 class ArticleFragment : Fragment() {
 
@@ -23,6 +25,17 @@ class ArticleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (activity != null) {
+            val articleAdapter = ArticleAdapter()
+            articleAdapter.setData(DummyData.getArticle())
+
+            binding.rvArticle.apply {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = articleAdapter
+            }
+        }
     }
 
     override fun onDestroy() {
