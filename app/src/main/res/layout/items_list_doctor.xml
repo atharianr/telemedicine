@@ -61,20 +61,8 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-            <TextView
-                android:id="@+id/tv_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:maxLines="1"
-                android:text="@string/percentage"
-                android:textColor="@color/blue_2B95F6"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tv_category"
-                app:layout_constraintTop_toBottomOf="@+id/tv_category" />
-
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_price"
+                android:id="@+id/btn_choose"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:layout_marginEnd="8dp"
@@ -83,14 +71,13 @@
                 android:fontFamily="@font/poppins"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
-                android:text="@string/price"
+                android:text="@string/choose"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/tv_percentage"
                 app:layout_constraintTop_toBottomOf="@+id/tv_category" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
