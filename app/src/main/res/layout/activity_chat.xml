@@ -22,25 +22,38 @@
         android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/name"
+        android:textColor="@color/blue_2B95F6"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_doctor"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_doctor"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:src="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/et_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_back" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_back"
+        tools:listitem="@layout/items_list_chat_received" />
 
     <EditText
         android:id="@+id/et_message"
@@ -50,7 +63,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edit_text_background"
-        android:hint="Tuliskan pesan"
+        android:hint="@string/type_a_message"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:paddingVertical="16dp"
