@@ -42,8 +42,6 @@ class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
 
                 tvName.text = data.name
                 tvCategory.text = data.category
-                tvPercentage.text = "${data.percentage}%"
-                btnPrice.text = "Rp ${data.price}"
             }
         }
     }
