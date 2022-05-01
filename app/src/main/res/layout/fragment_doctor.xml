@@ -45,6 +45,9 @@
         android:layout_height="28dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_button_border"
+        android:drawableStart="@drawable/ic_round_filter_list_16"
+        android:drawablePadding="8dp"
+        android:drawableTint="@color/purple_8883F0"
         android:paddingHorizontal="16dp"
         android:text="Filter Spesialis"
         android:textAllCaps="false"
@@ -52,6 +55,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:targetApi="m" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
