@@ -52,7 +52,8 @@
         android:layout_height="200dp"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="24dp"
-        android:src="@color/grey_A6A6A6"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_placeholder"
         app:layout_constraintTop_toBottomOf="@+id/tv_name"
         tools:ignore="ContentDescription" />
 

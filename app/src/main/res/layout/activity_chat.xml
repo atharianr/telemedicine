@@ -39,7 +39,7 @@
         android:id="@+id/iv_doctor"
         android:layout_width="40dp"
         android:layout_height="0dp"
-        android:src="@color/black"
+        android:src="@drawable/profile_pic_placeholder"
         app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="@+id/btn_back" />
