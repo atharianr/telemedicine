@@ -37,4 +37,10 @@
     <string name="body_weight">Berat Badan</string>
     <string name="blood_group">Golongan Darah</string>
     <string name="address">Alamat</string>
+    <string name="id">ID</string>
+    <string name="speciality">Spesialis</string>
+    <string name="education">Pendidikan</string>
+    <string name="experience">Pengalaman</string>
+    <string name="chat">Chat</string>
+    <string name="doctor_profile">Profil Dokter</string>
 </resources>
