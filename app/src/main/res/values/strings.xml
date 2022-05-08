@@ -46,4 +46,7 @@
     <string name="hello">Hello</string>
     <string name="your_profile">Profil Anda</string>
     <string name="save">Simpan</string>
+    <string name="delete">Hapus</string>
+    <string name="use">Gunakan</string>
+    <string name="filter">Filter</string>
 </resources>
