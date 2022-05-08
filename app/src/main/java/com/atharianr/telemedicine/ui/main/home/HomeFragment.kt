@@ -47,7 +47,12 @@ class HomeFragment : Fragment() {
             listDescriptions.add("Toko Kesehatan")
 
             val homeAdapter = HomeAdapter()
-            homeAdapter.setData(listImages, listTitles, listDescriptions)
+            homeAdapter.setData(
+                listImages,
+                listTitles,
+                listDescriptions,
+                requireActivity().supportFragmentManager
+            )
 
             binding.rvHome.apply {
                 layoutManager = GridLayoutManager(

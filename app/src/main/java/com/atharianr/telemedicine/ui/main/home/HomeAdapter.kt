@@ -2,10 +2,14 @@ package com.atharianr.telemedicine.ui.main.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.databinding.ItemsListHomeBinding
+import com.atharianr.telemedicine.ui.main.consultation.ConsultationFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -13,7 +17,14 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     private var listTitles = ArrayList<String>()
     private var listDescriptions = ArrayList<String>()
 
-    fun setData(dataImage: List<Int>, dataTitle: List<String>, dataDescription: List<String>) {
+    private lateinit var fm: FragmentManager
+
+    fun setData(
+        dataImage: List<Int>,
+        dataTitle: List<String>,
+        dataDescription: List<String>,
+        fm: FragmentManager
+    ) {
         this.listImages.clear()
         this.listImages.addAll(dataImage)
 
@@ -22,6 +33,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
         this.listDescriptions.clear()
         this.listDescriptions.addAll(dataDescription)
+
+        this.fm = fm
     }
 
 
@@ -32,7 +45,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(listImages[position], listTitles[position], listDescriptions[position])
+        holder.bind(
+            listImages[position],
+            listTitles[position],
+            listDescriptions[position],
+            fm
+        )
     }
 
     override fun getItemCount(): Int = listTitles.size
@@ -40,7 +58,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ItemsListHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(image: Int, title: String, description: String) {
+        fun bind(image: Int, title: String, description: String, fm: FragmentManager) {
             binding.apply {
                 Glide.with(itemView)
                     .load(image)
@@ -50,6 +68,17 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
                 tvTitle.text = title
                 tvDescription.text = description
+
+                itemView.setOnClickListener {
+                    when (title) {
+                        "Konsultasi" -> {
+                            val tag = ConsultationFragment()::class.java.simpleName
+                            val ft = fm.beginTransaction()
+                            ft.replace(R.id.fragment, ConsultationFragment(), tag)
+                                .commit()
+                        }
+                    }
+                }
             }
         }
     }
