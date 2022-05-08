@@ -43,4 +43,5 @@
     <string name="experience">Pengalaman</string>
     <string name="chat">Chat</string>
     <string name="doctor_profile">Profil Dokter</string>
+    <string name="hello">Hello</string>
 </resources>
