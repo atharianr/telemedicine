@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme">
         <activity
+            android:name=".ui.main.profile.InputProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.consultation.doctor.profile.DoctorProfileActivity"
             android:exported="false" />
         <activity
