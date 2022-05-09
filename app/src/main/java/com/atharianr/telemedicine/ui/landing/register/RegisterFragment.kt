@@ -1,4 +1,4 @@
-package com.atharianr.telemedicine.ui.loginregister.register
+package com.atharianr.telemedicine.ui.landing.register
 
 import android.content.Intent
 import android.os.Bundle
@@ -34,6 +34,7 @@ class RegisterFragment : Fragment() {
             btnRegister.setOnClickListener {
                 val intent = Intent(requireActivity(), InputProfileActivity::class.java)
                 startActivity(intent)
+                requireActivity().finish()
             }
         }
     }

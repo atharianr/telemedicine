@@ -1,4 +1,4 @@
-package com.atharianr.telemedicine.ui.loginregister.login
+package com.atharianr.telemedicine.ui.landing.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.databinding.FragmentLoginBinding
-import com.atharianr.telemedicine.ui.loginregister.register.RegisterFragment
+import com.atharianr.telemedicine.ui.landing.register.RegisterFragment
 import com.atharianr.telemedicine.ui.main.MainActivity
 
 class LoginFragment : Fragment() {
@@ -38,6 +38,7 @@ class LoginFragment : Fragment() {
                     val intent =
                         Intent(requireActivity().applicationContext, MainActivity::class.java)
                     startActivity(intent)
+                    requireActivity().finish()
                 }
 
                 btnRegister.setOnClickListener {
@@ -52,14 +53,13 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
-    private fun loadFragment(fragment: Fragment?): Boolean {
+    private fun loadFragment(fragment: Fragment?) {
         if (fragment != null) {
             val tag = fragment::class.java.simpleName
             val ft = requireActivity().supportFragmentManager.beginTransaction()
-            ft.replace(R.id.fragment_login, fragment, tag)
+            ft.replace(R.id.fragment_landing, fragment, tag)
+                .addToBackStack(tag)
                 .commit()
-            return true
         }
-        return false
     }
 }
