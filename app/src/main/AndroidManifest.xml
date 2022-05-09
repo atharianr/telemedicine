@@ -25,9 +25,6 @@
             android:name=".ui.main.consultation.message.chatroom.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.loginregister.LoginRegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.landing.LandingActivity"
             android:exported="true">
             <intent-filter>
