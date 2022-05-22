@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.databinding.FragmentLoginBinding
-import com.atharianr.telemedicine.ui.landing.register.RegisterFragment
 import com.atharianr.telemedicine.ui.main.MainActivity
 
 class LoginFragment : Fragment() {
@@ -42,7 +42,8 @@ class LoginFragment : Fragment() {
                 }
 
                 btnRegister.setOnClickListener {
-                    loadFragment(RegisterFragment())
+                    view.findNavController()
+                        .navigate(R.id.action_loginFragment_to_registerFragment)
                 }
             }
         }
@@ -51,15 +52,5 @@ class LoginFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    private fun loadFragment(fragment: Fragment?) {
-        if (fragment != null) {
-            val tag = fragment::class.java.simpleName
-            val ft = requireActivity().supportFragmentManager.beginTransaction()
-            ft.replace(R.id.fragment_landing, fragment, tag)
-                .addToBackStack(tag)
-                .commit()
-        }
     }
 }

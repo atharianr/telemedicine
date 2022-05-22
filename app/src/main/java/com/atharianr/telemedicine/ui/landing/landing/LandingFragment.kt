@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.databinding.FragmentLandingBinding
-import com.atharianr.telemedicine.ui.landing.login.LoginFragment
-import com.atharianr.telemedicine.ui.landing.register.RegisterFragment
+
 
 class LandingFragment : Fragment() {
 
@@ -32,12 +32,15 @@ class LandingFragment : Fragment() {
 
         if (activity != null) {
             binding.apply {
-                btnRegister.setOnClickListener {
-                    loadFragment(RegisterFragment())
+                binding.btnRegister.setOnClickListener {
+                    view.findNavController()
+                        .navigate(R.id.action_landingFragment_to_registerFragment)
                 }
 
+
                 btnLogin.setOnClickListener {
-                    loadFragment(LoginFragment())
+                    view.findNavController()
+                        .navigate(R.id.action_landingFragment_to_loginFragment)
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -59,15 +62,5 @@ class LandingFragment : Fragment() {
 
     private fun getColoredSpanned(text: String, color: String): String? {
         return "<font color=$color>$text</font>"
-    }
-
-    private fun loadFragment(fragment: Fragment?) {
-        if (fragment != null) {
-            val tag = fragment::class.java.simpleName
-            val ft = requireActivity().supportFragmentManager.beginTransaction()
-            ft.replace(R.id.fragment_landing, fragment, tag)
-                .addToBackStack(tag)
-                .commit()
-        }
     }
 }
