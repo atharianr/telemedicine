@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/textView3"
@@ -49,26 +50,35 @@
         android:padding="24dp"
         app:layout_constraintTop_toBottomOf="@+id/view">
 
-        <CheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:button="@null"
             android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-            android:text="@string/name" />
+            android:drawableTint="@color/grey_979797"
+            android:text="@string/name"
+            android:textColor="@color/black"
+            tools:targetApi="m" />
 
-        <CheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:button="@null"
             android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-            android:text="@string/name" />
+            android:drawableTint="@color/grey_979797"
+            android:text="@string/name"
+            android:textColor="@color/black"
+            tools:targetApi="m" />
 
-        <CheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:button="@null"
             android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-            android:text="@string/name" />
+            android:drawableTint="@color/grey_979797"
+            android:text="@string/name"
+            android:textColor="@color/black"
+            tools:targetApi="m" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

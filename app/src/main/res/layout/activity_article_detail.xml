@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/textView2"
@@ -49,6 +50,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:text="@string/content"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/iv_disease" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

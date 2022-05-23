@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
@@ -25,6 +26,7 @@
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingVertical="16dp"
+        android:textColorHint="@android:color/darker_gray"
         android:textSize="14sp" />
 
     <EditText
@@ -37,6 +39,7 @@
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingVertical="16dp"
+        android:textColorHint="@android:color/darker_gray"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -61,6 +64,7 @@
         android:focusable="true"
         android:fontFamily="@font/poppins"
         android:minHeight="48dp"
+        android:textColor="@color/grey_979797"
         android:text="@string/asking_account"
         android:textAlignment="center"
         android:textSize="12sp" />

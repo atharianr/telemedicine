@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/tv_name"
@@ -55,6 +56,7 @@
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:paddingVertical="16dp"
+        android:textColorHint="@android:color/darker_gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_send"
