@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.atharianr.telemedicine.databinding.FragmentProfileBinding
 import com.atharianr.telemedicine.ui.landing.LandingActivity
+import com.atharianr.telemedicine.utils.Constant
 
 class ProfileFragment : Fragment() {
 
@@ -31,6 +32,12 @@ class ProfileFragment : Fragment() {
                 val intent = Intent(requireActivity(), LandingActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
+            }
+
+            btnEdit.setOnClickListener {
+                val intent = Intent(requireActivity(), InputProfileActivity::class.java)
+                intent.putExtra(Constant.FROM_REGISTER, false)
+                startActivity(intent)
             }
         }
     }

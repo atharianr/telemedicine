@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.atharianr.telemedicine.databinding.FragmentRegisterBinding
 import com.atharianr.telemedicine.ui.main.profile.InputProfileActivity
+import com.atharianr.telemedicine.utils.Constant
 
 
 class RegisterFragment : Fragment() {
@@ -33,6 +34,7 @@ class RegisterFragment : Fragment() {
 
             btnRegister.setOnClickListener {
                 val intent = Intent(requireActivity(), InputProfileActivity::class.java)
+                intent.putExtra(Constant.FROM_REGISTER, true)
                 startActivity(intent)
                 requireActivity().finish()
             }

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.databinding.ActivityInputProfileBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
+import com.atharianr.telemedicine.utils.Constant
 
 
 class InputProfileActivity : AppCompatActivity() {
@@ -15,6 +16,8 @@ class InputProfileActivity : AppCompatActivity() {
         val binding = ActivityInputProfileBinding.inflate(layoutInflater)
         setTheme(R.style.Theme_Telemedicine)
         setContentView(binding.root)
+
+        val fromRegister = intent.getBooleanExtra(Constant.FROM_REGISTER, true)
 
         binding.apply {
             val gender = arrayOf("Laki-laki", "Perempuan")
@@ -27,9 +30,13 @@ class InputProfileActivity : AppCompatActivity() {
             spinnerBlood.adapter = bloodArrayAdapter
 
             btnSave.setOnClickListener {
-                val intent = Intent(this@InputProfileActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                if (fromRegister) {
+                    val intent = Intent(this@InputProfileActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    onBackPressed()
+                }
             }
         }
     }

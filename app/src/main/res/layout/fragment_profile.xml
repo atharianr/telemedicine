@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
-            android:minWidth="32dp"
+            android:minWidth="48dp"
             android:minHeight="48dp"
             android:src="@drawable/ic_round_logout_24"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +37,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+            app:layout_constraintEnd_toEndOf="@+id/iv_profile">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:src="@drawable/ic_round_edit_16"
+                tools:ignore="ContentDescription" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_name"

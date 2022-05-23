@@ -12,6 +12,7 @@
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/home_selector.xml" value="0.196" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1985" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/ic_baseline_search_16_black.xml" value="0.1985" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/ic_round_edit_24.xml" value="0.196" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/ic_round_filter_list_24.xml" value="0.2215" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/profile_selector.xml" value="0.196" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_box_16.xml" value="0.238" />
@@ -43,7 +44,7 @@
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_landing.xml" value="0.2" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_message.xml" value="0.25" />
-        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_register.xml" value="0.25" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_article.xml" value="0.32592592592592595" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_chat_received.xml" value="0.67" />
