@@ -1,10 +1,12 @@
 package com.atharianr.telemedicine.ui.main.consultation.doctor
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.atharianr.telemedicine.data.source.local.entity.DoctorEntity
 import com.atharianr.telemedicine.databinding.ItemsListDoctorBinding
+import com.atharianr.telemedicine.ui.main.consultation.doctor.profile.DoctorProfileActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
@@ -42,6 +44,11 @@ class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
 
                 tvName.text = data.name
                 tvCategory.text = data.category
+
+                btnChoose.setOnClickListener {
+                    val intent = Intent(itemView.context, DoctorProfileActivity::class.java)
+                    itemView.context.startActivity(intent)
+                }
             }
         }
     }
