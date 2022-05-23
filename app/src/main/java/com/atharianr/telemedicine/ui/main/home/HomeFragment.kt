@@ -63,6 +63,7 @@ class HomeFragment : Fragment() {
                 )
                 setHasFixedSize(true)
                 adapter = homeAdapter
+                isFocusable = false
             }
         }
     }
