@@ -30,10 +30,6 @@ class LoginFragment : Fragment() {
 
         if (activity != null) {
             binding.apply {
-                btnBack.setOnClickListener {
-                    requireActivity().onBackPressed()
-                }
-
                 btnLogin.setOnClickListener {
                     val intent =
                         Intent(requireActivity().applicationContext, MainActivity::class.java)

@@ -28,10 +28,6 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            btnBack.setOnClickListener {
-                requireActivity().onBackPressed()
-            }
-
             btnRegister.setOnClickListener {
                 val intent = Intent(requireActivity(), InputProfileActivity::class.java)
                 intent.putExtra(Constant.FROM_REGISTER, true)

@@ -17,10 +17,6 @@ class ChatActivity : AppCompatActivity() {
         val doctorName = intent.getStringExtra(Constant.NAME)
 
         binding.apply {
-            btnBack.setOnClickListener {
-                onBackPressed()
-            }
-
             btnSend.setOnClickListener {
                 etMessage.text = null
             }
