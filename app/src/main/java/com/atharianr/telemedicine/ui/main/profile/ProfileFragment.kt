@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.ui.main.profile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,12 +30,15 @@ class ProfileFragment : Fragment() {
 
         binding.apply {
             btnLogout.setOnClickListener {
+                removeToken()
+                // intent back to landing
                 val intent = Intent(requireActivity(), LandingActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
             }
 
             btnEdit.setOnClickListener {
+                // intent to input profile (edit)
                 val intent = Intent(requireActivity(), InputProfileActivity::class.java)
                 intent.putExtra(Constant.FROM_REGISTER, false)
                 startActivity(intent)
@@ -45,5 +49,11 @@ class ProfileFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun removeToken() {
+        val sharedPref =
+            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        sharedPref.edit().clear().apply()
     }
 }

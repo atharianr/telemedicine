@@ -16,24 +16,16 @@ class LandingActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Telemedicine)
         setContentView(binding.root)
 
-        checkToken()
-    }
-
-    private fun checkToken() {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
-        val token = sharedPref.getString(Constant.TOKEN, null)
-
-        if (token != null) {
+        if (getToken() != null) {
             with(Intent(this, MainActivity::class.java)) {
                 startActivity(this)
                 finish()
             }
-
-//            with(Intent(this, InputProfileActivity::class.java)) {
-//                putExtra(Constant.FROM_REGISTER, true)
-//                startActivity(this)
-//                finish()
-//            }
         }
+    }
+
+    private fun getToken(): String? {
+        val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.TOKEN, null)
     }
 }

@@ -14,6 +14,7 @@ import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentLoginBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
+import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
@@ -41,6 +42,8 @@ class LoginFragment : Fragment() {
                     val email = etEmail.text.toString()
                     val password = etPassword.text.toString()
 
+                    formValidation(email, password)
+
                     val loginRequest = LoginRequest(email, password)
 
                     loginViewModel.login(loginRequest).observe(requireActivity()) {
@@ -53,23 +56,11 @@ class LoginFragment : Fragment() {
                                 ).show()
 
                                 if (it.body?.data?.emailVerifiedAt != null) {
+                                    saveToken(it.body.token)
                                     with(Intent(requireActivity(), MainActivity::class.java)) {
                                         startActivity(this)
                                         requireActivity().finish()
                                     }
-
-                                    // save token
-                                    val sharedPref =
-                                        requireActivity().getPreferences(Context.MODE_PRIVATE)
-                                            ?: return@observe
-                                    with(sharedPref.edit()) {
-                                        putString(
-                                            com.atharianr.telemedicine.utils.Constant.TOKEN,
-                                            it.body.token
-                                        )
-                                        apply()
-                                    }
-
                                 } else {
                                     val toVerifyFragment =
                                         LoginFragmentDirections.actionLoginFragmentToVerifyFragment(
@@ -105,5 +96,24 @@ class LoginFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun formValidation(email: String, password: String) {
+        binding.apply {
+            if (email.isEmpty()) {
+                etEmail.error = "Masukkan email anda."
+            }
+
+            if (password.isEmpty()) {
+                etPassword.error = "Masukkan kata sandi anda."
+            }
+        }
+    }
+
+    private fun saveToken(token: String?) {
+        val sharedPref =
+            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+                ?: return
+        sharedPref.edit().putString(Constant.TOKEN, token).apply()
     }
 }
