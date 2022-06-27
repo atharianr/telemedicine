@@ -1,18 +1,15 @@
 package com.atharianr.telemedicine.ui.landing.register
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentRegisterBinding
-import com.atharianr.telemedicine.ui.main.profile.InputProfileActivity
-import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -48,20 +45,9 @@ class RegisterFragment : Fragment() {
                             Toast.makeText(requireActivity(), it.body?.message, Toast.LENGTH_SHORT)
                                 .show()
 
-                            // save token
-                            val sharedPref =
-                                activity?.getPreferences(Context.MODE_PRIVATE) ?: return@observe
-                            with(sharedPref.edit()) {
-                                putString(Constant.TOKEN, it.body?.token)
-                                apply()
-                            }
-
-                            with(Intent(requireActivity(), InputProfileActivity::class.java)) {
-                                putExtra(Constant.FROM_REGISTER, true)
-                                putExtra(Constant.NAME, name)
-                                startActivity(this)
-                                requireActivity().finish()
-                            }
+                            val toVerifyFragment =
+                                RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment(it.body?.token)
+                            view.findNavController().navigate(toVerifyFragment)
                         }
 
                         StatusResponse.ERROR -> {

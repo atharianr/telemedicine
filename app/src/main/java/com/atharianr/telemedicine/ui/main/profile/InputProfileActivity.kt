@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.ui.main.profile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -31,6 +32,16 @@ class InputProfileActivity : AppCompatActivity() {
 
             btnSave.setOnClickListener {
                 if (fromRegister) {
+                    val token = intent.getStringExtra(Constant.TOKEN)
+
+                    // save token
+                    val sharedPref =
+                        getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
+                    with(sharedPref.edit()) {
+                        putString(Constant.TOKEN, token)
+                        apply()
+                    }
+
                     val intent = Intent(this@InputProfileActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
