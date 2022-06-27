@@ -9,6 +9,7 @@ import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
 import com.atharianr.telemedicine.data.source.remote.response.LoginResponse
 import com.atharianr.telemedicine.data.source.remote.response.RegisterResponse
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,8 +56,17 @@ class RemoteDataSource(private val apiService: ApiService) {
                         resultResponse.postValue(ApiResponse.success(response.body()))
                     }
                     else -> {
-                        Log.d(TAG, "Error: ${response.message()}")
-                        resultResponse.postValue(ApiResponse.error("Terjadi kesalahan, ulangi kembali."))
+                        try {
+                            val errorBody = response.errorBody()
+                            if (errorBody != null) {
+                                val jObjError = JSONObject(errorBody.string())
+                                Log.d(TAG, jObjError.getString("message"))
+                                resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "${e.message}")
+                            resultResponse.postValue(ApiResponse.error(e.message))
+                        }
                     }
                 }
             }
