@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.databinding.ActivityLandingBinding
-import com.atharianr.telemedicine.ui.main.profile.InputProfileActivity
+import com.atharianr.telemedicine.ui.main.MainActivity
 import com.atharianr.telemedicine.utils.Constant
 
 class LandingActivity : AppCompatActivity() {
@@ -24,11 +24,16 @@ class LandingActivity : AppCompatActivity() {
         val token = sharedPref.getString(Constant.TOKEN, null)
 
         if (token != null) {
-            with(Intent(this, InputProfileActivity::class.java)) {
-                putExtra(Constant.FROM_REGISTER, true)
+            with(Intent(this, MainActivity::class.java)) {
                 startActivity(this)
                 finish()
             }
+
+//            with(Intent(this, InputProfileActivity::class.java)) {
+//                putExtra(Constant.FROM_REGISTER, true)
+//                startActivity(this)
+//                finish()
+//            }
         }
     }
 }

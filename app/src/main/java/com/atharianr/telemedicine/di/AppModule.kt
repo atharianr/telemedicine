@@ -2,6 +2,7 @@ package com.atharianr.telemedicine.di
 
 import com.atharianr.telemedicine.data.source.remote.RemoteDataSource
 import com.atharianr.telemedicine.data.source.remote.network.ApiService
+import com.atharianr.telemedicine.ui.landing.login.LoginViewModel
 import com.atharianr.telemedicine.ui.landing.register.RegisterViewModel
 import com.atharianr.telemedicine.utils.Constant
 import okhttp3.OkHttpClient
@@ -37,4 +38,5 @@ val remoteDataSourceModule = module {
 
 val viewModelModule = module {
     viewModel { RegisterViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
 }

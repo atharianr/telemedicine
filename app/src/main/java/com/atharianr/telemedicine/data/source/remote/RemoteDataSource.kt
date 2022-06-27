@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.atharianr.telemedicine.data.source.remote.network.ApiService
+import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
+import com.atharianr.telemedicine.data.source.remote.response.LoginResponse
 import com.atharianr.telemedicine.data.source.remote.response.RegisterResponse
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 import retrofit2.Call
@@ -33,6 +35,33 @@ class RemoteDataSource(private val apiService: ApiService) {
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                Log.d(TAG, t.message.toString())
+                resultResponse.postValue(ApiResponse.error(t.message.toString()))
+            }
+
+        })
+
+        return resultResponse
+    }
+
+    fun login(loginRequest: LoginRequest): LiveData<ApiResponse<LoginResponse>> {
+        val resultResponse = MutableLiveData<ApiResponse<LoginResponse>>()
+
+        apiService.login(loginRequest).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, "Login Success")
+                        resultResponse.postValue(ApiResponse.success(response.body()))
+                    }
+                    else -> {
+                        Log.d(TAG, "Error: ${response.message()}")
+                        resultResponse.postValue(ApiResponse.error("Terjadi kesalahan, ulangi kembali."))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.d(TAG, t.message.toString())
                 resultResponse.postValue(ApiResponse.error(t.message.toString()))
             }

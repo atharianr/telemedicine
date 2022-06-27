@@ -8,7 +8,7 @@ data class RegisterResponse(
     val code: Int? = null,
 
     @field:SerializedName("data")
-    val data: Data? = null,
+    val data: RegisterData? = null,
 
     @field:SerializedName("message")
     val message: String? = null,
@@ -17,20 +17,20 @@ data class RegisterResponse(
     val token: String? = null
 )
 
-data class Data(
+data class RegisterData(
 
-	@field:SerializedName("id")
-	val id: Int? = null,
+    @field:SerializedName("id")
+    val id: Int? = null,
 
     @field:SerializedName("name")
     val name: String? = null,
 
-	@field:SerializedName("email")
-	val email: String? = null,
+    @field:SerializedName("email")
+    val email: String? = null,
 
     @field:SerializedName("created_at")
     val createdAt: String? = null,
 
-	@field:SerializedName("updated_at")
-	val updatedAt: String? = null
+    @field:SerializedName("updated_at")
+    val updatedAt: String? = null
 )
