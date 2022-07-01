@@ -15,6 +15,7 @@ import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentLoginBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
+import com.atharianr.telemedicine.ui.main.profile.InputProfileActivity
 import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -66,29 +67,24 @@ class LoginFragment : Fragment() {
             when (it.status) {
                 StatusResponse.SUCCESS -> {
                     if (it.body?.data?.emailVerifiedAt != null) {
-                        isLoading(false)
-                        saveToken(it.body.token)
-                        with(Intent(requireActivity(), MainActivity::class.java)) {
-                            startActivity(this)
-                            requireActivity().finish()
-                        }
+                        checkIsProfileFilled(it.body.token)
                     } else {
-                        isLoading(false)
                         val toVerifyFragment =
                             LoginFragmentDirections.actionLoginFragmentToVerifyFragment(
                                 it.body?.token
                             )
                         view?.findNavController()?.navigate(toVerifyFragment)
+                        isLoading(false)
                     }
                 }
 
                 StatusResponse.ERROR -> {
-                    isLoading(false)
                     Toast.makeText(
                         requireActivity(),
                         it.message,
                         Toast.LENGTH_SHORT
                     ).show()
+                    isLoading(false)
 
                     return@observe
                 }
@@ -127,6 +123,37 @@ class LoginFragment : Fragment() {
         login()
     }
 
+    private fun checkIsProfileFilled(token: String?) {
+        if (token != null) {
+            val bearerToken = "Bearer $token"
+            loginViewModel.getUserDetail(bearerToken).observe(requireActivity()) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        val name = it.body?.data?.name
+                        val phoneNumber = it.body?.data?.phoneNumber
+                        val gender = it.body?.data?.gender
+                        val birthdate = it.body?.data?.birthdate
+                        val bodyHeight = it.body?.data?.bodyHeight
+                        val bodyWeight = it.body?.data?.bodyWeight
+                        val bloodType = it.body?.data?.bloodType
+                        val address = it.body?.data?.address
+
+                        if (gender != null || birthdate != null || bodyHeight != null || bodyWeight != null || bloodType != null || address != null) {
+                            intentToMain()
+                            saveToken(token)
+                        } else {
+                            intentToInputProfile(token, name)
+                        }
+
+                        isLoading(false)
+                    }
+
+                    else -> isLoading(false)
+                }
+            }
+        }
+    }
+
     private fun isLoading(loading: Boolean) {
         binding.apply {
             if (loading) {
@@ -141,10 +168,27 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun saveToken(token: String?) {
+    private fun saveToken(token: String) {
         val sharedPref =
             requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
                 ?: return
         sharedPref.edit().putString(Constant.TOKEN, token).apply()
+    }
+
+    private fun intentToInputProfile(token: String, name: String?) {
+        with(Intent(requireActivity(), InputProfileActivity::class.java)) {
+            putExtra(Constant.FROM_AUTH, true)
+            putExtra(Constant.TOKEN, token)
+            putExtra(Constant.NAME, name)
+            startActivity(this)
+            requireActivity().finish()
+        }
+    }
+
+    private fun intentToMain() {
+        with(Intent(requireActivity(), MainActivity::class.java)) {
+            startActivity(this)
+            requireActivity().finish()
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.atharianr.telemedicine.ui.landing.verify
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +11,7 @@ import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentVerifyBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
+import com.atharianr.telemedicine.ui.main.profile.InputProfileActivity
 import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -82,8 +82,7 @@ class VerifyFragment : Fragment() {
             when (it.status) {
                 StatusResponse.SUCCESS -> {
                     if (it.body?.data?.emailVerifiedAt != null) {
-                        intentToMain()
-                        saveToken(token)
+                        checkIsProfileFilled(token)
                         isLoading(false)
                     } else {
                         Toast.makeText(
@@ -109,6 +108,32 @@ class VerifyFragment : Fragment() {
         }
     }
 
+    private fun checkIsProfileFilled(token: String) {
+        verifyViewModel.getUserDetail(token).observe(requireActivity()) {
+            when (it.status) {
+                StatusResponse.SUCCESS -> {
+                    val phoneNumber = it.body?.data?.phoneNumber
+                    val gender = it.body?.data?.gender
+                    val birthdate = it.body?.data?.birthdate
+                    val bodyHeight = it.body?.data?.bodyHeight
+                    val bodyWeight = it.body?.data?.bodyWeight
+                    val bloodType = it.body?.data?.bloodType
+                    val address = it.body?.data?.address
+
+                    if (phoneNumber != null || gender != null || birthdate != null || bodyHeight != null || bodyWeight != null || bloodType != null || address != null) {
+                        intentToMain()
+                    } else {
+                        intentToInputProfile()
+                    }
+
+                    isLoading(true)
+                }
+
+                else -> {}
+            }
+        }
+    }
+
     private fun isLoading(loading: Boolean) {
         binding.apply {
             if (loading) {
@@ -123,11 +148,12 @@ class VerifyFragment : Fragment() {
         }
     }
 
-    private fun saveToken(token: String?) {
-        val sharedPref =
-            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
-                ?: return
-        sharedPref.edit().putString(Constant.TOKEN, token).apply()
+    private fun intentToInputProfile() {
+        with(Intent(requireActivity(), InputProfileActivity::class.java)) {
+            putExtra(Constant.FROM_AUTH, true)
+            startActivity(this)
+            requireActivity().finish()
+        }
     }
 
     private fun intentToMain() {

@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
             btnEdit.setOnClickListener {
                 // intent to input profile (edit)
                 val intent = Intent(requireActivity(), InputProfileActivity::class.java)
-                intent.putExtra(Constant.FROM_REGISTER, false)
+                intent.putExtra(Constant.FROM_AUTH, false)
                 startActivity(intent)
             }
         }

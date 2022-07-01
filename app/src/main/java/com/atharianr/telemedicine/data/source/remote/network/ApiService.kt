@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.data.source.remote.network
 
+import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
 import com.atharianr.telemedicine.data.source.remote.response.LoginResponse
@@ -25,4 +26,11 @@ interface ApiService {
     @Headers("Accept: application/json")
     @GET("user")
     fun getUserDetail(@Header("Authorization") token: String): Call<UserResponse>
+
+    @Headers("Accept: application/json")
+    @PUT("user/edit")
+    fun inputProfile(
+        @Header("Authorization") token: String,
+        @Body inputProfileRequest: InputProfileRequest
+    ): Call<UserResponse>
 }

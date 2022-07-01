@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.atharianr.telemedicine.data.source.remote.network.ApiService
+import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
 import com.atharianr.telemedicine.data.source.remote.response.LoginResponse
@@ -150,6 +151,45 @@ class RemoteDataSource(private val apiService: ApiService) {
                 resultResponse.postValue(ApiResponse.error(t.message.toString()))
             }
         })
+
+        return resultResponse
+    }
+
+    fun inputProfile(
+        token: String,
+        inputProfileRequest: InputProfileRequest
+    ): LiveData<ApiResponse<UserResponse>> {
+        val resultResponse = MutableLiveData<ApiResponse<UserResponse>>()
+
+        apiService.inputProfile(token, inputProfileRequest)
+            .enqueue(object : Callback<UserResponse> {
+                override fun onResponse(
+                    call: Call<UserResponse>,
+                    response: Response<UserResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d(TAG, "Input Success")
+                        resultResponse.postValue(ApiResponse.success(response.body()))
+                    } else {
+                        try {
+                            val errorBody = response.errorBody()
+                            if (errorBody != null) {
+                                val jObjError = JSONObject(errorBody.string())
+                                Log.d(TAG, jObjError.getString("message"))
+                                resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "${e.message}")
+                            resultResponse.postValue(ApiResponse.error(e.message))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                    Log.d(TAG, t.message.toString())
+                    resultResponse.postValue(ApiResponse.error(t.message.toString()))
+                }
+            })
 
         return resultResponse
     }
