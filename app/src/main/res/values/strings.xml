@@ -49,4 +49,8 @@
     <string name="delete">Hapus</string>
     <string name="use">Gunakan</string>
     <string name="filter">Filter</string>
+    <string name="next">Lanjut</string>
+    <string name="resend_email_verification">Tidak mendapat email? Kirim ulang</string>
+    <string name="email_verification_info">Untuk mengonfirmasi alamat anda, klik link pada email yang kami kirimkan kepada anda.</string>
+    <string name="email_verification">Verifikasi Email</string>
 </resources>

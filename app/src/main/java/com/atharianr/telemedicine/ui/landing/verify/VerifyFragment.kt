@@ -6,14 +6,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.atharianr.telemedicine.R
+import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentVerifyBinding
-import com.atharianr.telemedicine.ui.main.profile.InputProfileActivity
+import com.atharianr.telemedicine.ui.main.MainActivity
 import com.atharianr.telemedicine.utils.Constant
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class VerifyFragment : Fragment() {
     private var _binding: FragmentVerifyBinding? = null
     private val binding get() = _binding as FragmentVerifyBinding
+
+    private val verifyViewModel: VerifyViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,22 +32,108 @@ class VerifyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val token = VerifyFragmentArgs.fromBundle(arguments as Bundle).token
+        val bearerToken = "Bearer $token"
+
         binding.apply {
             btnNext.setOnClickListener {
-                val token = VerifyFragmentArgs.fromBundle(arguments as Bundle).token
+                checkVerified(bearerToken)
+            }
 
-                with(Intent(requireActivity(), InputProfileActivity::class.java)) {
-                    putExtra(Constant.FROM_REGISTER, true)
-                    putExtra(Constant.TOKEN, token)
-                    startActivity(this)
-                    requireActivity().finish()
-                }
+            tvSend.setOnClickListener {
+                sendEmailVerification(bearerToken)
             }
         }
+
+        isLoading(true)
+        sendEmailVerification(bearerToken)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun sendEmailVerification(token: String) {
+        verifyViewModel.verifyEmail(token).observe(requireActivity()) {
+            when (it.status) {
+                StatusResponse.SUCCESS -> {
+                    Toast.makeText(requireActivity(), it.body?.message, Toast.LENGTH_SHORT).show()
+                    isLoading(false)
+                }
+
+                StatusResponse.ERROR -> {
+                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                    isLoading(false)
+
+                    return@observe
+                }
+                else -> {
+                    isLoading(false)
+                }
+            }
+        }
+        isLoading(true)
+    }
+
+    private fun checkVerified(token: String) {
+        verifyViewModel.getUserDetail(token).observe(requireActivity()) {
+            when (it.status) {
+                StatusResponse.SUCCESS -> {
+                    if (it.body?.data?.emailVerifiedAt != null) {
+                        intentToMain()
+                        saveToken(token)
+                        isLoading(false)
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Email belum diverifikasi.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        isLoading(false)
+
+                        return@observe
+                    }
+
+                    isLoading(true)
+                }
+
+                StatusResponse.ERROR -> {
+                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                    isLoading(false)
+                }
+
+                else -> {}
+            }
+        }
+    }
+
+    private fun isLoading(loading: Boolean) {
+        binding.apply {
+            if (loading) {
+                btnNext.text = ""
+                btnNext.isEnabled = false
+                progressBar.visibility = View.VISIBLE
+            } else {
+                btnNext.text = getString(R.string.next)
+                btnNext.isEnabled = true
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun saveToken(token: String?) {
+        val sharedPref =
+            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+                ?: return
+        sharedPref.edit().putString(Constant.TOKEN, token).apply()
+    }
+
+    private fun intentToMain() {
+        with(Intent(requireActivity(), MainActivity::class.java)) {
+            startActivity(this)
+            requireActivity().finish()
+        }
     }
 }
