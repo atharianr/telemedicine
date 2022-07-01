@@ -25,14 +25,20 @@ class RemoteDataSource(private val apiService: ApiService) {
                 call: Call<RegisterResponse>,
                 response: Response<RegisterResponse>
             ) {
-                when (response.code()) {
-                    201 -> {
-                        Log.d(TAG, "Register Success")
-                        resultResponse.postValue(ApiResponse.success(response.body()))
-                    }
-                    else -> {
-                        Log.d(TAG, "Error: ${response.message()}")
-                        resultResponse.postValue(ApiResponse.error("Terjadi kesalahan, ulangi kembali."))
+                if (response.isSuccessful) {
+                    Log.d(TAG, "Register Success")
+                    resultResponse.postValue(ApiResponse.success(response.body()))
+                } else {
+                    try {
+                        val errorBody = response.errorBody()
+                        if (errorBody != null) {
+                            val jObjError = JSONObject(errorBody.string())
+                            Log.d(TAG, jObjError.getString("message"))
+                            resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                        }
+                    } catch (e: Exception) {
+                        Log.d(TAG, "${e.message}")
+                        resultResponse.postValue(ApiResponse.error(e.message))
                     }
                 }
             }
