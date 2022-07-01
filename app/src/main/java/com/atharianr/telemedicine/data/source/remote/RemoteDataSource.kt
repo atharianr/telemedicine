@@ -68,26 +68,6 @@ class RemoteDataSource(private val apiService: ApiService) {
                         resultResponse.postValue(ApiResponse.error(e.message))
                     }
                 }
-
-//                when (response.code()) {
-//                    200 -> {
-//                        Log.d(TAG, "Login Success")
-//                        resultResponse.postValue(ApiResponse.success(response.body()))
-//                    }
-//                    else -> {
-//                        try {
-//                            val errorBody = response.errorBody()
-//                            if (errorBody != null) {
-//                                val jObjError = JSONObject(errorBody.string())
-//                                Log.d(TAG, jObjError.getString("message"))
-//                                resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
-//                            }
-//                        } catch (e: Exception) {
-//                            Log.d(TAG, "${e.message}")
-//                            resultResponse.postValue(ApiResponse.error(e.message))
-//                        }
-//                    }
-//                }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
