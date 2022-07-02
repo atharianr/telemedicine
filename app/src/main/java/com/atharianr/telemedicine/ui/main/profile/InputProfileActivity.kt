@@ -14,6 +14,7 @@ import com.atharianr.telemedicine.databinding.ActivityInputProfileBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
 import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.regex.Pattern
 
 
 class InputProfileActivity : AppCompatActivity() {
@@ -84,6 +85,15 @@ class InputProfileActivity : AppCompatActivity() {
         inputProfileRequest: InputProfileRequest,
         fromAuth: Boolean
     ) {
+        val formattedDateMatcher = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$")
+
+        val gregorianDateMatcher = Pattern.compile(
+            "^(29/02/(2000|2400|2800|(19|2[0-9])(0[48]|[2468][048]|[13579][26])))$"
+                    + "|^((0[1-9]|1[0-9]|2[0-8])/02/((19|2[0-9])[0-9]{2}))$"
+                    + "|^((0[1-9]|[12][0-9]|3[01])/(0[13578]|10|12)/((19|2[0-9])[0-9]{2}))$"
+                    + "|^((0[1-9]|[12][0-9]|30)/(0[469]|11)/((19|2[0-9])[0-9]{2}))$"
+        )
+
         binding.apply {
             // name
             if (etName.text.toString().isEmpty()) {
@@ -99,6 +109,16 @@ class InputProfileActivity : AppCompatActivity() {
                 etBirthdate.error = "Masukkan tanggal lahir anda."
                 isLoading(false)
                 return
+            }
+            if (!formattedDateMatcher.matcher(etBirthdate.text.toString()).matches()) {
+                etBirthdate.error = "Format tanggal tidak tepat."
+                isLoading(false)
+                return
+            }
+            if (!gregorianDateMatcher.matcher(etBirthdate.text.toString()).matches()) {
+                etBirthdate.error = "Masukkan tanggal yang sesuai."
+                isLoading(false)
+                return
             } else {
                 etBirthdate.error = null
             }
@@ -108,6 +128,9 @@ class InputProfileActivity : AppCompatActivity() {
                 etBodyHeight.error = "Masukkan tinggi badan anda."
                 isLoading(false)
                 return
+            }
+            if (etBodyHeight.text.toString() == "\\d{4}-\\d{2}-\\d{2}") {
+
             } else {
                 etBodyHeight.error = null
             }
