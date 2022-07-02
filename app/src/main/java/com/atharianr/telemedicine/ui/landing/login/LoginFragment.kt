@@ -132,7 +132,7 @@ class LoginFragment : Fragment() {
                         val bloodType = it.body?.data?.bloodType
                         val address = it.body?.data?.address
 
-                        if (gender != null || birthdate != null || bodyHeight != null || bodyWeight != null || bloodType != null || address != null) {
+                        if (phoneNumber != null || gender != null || birthdate != null || bodyHeight != null || bodyWeight != null || bloodType != null || address != null) {
                             intentToMain()
                             saveToken(token)
                         } else {
