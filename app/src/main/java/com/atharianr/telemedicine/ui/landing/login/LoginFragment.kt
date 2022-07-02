@@ -89,9 +89,7 @@ class LoginFragment : Fragment() {
                     return@observe
                 }
 
-                else -> {
-                    isLoading(false)
-                }
+                else -> isLoading(false)
             }
         }
     }

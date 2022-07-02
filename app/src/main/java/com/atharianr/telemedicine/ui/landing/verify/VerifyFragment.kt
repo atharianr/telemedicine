@@ -2,6 +2,7 @@ package com.atharianr.telemedicine.ui.landing.verify
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ class VerifyFragment : Fragment() {
 
         val token = VerifyFragmentArgs.fromBundle(arguments as Bundle).token
         val bearerToken = "Bearer $token"
+        Log.d("VerifyFragment", bearerToken)
 
         binding.apply {
             btnNext.setOnClickListener {
@@ -123,7 +125,7 @@ class VerifyFragment : Fragment() {
                     if (phoneNumber != null || gender != null || birthdate != null || bodyHeight != null || bodyWeight != null || bloodType != null || address != null) {
                         intentToMain()
                     } else {
-                        intentToInputProfile()
+                        intentToInputProfile(token, it.body?.data?.name)
                     }
 
                     isLoading(true)
@@ -148,9 +150,11 @@ class VerifyFragment : Fragment() {
         }
     }
 
-    private fun intentToInputProfile() {
+    private fun intentToInputProfile(token: String, name: String?) {
         with(Intent(requireActivity(), InputProfileActivity::class.java)) {
             putExtra(Constant.FROM_AUTH, true)
+            putExtra(Constant.TOKEN, token)
+            putExtra(Constant.NAME, name)
             startActivity(this)
             requireActivity().finish()
         }

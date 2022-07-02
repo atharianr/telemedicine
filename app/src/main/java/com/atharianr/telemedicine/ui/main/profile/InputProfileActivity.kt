@@ -73,10 +73,65 @@ class InputProfileActivity : AppCompatActivity() {
                     address
                 )
 
-                inputProfile(token, inputProfileRequest, fromAuth)
                 isLoading(true)
+                checkValidation(token, inputProfileRequest, fromAuth)
             }
         }
+    }
+
+    private fun checkValidation(
+        token: String?,
+        inputProfileRequest: InputProfileRequest,
+        fromAuth: Boolean
+    ) {
+        binding.apply {
+            // name
+            if (etName.text.toString().isEmpty()) {
+                etName.error = "Masukkan nama lengkap anda."
+                isLoading(false)
+                return
+            } else {
+                etName.error = null
+            }
+
+            // birthdate
+            if (etBirthdate.text.toString().isEmpty()) {
+                etBirthdate.error = "Masukkan tanggal lahir anda."
+                isLoading(false)
+                return
+            } else {
+                etBirthdate.error = null
+            }
+
+            // bodyHeight
+            if (etBodyHeight.text.toString().isEmpty()) {
+                etBodyHeight.error = "Masukkan tinggi badan anda."
+                isLoading(false)
+                return
+            } else {
+                etBodyHeight.error = null
+            }
+
+            // bodyWeight
+            if (etBodyWeight.text.toString().isEmpty()) {
+                etBodyWeight.error = "Masukkan berat badan anda."
+                isLoading(false)
+                return
+            } else {
+                etBodyWeight.error = null
+            }
+
+            // address
+            if (etAddress.text.toString().isEmpty()) {
+                etAddress.error = "Masukkan alamat anda."
+                isLoading(false)
+                return
+            } else {
+                etAddress.error = null
+            }
+        }
+
+        inputProfile(token, inputProfileRequest, fromAuth)
     }
 
     private fun inputProfile(

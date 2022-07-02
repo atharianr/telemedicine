@@ -1,11 +1,26 @@
 package com.atharianr.telemedicine.data.source.remote.request
 
+import com.google.gson.annotations.SerializedName
+
 data class InputProfileRequest(
-    val name: String,
-    val gender: Int,
-    val birthdate: String,
-    val bodyHeight: Int,
-    val bodyWeight: Int,
-    val bloodType: Int,
-    val address: String,
+    @field:SerializedName("name")
+    val name: String? = null,
+
+    @field:SerializedName("gender")
+    val gender: Int? = null,
+
+    @field:SerializedName("birthdate")
+    val birthdate: String? = null,
+
+    @field:SerializedName("body_height")
+    val bodyHeight: Int? = null,
+
+    @field:SerializedName("body_weight")
+    val bodyWeight: Int? = null,
+
+    @field:SerializedName("blood_type")
+    val bloodType: Int? = null,
+
+    @field:SerializedName("address")
+    val address: String? = null
 )
