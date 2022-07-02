@@ -21,6 +21,9 @@ data class InputProfileRequest(
     @field:SerializedName("blood_type")
     val bloodType: Int? = null,
 
+    @field:SerializedName("phone_number")
+    val phoneNumber: String? = null,
+
     @field:SerializedName("address")
     val address: String? = null
 )

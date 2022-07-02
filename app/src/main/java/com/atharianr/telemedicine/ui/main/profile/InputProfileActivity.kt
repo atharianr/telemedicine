@@ -54,6 +54,7 @@ class InputProfileActivity : AppCompatActivity() {
                 var bodyHeight = etBodyHeight.text.toString()
                 var bodyWeight = etBodyWeight.text.toString()
                 val bloodType = spinnerBlood.selectedItemPosition
+                val phoneNumber = etPhoneNumber.text.toString()
                 val address = etAddress.text.toString()
 
                 if (bodyHeight == "") {
@@ -71,6 +72,7 @@ class InputProfileActivity : AppCompatActivity() {
                     bodyHeight.toInt(),
                     bodyWeight.toInt(),
                     bloodType,
+                    phoneNumber,
                     address
                 )
 
@@ -128,9 +130,6 @@ class InputProfileActivity : AppCompatActivity() {
                 etBodyHeight.error = "Masukkan tinggi badan anda."
                 isLoading(false)
                 return
-            }
-            if (etBodyHeight.text.toString() == "\\d{4}-\\d{2}-\\d{2}") {
-
             } else {
                 etBodyHeight.error = null
             }
@@ -142,6 +141,15 @@ class InputProfileActivity : AppCompatActivity() {
                 return
             } else {
                 etBodyWeight.error = null
+            }
+
+            // phoneNumber
+            if (etPhoneNumber.text.toString().isEmpty()) {
+                etPhoneNumber.error = "Masukkan nomor HP anda."
+                isLoading(false)
+                return
+            } else {
+                etPhoneNumber.error = null
             }
 
             // address

@@ -133,6 +133,20 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_edit_text_background"
+                android:hint="@string/phone_number"
+                android:importantForAutofill="no"
+                android:inputType="phone"
+                android:paddingVertical="16dp"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="14sp" />
+
+            <EditText
                 android:id="@+id/et_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
