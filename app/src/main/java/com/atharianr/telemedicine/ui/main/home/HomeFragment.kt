@@ -81,10 +81,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        _binding = null
+//    }
 
     private fun getUserDetail(token: String?) {
         val bearerToken = "Bearer $token"

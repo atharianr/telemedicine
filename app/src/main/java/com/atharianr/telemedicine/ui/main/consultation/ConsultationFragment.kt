@@ -43,11 +43,10 @@ class ConsultationFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        _binding = null
+//    }
 
     companion object {
         @StringRes

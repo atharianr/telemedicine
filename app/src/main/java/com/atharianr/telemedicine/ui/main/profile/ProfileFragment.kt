@@ -51,10 +51,10 @@ class ProfileFragment : Fragment() {
         getUserDetail(token)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        _binding = null
+//    }
 
     private fun getUserDetail(token: String?) {
         val bearerToken = "Bearer $token"
