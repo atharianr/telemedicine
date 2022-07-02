@@ -7,6 +7,7 @@ import com.atharianr.telemedicine.ui.landing.register.RegisterViewModel
 import com.atharianr.telemedicine.ui.landing.verify.VerifyViewModel
 import com.atharianr.telemedicine.ui.main.home.HomeViewModel
 import com.atharianr.telemedicine.ui.main.profile.InputProfileViewModel
+import com.atharianr.telemedicine.ui.main.profile.ProfileViewModel
 import com.atharianr.telemedicine.utils.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,4 +46,5 @@ val viewModelModule = module {
     viewModel { VerifyViewModel(get()) }
     viewModel { InputProfileViewModel(get()) }
     viewModel { HomeViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
 }
