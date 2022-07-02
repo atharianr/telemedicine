@@ -79,11 +79,7 @@ class LoginFragment : Fragment() {
                 }
 
                 StatusResponse.ERROR -> {
-                    Toast.makeText(
-                        requireActivity(),
-                        it.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
                     isLoading(false)
 
                     return@observe
