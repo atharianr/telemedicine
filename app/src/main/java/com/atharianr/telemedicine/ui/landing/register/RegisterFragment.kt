@@ -76,6 +76,11 @@ class RegisterFragment : Fragment() {
                 etPassword.error = "Masukkan kata sandi anda."
                 isLoading(false)
                 return
+            }
+            if (etPassword.text.toString().length < 8) {
+                etPassword.error = "Kata sandi minimal 8 karakter"
+                isLoading(false)
+                return
             } else {
                 etPassword.error = null
             }
