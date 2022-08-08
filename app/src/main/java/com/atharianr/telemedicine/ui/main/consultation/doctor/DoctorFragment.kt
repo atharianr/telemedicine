@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.atharianr.telemedicine.R
+import com.atharianr.telemedicine.data.source.remote.response.DoctorData
+import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.DialogFilterBinding
 import com.atharianr.telemedicine.databinding.FragmentDoctorBinding
-import com.atharianr.telemedicine.utils.DummyData
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DoctorFragment : Fragment() {
 
@@ -18,6 +21,8 @@ class DoctorFragment : Fragment() {
     private var _dialogBinding: DialogFilterBinding? = null
     private val binding get() = _binding as FragmentDoctorBinding
     private val dialogBinding get() = _dialogBinding as DialogFilterBinding
+
+    private val doctorViewModel: DoctorViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,18 +42,9 @@ class DoctorFragment : Fragment() {
             dialog.setContentView(dialogBinding.root)
             dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_box_16)
 
-            val doctorAdapter = DoctorAdapter()
-            doctorAdapter.setData(DummyData.getDoctor())
-
             binding.apply {
                 btnFilter.setOnClickListener {
                     dialog.show()
-                }
-
-                rvDoctor.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    adapter = doctorAdapter
                 }
             }
 
@@ -66,10 +62,60 @@ class DoctorFragment : Fragment() {
                 }
             }
         }
+
+        getAllDoctors()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getAllDoctors() {
+        doctorViewModel.getAllDoctors().observe(this) {
+            when (it.status) {
+                StatusResponse.SUCCESS -> {
+                    val data = it.body?.data
+                    if (data != null) {
+                        initRecyclerView(data)
+                    }
+                    isLoading(false)
+                }
+
+                StatusResponse.ERROR -> {
+                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                    isLoading(false)
+                    return@observe
+                }
+
+                else -> {
+                    isLoading(false)
+                    return@observe
+                }
+            }
+        }
+    }
+
+    private fun initRecyclerView(listDoctor: List<DoctorData>) {
+        val doctorAdapter = DoctorAdapter()
+        doctorAdapter.setData(listDoctor)
+
+        binding.rvDoctor.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = doctorAdapter
+        }
+    }
+
+    private fun isLoading(loading: Boolean) {
+        binding.apply {
+            if (loading) {
+                rvDoctor.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            } else {
+                rvDoctor.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
+        }
     }
 }

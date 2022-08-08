@@ -3,10 +3,7 @@ package com.atharianr.telemedicine.data.source.remote.network
 import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
-import com.atharianr.telemedicine.data.source.remote.response.LoginResponse
-import com.atharianr.telemedicine.data.source.remote.response.RegisterResponse
-import com.atharianr.telemedicine.data.source.remote.response.UserResponse
-import com.atharianr.telemedicine.data.source.remote.response.VerifyEmailResponse
+import com.atharianr.telemedicine.data.source.remote.response.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -33,4 +30,8 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body inputProfileRequest: InputProfileRequest
     ): Call<UserResponse>
+
+    @Headers("Accept: application/json")
+    @GET("doctor")
+    fun getAllDoctors(): Call<DoctorResponse>
 }
