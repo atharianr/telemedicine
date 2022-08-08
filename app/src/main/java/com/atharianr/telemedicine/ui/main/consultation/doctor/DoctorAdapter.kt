@@ -4,13 +4,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.atharianr.telemedicine.data.source.local.entity.DoctorEntity
 import com.atharianr.telemedicine.data.source.remote.response.DoctorData
-import com.atharianr.telemedicine.data.source.remote.response.DoctorResponse
 import com.atharianr.telemedicine.databinding.ItemsListDoctorBinding
 import com.atharianr.telemedicine.ui.main.consultation.doctor.profile.DoctorProfileActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.atharianr.telemedicine.utils.Constant
 
 class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
 
@@ -48,8 +45,16 @@ class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
                 tvCategory.text = data.specialist
 
                 btnChoose.setOnClickListener {
-                    val intent = Intent(itemView.context, DoctorProfileActivity::class.java)
-                    itemView.context.startActivity(intent)
+                    with(Intent(itemView.context, DoctorProfileActivity::class.java)) {
+                        this.putExtra(Constant.DOCTOR_ID, data.id)
+                        this.putExtra(Constant.DOCTOR_NAME, data.name)
+                        this.putExtra(Constant.DOCTOR_NAME, data.name)
+                        this.putExtra(Constant.DOCTOR_SP, data.specialist)
+                        this.putExtra(Constant.DOCTOR_EDU, data.education)
+                        this.putExtra(Constant.DOCTOR_EDU_YEAR, data.educationYear)
+                        this.putExtra(Constant.DOCTOR_PHONE, data.phoneNumber)
+                        itemView.context.startActivity(this)
+                    }
                 }
             }
         }

@@ -15,11 +15,24 @@ class DoctorProfileActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Telemedicine)
         setContentView(binding.root)
 
+        val name = intent.getStringExtra(Constant.DOCTOR_NAME)
+        val sp = intent.getStringExtra(Constant.DOCTOR_SP)
+        val edu = intent.getStringExtra(Constant.DOCTOR_EDU)
+        val eduYear = intent.getStringExtra(Constant.DOCTOR_EDU_YEAR)
+        val phone = intent.getStringExtra(Constant.DOCTOR_PHONE)
+
         binding.apply {
+            tvName.text = name
+            tvSpeciality.text = sp
+            tvEducation.text = edu
+            tvEducationYear.text = eduYear
+            tvDoctorId.text = phone
+
             btnChat.setOnClickListener {
-                val intent = Intent(this@DoctorProfileActivity, ChatActivity::class.java)
-                intent.putExtra(Constant.NAME, "Nama Dokter")
-                startActivity(intent)
+                with(Intent(this@DoctorProfileActivity, ChatActivity::class.java)) {
+                    putExtra(Constant.NAME, name)
+                    startActivity(this)
+                }
             }
         }
     }
