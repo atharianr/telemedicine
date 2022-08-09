@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.ui.main.profile
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +15,8 @@ import com.atharianr.telemedicine.databinding.ActivityInputProfileBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
 import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 
@@ -23,6 +26,8 @@ class InputProfileActivity : AppCompatActivity() {
     private val binding get() = _binding as ActivityInputProfileBinding
 
     private val inputProfileViewModel: InputProfileViewModel by viewModel()
+
+    private lateinit var datePickerDialog: DatePickerDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +84,49 @@ class InputProfileActivity : AppCompatActivity() {
                 isLoading(true)
                 checkValidation(token, inputProfileRequest, fromAuth)
             }
+
+            if (!fromAuth) {
+                etName.setText(intent.getStringExtra(Constant.USER_NAME))
+                spinnerGender.setSelection(intent.getIntExtra(Constant.USER_GENDER, 0))
+                etBirthdate.setText(intent.getStringExtra(Constant.USER_BIRTHDATE))
+                etBodyHeight.setText(intent.getIntExtra(Constant.USER_HEIGHT, 0).toString())
+                etBodyWeight.setText(intent.getIntExtra(Constant.USER_WEIGHT, 0).toString())
+                spinnerBlood.setSelection(intent.getIntExtra(Constant.USER_BLOOD, 0))
+                etPhoneNumber.setText(intent.getStringExtra(Constant.USER_PHONE))
+                etAddress.setText(intent.getStringExtra(Constant.USER_ADDRESS))
+            }
+        }
+
+        setupDatePicker()
+    }
+
+    private fun setupDatePicker() {
+        val c = Calendar.getInstance()
+        val yearNow = c.get(Calendar.YEAR)
+        val monthNow = c.get(Calendar.MONTH)
+        val dayNow = c.get(Calendar.DAY_OF_MONTH)
+
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            c.set(year, month, dayOfMonth)
+
+            val df = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+//            birthday = c.time
+            val birthdayString = df.format(c.time)
+            binding.etBirthdate.setText(birthdayString)
+        }
+
+        datePickerDialog = DatePickerDialog(
+            this,
+            R.style.DatePickerDialogTheme,
+            dateSetListener,
+            yearNow,
+            monthNow,
+            dayNow
+        )
+
+        datePickerDialog.apply {
+            datePicker.maxDate = System.currentTimeMillis()
+            window?.setBackgroundDrawableResource(R.drawable.rounded_box_16)
         }
     }
 

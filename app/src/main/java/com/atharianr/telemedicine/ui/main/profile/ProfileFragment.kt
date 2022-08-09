@@ -21,6 +21,16 @@ class ProfileFragment : Fragment() {
 
     private val profileViewModel: ProfileViewModel by viewModel()
 
+    private var name: String? = null
+    private var email: String? = null
+    private var gender: Int? = null
+    private var birthdate: String? = null
+    private var bodyHeight: Int? = null
+    private var bodyWeight: Int? = null
+    private var bloodType: Int? = null
+    private var phoneNumber: String? = null
+    private var address: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,10 +43,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref =
-            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
-        val token = sharedPref.getString(Constant.TOKEN, null)
-
         binding.apply {
             btnLogout.setOnClickListener {
                 removeToken()
@@ -48,7 +54,12 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        getUserDetail(token)
+        getUserDetail(getToken())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getUserDetail(getToken())
     }
 
 //    override fun onDestroy() {
@@ -57,6 +68,7 @@ class ProfileFragment : Fragment() {
 //    }
 
     private fun getUserDetail(token: String?) {
+        isLoading(true)
         val bearerToken = "Bearer $token"
         profileViewModel.getUserDetail(bearerToken).observe(requireActivity()) {
             when (it.status) {
@@ -64,15 +76,15 @@ class ProfileFragment : Fragment() {
                     val genderArray = arrayOf("Laki-laki", "Perempuan")
                     val bloodArray = arrayOf("A", "B", "AB", "O")
 
-                    val name = it.body?.data?.name
-                    val email = it.body?.data?.email
-                    val phoneNumber = it.body?.data?.phoneNumber
-                    val gender = it.body?.data?.gender
-                    val birthdate = it.body?.data?.birthdate
-                    val bodyHeight = it.body?.data?.bodyHeight
-                    val bodyWeight = it.body?.data?.bodyWeight
-                    val bloodType = it.body?.data?.bloodType
-                    val address = it.body?.data?.address
+                    name = it.body?.data?.name
+                    email = it.body?.data?.email
+                    phoneNumber = it.body?.data?.phoneNumber
+                    gender = it.body?.data?.gender
+                    birthdate = it.body?.data?.birthdate
+                    bodyHeight = it.body?.data?.bodyHeight
+                    bodyWeight = it.body?.data?.bodyWeight
+                    bloodType = it.body?.data?.bloodType
+                    address = it.body?.data?.address
 
                     binding.tvName.text = name
                     binding.tvEmail.text = email
@@ -83,14 +95,20 @@ class ProfileFragment : Fragment() {
                     binding.tvWeight.text = bodyWeight.toString()
                     binding.tvBlood.text = bloodArray[bloodType!!]
                     binding.tvAddress.text = address
+
+                    isLoading(false)
                 }
 
                 StatusResponse.ERROR -> {
                     Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                    isLoading(false)
                     return@observe
                 }
 
-                else -> return@observe
+                else -> {
+                    isLoading(false)
+                    return@observe
+                }
             }
         }
     }
@@ -109,9 +127,40 @@ class ProfileFragment : Fragment() {
     }
 
     private fun intentToInputProfile() {
-        with(Intent(requireActivity(), LandingActivity::class.java)) {
+        with(Intent(requireActivity(), InputProfileActivity::class.java)) {
             this.putExtra(Constant.FROM_AUTH, false)
+            this.putExtra(Constant.TOKEN, getToken())
+
+            /* user data */
+            this.putExtra(Constant.USER_NAME, name)
+            this.putExtra(Constant.USER_EMAIL, email)
+            this.putExtra(Constant.USER_GENDER, gender)
+            this.putExtra(Constant.USER_BIRTHDATE, birthdate)
+            this.putExtra(Constant.USER_HEIGHT, bodyHeight)
+            this.putExtra(Constant.USER_WEIGHT, bodyWeight)
+            this.putExtra(Constant.USER_BLOOD, bloodType)
+            this.putExtra(Constant.USER_PHONE, phoneNumber)
+            this.putExtra(Constant.USER_ADDRESS, address)
+
             startActivity(this)
         }
+    }
+
+    private fun isLoading(loading: Boolean) {
+        binding.apply {
+            if (loading) {
+                layoutData.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            } else {
+                layoutData.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun getToken(): String? {
+        val sharedPref =
+            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.TOKEN, "")
     }
 }
