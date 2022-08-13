@@ -61,9 +61,9 @@ class DoctorFragment : Fragment() {
                     dialog.dismiss()
                 }
             }
-        }
 
-        getAllDoctors()
+            getAllDoctors()
+        }
     }
 
     override fun onDestroyView() {
@@ -72,7 +72,8 @@ class DoctorFragment : Fragment() {
     }
 
     private fun getAllDoctors() {
-        doctorViewModel.getAllDoctors().observe(this) {
+        isLoading(true)
+        doctorViewModel.getAllDoctors().observe(viewLifecycleOwner) {
             when (it.status) {
                 StatusResponse.SUCCESS -> {
                     val data = it.body?.data

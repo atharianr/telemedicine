@@ -41,7 +41,7 @@ data class Data(
 	val name: String? = null,
 
 	@field:SerializedName("phone_number")
-	val phoneNumber: Any? = null,
+	val phoneNumber: String? = null,
 
 	@field:SerializedName("body_weight")
 	val bodyWeight: Int? = null,

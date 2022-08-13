@@ -34,4 +34,17 @@ interface ApiService {
     @Headers("Accept: application/json")
     @GET("doctor")
     fun getAllDoctors(): Call<DoctorResponse>
+
+    @Headers("Accept: application/json")
+    @GET("doctor/search")
+    fun getSearchDoctors(@Query("keyword") keyword: String): Call<DoctorResponse>
+
+    @Headers("Accept: application/json")
+    @GET("article")
+    fun getAllArticles(): Call<ArticleResponse>
+
+    @Headers("Accept: application/json")
+    @GET("article/search")
+    fun getSearchArticles(@Query("keyword") keyword: String): Call<ArticleResponse>
+
 }

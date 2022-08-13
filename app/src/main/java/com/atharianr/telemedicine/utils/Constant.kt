@@ -6,6 +6,7 @@ object Constant {
     const val API_BASE_URL = "http://202.157.176.228:9001/api/"
     const val TOKEN = "token"
     const val USER_DATA = "user_data"
+
     const val DOCTOR_ID = "doctor_id"
     const val DOCTOR_NAME = "doctor_name"
     const val DOCTOR_SP = "doctor_sp"
@@ -14,4 +15,14 @@ object Constant {
     const val DOCTOR_EXP = "doctor_exp"
     const val DOCTOR_EXP_YEAR = "doctor_exp_year"
     const val DOCTOR_PHONE = "doctor_phone"
+
+    const val USER_NAME = "user_name"
+    const val USER_EMAIL = "user_email"
+    const val USER_GENDER = "user_gender"
+    const val USER_BIRTHDATE = "user_birthdate"
+    const val USER_HEIGHT = "user_height"
+    const val USER_WEIGHT = "user_weight"
+    const val USER_BLOOD = "user_blood"
+    const val USER_PHONE = "user_phone"
+    const val USER_ADDRESS = "user_address"
 }

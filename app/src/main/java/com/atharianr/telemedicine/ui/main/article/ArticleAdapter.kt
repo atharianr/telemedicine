@@ -4,15 +4,15 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.atharianr.telemedicine.data.source.local.entity.ArticleEntity
+import com.atharianr.telemedicine.data.source.remote.response.ArticleData
 import com.atharianr.telemedicine.databinding.ItemsListArticleBinding
 import com.atharianr.telemedicine.ui.main.article.detail.ArticleDetailActivity
 
 class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
-    private var listData = ArrayList<ArticleEntity>()
+    private var listData = ArrayList<ArticleData>()
 
-    fun setData(data: List<ArticleEntity>) {
+    fun setData(data: List<ArticleData>) {
         this.listData.clear()
         this.listData.addAll(data)
     }
@@ -31,10 +31,15 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ItemsListArticleBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ArticleEntity) {
+        fun bind(data: ArticleData) {
+            binding.apply {
+                textView.text = data.name
+            }
+
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, ArticleDetailActivity::class.java)
-                itemView.context.startActivity(intent)
+                with(Intent(itemView.context, ArticleDetailActivity::class.java)) {
+                    itemView.context.startActivity(this)
+                }
             }
         }
     }

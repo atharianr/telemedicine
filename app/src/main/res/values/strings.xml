@@ -53,4 +53,5 @@
     <string name="resend_email_verification">Tidak mendapat email? Kirim ulang</string>
     <string name="email_verification_info">Untuk mengonfirmasi alamat anda, klik link pada email yang kami kirimkan kepada anda.</string>
     <string name="email_verification">Verifikasi Email</string>
+    <string name="article_not_found">Belum ada artikel.</string>
 </resources>
