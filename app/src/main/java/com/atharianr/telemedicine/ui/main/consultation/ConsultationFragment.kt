@@ -1,10 +1,13 @@
 package com.atharianr.telemedicine.ui.main.consultation
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.databinding.FragmentConsultationBinding
@@ -30,6 +33,13 @@ class ConsultationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val window = activity!!.window
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.statusBarColor =
+                    ContextCompat.getColor(requireActivity(), R.color.white)
+            }
+
             val sectionsPagerAdapter =
                 SectionsPagerAdapter(requireActivity().supportFragmentManager, this.lifecycle)
 

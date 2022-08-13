@@ -2,12 +2,16 @@ package com.atharianr.telemedicine.ui.main.profile
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentProfileBinding
 import com.atharianr.telemedicine.ui.landing.LandingActivity
@@ -43,18 +47,27 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.apply {
-            btnLogout.setOnClickListener {
-                removeToken()
-                intentToLanding()
+        if (activity != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val window = activity!!.window
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.statusBarColor =
+                    ContextCompat.getColor(requireActivity(), R.color.white)
             }
 
-            btnEdit.setOnClickListener {
-                intentToInputProfile()
+            binding.apply {
+                btnLogout.setOnClickListener {
+                    removeToken()
+                    intentToLanding()
+                }
+
+                btnEdit.setOnClickListener {
+                    intentToInputProfile()
+                }
             }
+
+            getUserDetail(getToken())
         }
-
-        getUserDetail(getToken())
     }
 
     override fun onResume() {
