@@ -29,6 +29,9 @@ class InputProfileActivity : AppCompatActivity() {
 
     private lateinit var datePickerDialog: DatePickerDialog
 
+    private var gender = 0
+    private var bloodType = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityInputProfileBinding.inflate(layoutInflater)
@@ -43,24 +46,38 @@ class InputProfileActivity : AppCompatActivity() {
             val genderArray = arrayOf("Laki-laki", "Perempuan")
             val genderArrayAdapter =
                 ArrayAdapter(this@InputProfileActivity, R.layout.spinner, genderArray)
-            spinnerGender.adapter = genderArrayAdapter
+            incGender.tv.setAdapter(genderArrayAdapter)
 
             val bloodArray = arrayOf("A", "B", "AB", "O")
             val bloodArrayAdapter =
                 ArrayAdapter(this@InputProfileActivity, R.layout.spinner, bloodArray)
-            spinnerBlood.adapter = bloodArrayAdapter
+            incBlood.tv.setAdapter(bloodArrayAdapter)
 
-            etName.setText(name)
+            incName.et.setText(name)
 
             btnSave.setOnClickListener {
-                name = etName.text.toString()
-                val gender = spinnerGender.selectedItemPosition
-                val birthdate = etBirthdate.text.toString()
-                var bodyHeight = etBodyHeight.text.toString()
-                var bodyWeight = etBodyWeight.text.toString()
-                val bloodType = spinnerBlood.selectedItemPosition
-                val phoneNumber = etPhoneNumber.text.toString()
-                val address = etAddress.text.toString()
+                name = incName.et.text.toString()
+
+                for (i in genderArray.indices) {
+                    if (genderArray[i] == incGender.tv.text.toString()) {
+                        gender = i
+                        break
+                    }
+                }
+
+                val birthdate = incBirthdate.et.text.toString()
+                var bodyHeight = incHeight.et.text.toString()
+                var bodyWeight = incWeight.et.text.toString()
+
+                for (i in bloodArray.indices) {
+                    if (bloodArray[i] == incBlood.tv.text.toString()) {
+                        bloodType = i
+                        break
+                    }
+                }
+
+                val phoneNumber = incPhone.et.text.toString()
+                val address = incAddress.et.text.toString()
 
                 if (bodyHeight == "") {
                     bodyHeight = "0"
@@ -86,18 +103,35 @@ class InputProfileActivity : AppCompatActivity() {
             }
 
             if (!fromAuth) {
-                etName.setText(intent.getStringExtra(Constant.USER_NAME))
-                spinnerGender.setSelection(intent.getIntExtra(Constant.USER_GENDER, 0))
-                etBirthdate.setText(intent.getStringExtra(Constant.USER_BIRTHDATE))
-                etBodyHeight.setText(intent.getIntExtra(Constant.USER_HEIGHT, 0).toString())
-                etBodyWeight.setText(intent.getIntExtra(Constant.USER_WEIGHT, 0).toString())
-                spinnerBlood.setSelection(intent.getIntExtra(Constant.USER_BLOOD, 0))
-                etPhoneNumber.setText(intent.getStringExtra(Constant.USER_PHONE))
-                etAddress.setText(intent.getStringExtra(Constant.USER_ADDRESS))
+                incName.et.setText(intent.getStringExtra(Constant.USER_NAME))
+                incGender.tv.setText(
+                    genderArray[intent.getIntExtra(Constant.USER_GENDER, 0)],
+                    false
+                )
+                incBirthdate.et.setText(intent.getStringExtra(Constant.USER_BIRTHDATE))
+                incHeight.et.setText(intent.getIntExtra(Constant.USER_HEIGHT, 0).toString())
+                incWeight.et.setText(intent.getIntExtra(Constant.USER_WEIGHT, 0).toString())
+                incBlood.tv.setText(bloodArray[intent.getIntExtra(Constant.USER_BLOOD, 0)], false)
+                incPhone.et.setText(intent.getStringExtra(Constant.USER_PHONE))
+                incAddress.et.setText(intent.getStringExtra(Constant.USER_ADDRESS))
             }
         }
 
+        setupForm()
         setupDatePicker()
+    }
+
+    private fun setupForm() {
+        binding.apply {
+            incName.til.hint = getString(R.string.name)
+            incGender.til.hint = getString(R.string.gender)
+            incBirthdate.til.hint = getString(R.string.birthday)
+            incHeight.til.hint = getString(R.string.body_height)
+            incWeight.til.hint = getString(R.string.body_weight)
+            incBlood.til.hint = getString(R.string.blood_group)
+            incPhone.til.hint = getString(R.string.phone_number)
+            incAddress.til.hint = getString(R.string.address)
+        }
     }
 
     private fun setupDatePicker() {
@@ -112,7 +146,7 @@ class InputProfileActivity : AppCompatActivity() {
             val df = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 //            birthday = c.time
             val birthdayString = df.format(c.time)
-            binding.etBirthdate.setText(birthdayString)
+            binding.incBirthdate.et.setText(birthdayString)
         }
 
         datePickerDialog = DatePickerDialog(
@@ -146,67 +180,67 @@ class InputProfileActivity : AppCompatActivity() {
 
         binding.apply {
             // name
-            if (etName.text.toString().isEmpty()) {
-                etName.error = "Masukkan nama lengkap anda."
+            if (incName.et.text.toString().isEmpty()) {
+                incName.et.error = "Masukkan nama lengkap anda."
                 isLoading(false)
                 return
             } else {
-                etName.error = null
+                incName.et.error = null
             }
 
             // birthdate
-            if (etBirthdate.text.toString().isEmpty()) {
-                etBirthdate.error = "Masukkan tanggal lahir anda."
+            if (incBirthdate.et.text.toString().isEmpty()) {
+                incBirthdate.et.error = "Masukkan tanggal lahir anda."
                 isLoading(false)
                 return
             }
-            if (!formattedDateMatcher.matcher(etBirthdate.text.toString()).matches()) {
-                etBirthdate.error = "Format tanggal tidak tepat."
+            if (!formattedDateMatcher.matcher(incBirthdate.et.text.toString()).matches()) {
+                incBirthdate.et.error = "Format tanggal tidak tepat."
                 isLoading(false)
                 return
             }
-            if (!gregorianDateMatcher.matcher(etBirthdate.text.toString()).matches()) {
-                etBirthdate.error = "Masukkan tanggal yang sesuai."
+            if (!gregorianDateMatcher.matcher(incBirthdate.et.text.toString()).matches()) {
+                incBirthdate.et.error = "Masukkan tanggal yang sesuai."
                 isLoading(false)
                 return
             } else {
-                etBirthdate.error = null
+                incBirthdate.et.error = null
             }
 
             // bodyHeight
-            if (etBodyHeight.text.toString().isEmpty()) {
-                etBodyHeight.error = "Masukkan tinggi badan anda."
+            if (incHeight.et.text.toString().isEmpty()) {
+                incHeight.et.error = "Masukkan tinggi badan anda."
                 isLoading(false)
                 return
             } else {
-                etBodyHeight.error = null
+                incHeight.et.error = null
             }
 
             // bodyWeight
-            if (etBodyWeight.text.toString().isEmpty()) {
-                etBodyWeight.error = "Masukkan berat badan anda."
+            if (incWeight.et.text.toString().isEmpty()) {
+                incWeight.et.error = "Masukkan berat badan anda."
                 isLoading(false)
                 return
             } else {
-                etBodyWeight.error = null
+                incWeight.et.error = null
             }
 
             // phoneNumber
-            if (etPhoneNumber.text.toString().isEmpty()) {
-                etPhoneNumber.error = "Masukkan nomor HP anda."
+            if (incPhone.et.text.toString().isEmpty()) {
+                incPhone.et.error = "Masukkan nomor HP anda."
                 isLoading(false)
                 return
             } else {
-                etPhoneNumber.error = null
+                incPhone.et.error = null
             }
 
             // address
-            if (etAddress.text.toString().isEmpty()) {
-                etAddress.error = "Masukkan alamat anda."
+            if (incAddress.et.text.toString().isEmpty()) {
+                incAddress.et.error = "Masukkan alamat anda."
                 isLoading(false)
                 return
             } else {
-                etAddress.error = null
+                incAddress.et.error = null
             }
         }
 
