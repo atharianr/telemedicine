@@ -3,9 +3,7 @@
     <item
         android:drawable="@color/white"
         android:gravity="center" />
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/logo_telemedicine" />
-    </item>
+    <item
+        android:drawable="@drawable/ic_telemedicine_logo"
+        android:gravity="center" />
 </layer-list>
