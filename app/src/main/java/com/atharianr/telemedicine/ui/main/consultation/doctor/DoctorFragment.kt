@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -26,6 +27,8 @@ class DoctorFragment : Fragment() {
     private val dialogBinding get() = _dialogBinding as DialogFilterBinding
 
     private val doctorViewModel: DoctorViewModel by viewModel()
+
+    private var searchKeyword = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,16 +60,19 @@ class DoctorFragment : Fragment() {
                 }
 
                 btnUse.setOnClickListener {
+                    useFilter()
                     dialog.dismiss()
                 }
 
                 btnDelete.setOnClickListener {
+                    clearFilter()
                     dialog.dismiss()
                 }
             }
 
             getAllDoctors()
             setupSearch()
+            setupFilter()
         }
     }
 
@@ -101,9 +107,9 @@ class DoctorFragment : Fragment() {
         }
     }
 
-    private fun getSearchArticles(keyword: String) {
+    private fun getSearchArticles(keyword: String, filter: String = "") {
         isLoading(loading = true, empty = false)
-        doctorViewModel.getSearchDoctors(keyword).observe(viewLifecycleOwner) {
+        doctorViewModel.getSearchDoctors(keyword, filter).observe(viewLifecycleOwner) {
             when (it.status) {
                 StatusResponse.SUCCESS -> {
                     val data = it.body?.data
@@ -134,6 +140,8 @@ class DoctorFragment : Fragment() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
+                    searchKeyword = query
+                    dialogBinding.lvFilter.clearChoices()
                     getSearchArticles(query)
                 }
                 return true
@@ -141,11 +149,44 @@ class DoctorFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
+                    searchKeyword = newText
+                    dialogBinding.lvFilter.clearChoices()
                     getSearchArticles(newText)
                 }
                 return true
             }
         })
+    }
+
+    private fun setupFilter() {
+        val filterList = arrayListOf("Dokter Umum", "Dokter Gigi", "Dokter Mata")
+
+        val filterAdapter = ArrayAdapter(
+            requireActivity(),
+            android.R.layout.simple_list_item_multiple_choice,
+            filterList
+        )
+
+        dialogBinding.lvFilter.adapter = filterAdapter
+    }
+
+    private fun useFilter() {
+        dialogBinding.apply {
+            var filter = ""
+            for (i in 0..lvFilter.count) {
+                if (lvFilter.isItemChecked(i)) {
+                    filter += "${lvFilter.getItemAtPosition(i)}-"
+                }
+            }
+            filter = filter.dropLast(1)
+            Log.d(DoctorFragment::class.simpleName, "filter -> $filter")
+            getSearchArticles(searchKeyword, filter)
+        }
+    }
+
+    private fun clearFilter() {
+        dialogBinding.lvFilter.clearChoices()
+        getSearchArticles(searchKeyword)
     }
 
     private fun initRecyclerView(listDoctor: List<DoctorData>) {

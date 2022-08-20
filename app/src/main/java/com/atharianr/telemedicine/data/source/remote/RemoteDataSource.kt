@@ -227,10 +227,10 @@ class RemoteDataSource(private val apiService: ApiService) {
         return resultResponse
     }
 
-    fun getSearchDoctors(keyword: String): LiveData<ApiResponse<DoctorResponse>> {
+    fun getSearchDoctors(keyword: String, filter: String): LiveData<ApiResponse<DoctorResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<DoctorResponse>>()
 
-        apiService.getSearchDoctors(keyword).enqueue(object : Callback<DoctorResponse> {
+        apiService.getSearchDoctors(keyword, filter).enqueue(object : Callback<DoctorResponse> {
             override fun onResponse(
                 call: Call<DoctorResponse>,
                 response: Response<DoctorResponse>

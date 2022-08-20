@@ -56,4 +56,5 @@
     <string name="article_not_found">Belum ada artikel.</string>
     <string name="doctor_not_found">Belum ada dokter.</string>
     <string name="hint">hint</string>
+    <string name="specialist_filter">Filter Spesialis</string>
 </resources>

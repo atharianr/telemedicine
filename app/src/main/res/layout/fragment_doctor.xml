@@ -42,15 +42,16 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_filter"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_button_border"
         android:drawableStart="@drawable/ic_round_filter_list_16"
         android:drawablePadding="8dp"
         android:drawableTint="@color/purple_8883F0"
         android:paddingHorizontal="16dp"
-        android:text="Filter Spesialis"
+        android:text="@string/specialist_filter"
         android:textAllCaps="false"
         android:textColor="@color/grey_A6A6A6"
         android:textSize="12sp"

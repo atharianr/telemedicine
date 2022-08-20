@@ -8,6 +8,6 @@ import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 
 class DoctorViewModel(private val remoteDataSource: RemoteDataSource) : ViewModel() {
     fun getAllDoctors(): LiveData<ApiResponse<DoctorResponse>> = remoteDataSource.getAllDoctors()
-    fun getSearchDoctors(keyword: String): LiveData<ApiResponse<DoctorResponse>> =
-        remoteDataSource.getSearchDoctors(keyword)
+    fun getSearchDoctors(keyword: String, filter: String): LiveData<ApiResponse<DoctorResponse>> =
+        remoteDataSource.getSearchDoctors(keyword, filter)
 }
