@@ -19,6 +19,8 @@
         android:id="@+id/et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingVertical="16dp"

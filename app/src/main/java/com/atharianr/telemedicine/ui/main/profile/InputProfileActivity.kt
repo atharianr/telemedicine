@@ -2,9 +2,11 @@ package com.atharianr.telemedicine.ui.main.profile
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -43,17 +45,43 @@ class InputProfileActivity : AppCompatActivity() {
         var name = intent.getStringExtra(Constant.NAME)
 
         binding.apply {
+            /* set gender dropdown data */
             val genderArray = arrayOf("Laki-laki", "Perempuan")
             val genderArrayAdapter =
                 ArrayAdapter(this@InputProfileActivity, R.layout.spinner, genderArray)
             incGender.tv.setAdapter(genderArrayAdapter)
 
+            /* set blood type dropdown data */
             val bloodArray = arrayOf("A", "B", "AB", "O")
             val bloodArrayAdapter =
                 ArrayAdapter(this@InputProfileActivity, R.layout.spinner, bloodArray)
             incBlood.tv.setAdapter(bloodArrayAdapter)
 
             incName.et.setText(name)
+
+            incBirthdate.et.setOnClickListener {
+                datePickerDialog.show()
+                /* disable et birthdate keyboard */
+                val imm =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(
+                    window.decorView.rootView.windowToken,
+                    InputMethodManager.RESULT_UNCHANGED_SHOWN
+                )
+            }
+            incBirthdate.et.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    datePickerDialog.show()
+                }
+                /* disable et birthdate keyboard */
+                val imm =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(
+                    view.windowToken,
+                    InputMethodManager.RESULT_UNCHANGED_SHOWN
+                )
+            }
+            incBirthdate.et.showSoftInputOnFocus = false
 
             btnSave.setOnClickListener {
                 name = incName.et.text.toString()
@@ -103,17 +131,7 @@ class InputProfileActivity : AppCompatActivity() {
             }
 
             if (!fromAuth) {
-                incName.et.setText(intent.getStringExtra(Constant.USER_NAME))
-                incGender.tv.setText(
-                    genderArray[intent.getIntExtra(Constant.USER_GENDER, 0)],
-                    false
-                )
-                incBirthdate.et.setText(intent.getStringExtra(Constant.USER_BIRTHDATE))
-                incHeight.et.setText(intent.getIntExtra(Constant.USER_HEIGHT, 0).toString())
-                incWeight.et.setText(intent.getIntExtra(Constant.USER_WEIGHT, 0).toString())
-                incBlood.tv.setText(bloodArray[intent.getIntExtra(Constant.USER_BLOOD, 0)], false)
-                incPhone.et.setText(intent.getStringExtra(Constant.USER_PHONE))
-                incAddress.et.setText(intent.getStringExtra(Constant.USER_ADDRESS))
+                setupFormData(genderArray, bloodArray)
             }
         }
 
@@ -134,8 +152,32 @@ class InputProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupFormData(genderArray: Array<String>, bloodArray: Array<String>) {
+        binding.apply {
+            incName.et.setText(intent.getStringExtra(Constant.USER_NAME))
+            incGender.tv.setText(
+                genderArray[intent.getIntExtra(Constant.USER_GENDER, 0)],
+                false
+            )
+            incBirthdate.et.setText(intent.getStringExtra(Constant.USER_BIRTHDATE))
+            incHeight.et.setText(intent.getIntExtra(Constant.USER_HEIGHT, 0).toString())
+            incWeight.et.setText(intent.getIntExtra(Constant.USER_WEIGHT, 0).toString())
+            incBlood.tv.setText(bloodArray[intent.getIntExtra(Constant.USER_BLOOD, 0)], false)
+            incPhone.et.setText(intent.getStringExtra(Constant.USER_PHONE))
+            incAddress.et.setText(intent.getStringExtra(Constant.USER_ADDRESS))
+        }
+    }
+
     private fun setupDatePicker() {
         val c = Calendar.getInstance()
+        val dateStr = intent.getStringExtra(Constant.USER_BIRTHDATE)
+        if (dateStr != null || dateStr == "") {
+            val date = stringToDate(dateStr)
+            if (date != null) {
+                c.time = date
+            }
+        }
+
         val yearNow = c.get(Calendar.YEAR)
         val monthNow = c.get(Calendar.MONTH)
         val dayNow = c.get(Calendar.DAY_OF_MONTH)
@@ -158,9 +200,29 @@ class InputProfileActivity : AppCompatActivity() {
             dayNow
         )
 
+        val dialogInterface = DialogInterface.OnClickListener { dialog, which ->
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                val datePicker = datePickerDialog.datePicker
+                dateSetListener.onDateSet(
+                    datePicker,
+                    datePicker.year,
+                    datePicker.month,
+                    datePicker.dayOfMonth
+                )
+                dialog.dismiss()
+                binding.apply {
+                    incBirthdate.et.error = null
+                    incHeight.et.requestFocus()
+                }
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            }
+        }
+
         datePickerDialog.apply {
             datePicker.maxDate = System.currentTimeMillis()
             window?.setBackgroundDrawableResource(R.drawable.rounded_box_16)
+            setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.next), dialogInterface)
         }
     }
 
@@ -304,5 +366,10 @@ class InputProfileActivity : AppCompatActivity() {
             startActivity(this)
             finish()
         }
+    }
+
+    private fun stringToDate(dateStr: String, format: String = "dd/MM/yyyy"): Date? {
+        val dateFormat = SimpleDateFormat(format, Locale.getDefault())
+        return dateFormat.parse(dateStr)
     }
 }

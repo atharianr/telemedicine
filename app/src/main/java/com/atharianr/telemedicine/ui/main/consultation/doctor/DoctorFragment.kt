@@ -2,10 +2,12 @@ package com.atharianr.telemedicine.ui.main.consultation.doctor
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.atharianr.telemedicine.R
@@ -13,6 +15,7 @@ import com.atharianr.telemedicine.data.source.remote.response.DoctorData
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.DialogFilterBinding
 import com.atharianr.telemedicine.databinding.FragmentDoctorBinding
+import com.atharianr.telemedicine.ui.main.article.ArticleFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DoctorFragment : Fragment() {
@@ -63,6 +66,7 @@ class DoctorFragment : Fragment() {
             }
 
             getAllDoctors()
+            setupSearch()
         }
     }
 
@@ -72,29 +76,76 @@ class DoctorFragment : Fragment() {
     }
 
     private fun getAllDoctors() {
-        isLoading(true)
+        isLoading(loading = true, empty = false)
         doctorViewModel.getAllDoctors().observe(viewLifecycleOwner) {
             when (it.status) {
                 StatusResponse.SUCCESS -> {
                     val data = it.body?.data
                     if (data != null) {
                         initRecyclerView(data)
+                        isLoading(loading = false, empty = false)
                     }
-                    isLoading(false)
                 }
 
                 StatusResponse.ERROR -> {
                     Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                    isLoading(false)
+                    isLoading(loading = false, empty = true)
                     return@observe
                 }
 
                 else -> {
-                    isLoading(false)
+                    isLoading(loading = false, empty = true)
                     return@observe
                 }
             }
         }
+    }
+
+    private fun getSearchArticles(keyword: String) {
+        isLoading(loading = true, empty = false)
+        doctorViewModel.getSearchDoctors(keyword).observe(viewLifecycleOwner) {
+            when (it.status) {
+                StatusResponse.SUCCESS -> {
+                    val data = it.body?.data
+                    if (data != null) {
+                        initRecyclerView(data)
+                        isLoading(loading = false, empty = false)
+                    } else {
+                        binding.tvEmptyDoctor.text = "Pencarian '$keyword' tidak ditemukan."
+                        isLoading(loading = false, empty = true)
+                    }
+                }
+
+                StatusResponse.ERROR -> {
+                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                    isLoading(loading = false, empty = true)
+                    return@observe
+                }
+
+                else -> {
+                    isLoading(loading = false, empty = true)
+                    return@observe
+                }
+            }
+        }
+    }
+
+    private fun setupSearch() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    getSearchArticles(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    getSearchArticles(newText)
+                }
+                return true
+            }
+        })
     }
 
     private fun initRecyclerView(listDoctor: List<DoctorData>) {
@@ -108,13 +159,21 @@ class DoctorFragment : Fragment() {
         }
     }
 
-    private fun isLoading(loading: Boolean) {
+    private fun isLoading(loading: Boolean, empty: Boolean) {
+        Log.d(ArticleFragment::class.simpleName, "$loading, $empty")
         binding.apply {
             if (loading) {
                 rvDoctor.visibility = View.GONE
                 progressBar.visibility = View.VISIBLE
+                tvEmptyDoctor.visibility = View.GONE
             } else {
-                rvDoctor.visibility = View.VISIBLE
+                if (empty) {
+                    rvDoctor.visibility = View.GONE
+                    tvEmptyDoctor.visibility = View.VISIBLE
+                } else {
+                    rvDoctor.visibility = View.VISIBLE
+                    tvEmptyDoctor.visibility = View.GONE
+                }
                 progressBar.visibility = View.GONE
             }
         }

@@ -54,5 +54,6 @@
     <string name="email_verification_info">Untuk mengonfirmasi alamat anda, klik link pada email yang kami kirimkan kepada anda.</string>
     <string name="email_verification">Verifikasi Email</string>
     <string name="article_not_found">Belum ada artikel.</string>
+    <string name="doctor_not_found">Belum ada dokter.</string>
     <string name="hint">hint</string>
 </resources>
