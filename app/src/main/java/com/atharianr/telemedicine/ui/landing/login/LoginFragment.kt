@@ -3,11 +3,14 @@ package com.atharianr.telemedicine.ui.landing.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.atharianr.telemedicine.R
@@ -50,6 +53,8 @@ class LoginFragment : Fragment() {
                         .navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
                 }
             }
+
+            setupForm()
         }
     }
 
@@ -58,9 +63,30 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
+    private fun setupForm() {
+        binding.apply {
+            incEmail.apply {
+                til.hint = getString(R.string.email)
+                et.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            }
+            incPassword.apply {
+                til.hint = getString(R.string.password)
+                til.isPasswordVisibilityToggleEnabled = true
+                til.setPasswordVisibilityToggleTintList(
+                    AppCompatResources.getColorStateList(
+                        requireActivity(),
+                        android.R.color.darker_gray
+                    )
+                )
+                et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                et.transformationMethod = PasswordTransformationMethod()
+            }
+        }
+    }
+
     private fun login() {
-        val email = binding.etEmail.text.toString()
-        val password = binding.etPassword.text.toString()
+        val email = binding.incEmail.et.text.toString()
+        val password = binding.incPassword.et.text.toString()
         val loginRequest = LoginRequest(email, password)
 
         loginViewModel.login(loginRequest).observe(requireActivity()) {
@@ -92,30 +118,30 @@ class LoginFragment : Fragment() {
 
     private fun checkValidation() {
         binding.apply {
-            if (etEmail.text.toString().isEmpty()) {
-                etEmail.error = "Masukkan email anda."
+            if (incEmail.et.text.toString().isEmpty()) {
+                incEmail.et.error = "Masukkan email anda."
                 isLoading(false)
                 return
             }
-            if (!Patterns.EMAIL_ADDRESS.matcher(etEmail.text.toString()).matches()) {
-                etEmail.error = "Masukkan email yang sesuai."
+            if (!Patterns.EMAIL_ADDRESS.matcher(incEmail.et.text.toString()).matches()) {
+                incEmail.et.error = "Masukkan email yang sesuai."
                 isLoading(false)
                 return
             } else {
-                etEmail.error = null
+                incEmail.et.error = null
             }
 
-            if (etPassword.text.toString().isEmpty()) {
-                etPassword.error = "Masukkan kata sandi anda."
+            if (incPassword.et.text.toString().isEmpty()) {
+                incPassword.et.error = "Masukkan kata sandi anda."
                 isLoading(false)
                 return
             }
-            if (etPassword.text.toString().length < 8) {
-                etPassword.error = "Kata sandi minimal 8 karakter"
+            if (incPassword.et.text.toString().length < 8) {
+                incPassword.et.error = "Kata sandi minimal 8 karakter"
                 isLoading(false)
                 return
             } else {
-                etPassword.error = null
+                incPassword.et.error = null
             }
         }
 

@@ -16,35 +16,13 @@
         android:textColor="@color/blue_2B95F6"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_edit_text_background"
-        android:hint="@string/email"
-        android:importantForAutofill="no"
-        android:inputType="textEmailAddress"
-        android:paddingVertical="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@android:color/darker_gray"
-        android:textSize="14sp" />
+    <include
+        android:id="@+id/inc_email"
+        layout="@layout/component_edit_text" />
 
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="54dp"
-        android:background="@drawable/rounded_edit_text_background"
-        android:hint="@string/password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        android:paddingVertical="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@android:color/darker_gray"
-        android:textSize="14sp" />
+    <include
+        android:id="@+id/inc_password"
+        layout="@layout/component_edit_text" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
