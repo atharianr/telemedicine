@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
@@ -61,27 +62,23 @@ class InputProfileActivity : AppCompatActivity() {
 
             incBirthdate.et.setOnClickListener {
                 datePickerDialog.show()
-                /* disable et birthdate keyboard */
-                val imm =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(
-                    window.decorView.rootView.windowToken,
-                    InputMethodManager.RESULT_UNCHANGED_SHOWN
-                )
+                disableKeyboard()
             }
-            incBirthdate.et.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    datePickerDialog.show()
-                }
-                /* disable et birthdate keyboard */
-                val imm =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(
-                    view.windowToken,
-                    InputMethodManager.RESULT_UNCHANGED_SHOWN
-                )
+            incBirthdate.et.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) datePickerDialog.show()
+                disableKeyboard()
             }
             incBirthdate.et.showSoftInputOnFocus = false
+            incGender.tv.showSoftInputOnFocus = false
+            incGender.tv.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) incGender.tv.showDropDown()
+                disableKeyboard()
+            }
+            incBlood.tv.showSoftInputOnFocus = false
+            incBlood.tv.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) incBlood.tv.showDropDown()
+                disableKeyboard()
+            }
 
             btnSave.setOnClickListener {
                 name = incName.et.text.toString()
@@ -139,16 +136,41 @@ class InputProfileActivity : AppCompatActivity() {
         setupDatePicker()
     }
 
+    private fun disableKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(
+            window.decorView.rootView.windowToken,
+            InputMethodManager.RESULT_UNCHANGED_SHOWN
+        )
+    }
+
     private fun setupForm() {
         binding.apply {
-            incName.til.hint = getString(R.string.name)
+            incName.apply {
+                til.hint = getString(R.string.name)
+                et.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+            }
             incGender.til.hint = getString(R.string.gender)
             incBirthdate.til.hint = getString(R.string.birthday)
-            incHeight.til.hint = getString(R.string.body_height)
-            incWeight.til.hint = getString(R.string.body_weight)
+            incHeight.apply {
+                til.hint = getString(R.string.body_height)
+                et.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+            incWeight.apply {
+                til.hint = getString(R.string.body_weight)
+                et.inputType = InputType.TYPE_CLASS_NUMBER
+            }
             incBlood.til.hint = getString(R.string.blood_group)
-            incPhone.til.hint = getString(R.string.phone_number)
-            incAddress.til.hint = getString(R.string.address)
+            incPhone.apply {
+                til.hint = getString(R.string.phone_number)
+                et.inputType = InputType.TYPE_CLASS_PHONE
+            }
+            incAddress.apply {
+                til.hint = getString(R.string.address)
+                et.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                et.isSingleLine = false
+                et.maxLines = 4
+            }
         }
     }
 
