@@ -78,6 +78,7 @@ class LoginFragment : Fragment() {
                         android.R.color.darker_gray
                     )
                 )
+                et.setPadding(et.paddingLeft, et.paddingTop, dpToPx(48), et.paddingBottom)
                 et.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 et.transformationMethod = PasswordTransformationMethod()
             }
@@ -215,5 +216,10 @@ class LoginFragment : Fragment() {
             startActivity(this)
             requireActivity().finish()
         }
+    }
+
+    private fun dpToPx(size: Int): Int {
+        val scale = resources.displayMetrics.density
+        return (size * scale + 0.5f).toInt()
     }
 }
