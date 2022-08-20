@@ -17,6 +17,8 @@ import com.atharianr.telemedicine.databinding.FragmentProfileBinding
 import com.atharianr.telemedicine.ui.landing.LandingActivity
 import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProfileFragment : Fragment() {
 
@@ -103,9 +105,9 @@ class ProfileFragment : Fragment() {
                     binding.tvEmail.text = email
                     binding.tvPhoneNumber.text = phoneNumber.toString()
                     binding.tvGender.text = genderArray[gender!!]
-                    binding.tvBirthday.text = birthdate
-                    binding.tvHeight.text = bodyHeight.toString()
-                    binding.tvWeight.text = bodyWeight.toString()
+                    binding.tvBirthday.text = birthdate?.let { date -> stringDateFormatter(date) }
+                    binding.tvHeight.text = "${bodyHeight.toString()} cm"
+                    binding.tvWeight.text = "${bodyWeight.toString()} kg"
                     binding.tvBlood.text = bloodArray[bloodType!!]
                     binding.tvAddress.text = address
 
@@ -175,5 +177,17 @@ class ProfileFragment : Fragment() {
         val sharedPref =
             requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
         return sharedPref.getString(Constant.TOKEN, "")
+    }
+
+    private fun stringDateFormatter(
+        dateStr: String,
+        format: String = "dd/MM/yyyy",
+        newFormat: String = "dd MMMM yyyy"
+    ): String? {
+        val dateFormat = SimpleDateFormat(format, Locale("id", "ID"))
+        val newDateFormat = SimpleDateFormat(newFormat, Locale("id", "ID"))
+        val date = dateFormat.parse(dateStr)
+
+        return date?.let { newDateFormat.format(it) }
     }
 }
