@@ -2,7 +2,9 @@ package com.atharianr.telemedicine.ui.landing.login
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
@@ -11,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.atharianr.telemedicine.R
@@ -43,6 +46,15 @@ class LoginFragment : Fragment() {
 
         if (activity != null) {
             binding.apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val appName =
+                        getColoredSpanned("Belum punya akun? ", "#000000") + getColoredSpanned(
+                            "Daftar",
+                            "#2B95F6"
+                        )
+                    btnRegister.text = Html.fromHtml(appName, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                }
+
                 btnLogin.setOnClickListener {
                     isLoading(true)
                     checkValidation()
@@ -221,5 +233,9 @@ class LoginFragment : Fragment() {
     private fun dpToPx(size: Int): Int {
         val scale = resources.displayMetrics.density
         return (size * scale + 0.5f).toInt()
+    }
+
+    private fun getColoredSpanned(text: String, color: String): String? {
+        return "<font color=$color>$text</font>"
     }
 }

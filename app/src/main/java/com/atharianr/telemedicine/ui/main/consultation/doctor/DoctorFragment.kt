@@ -163,7 +163,7 @@ class DoctorFragment : Fragment() {
 
         val filterAdapter = ArrayAdapter(
             requireActivity(),
-            android.R.layout.simple_list_item_multiple_choice,
+            R.layout.component_checked_text_view,
             filterList
         )
 
