@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".ui.webview.WebViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.profile.InputProfileActivity"
             android:exported="false" />
         <activity

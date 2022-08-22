@@ -43,12 +43,10 @@ class HomeFragment : Fragment() {
         val token = sharedPref.getString(Constant.TOKEN, null)
 
         if (activity != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val window = activity!!.window
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.statusBarColor =
-                    ContextCompat.getColor(requireActivity(), R.color.blue_2B95F6)
-            }
+            val window = requireActivity().window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor =
+                ContextCompat.getColor(requireActivity(), R.color.blue_2B95F6)
 
             val listImages = arrayListOf<Int>()
             listImages.add(R.drawable.consultation)
@@ -73,6 +71,7 @@ class HomeFragment : Fragment() {
                 listImages,
                 listTitles,
                 listDescriptions,
+                requireActivity(),
                 requireActivity().supportFragmentManager
             )
 

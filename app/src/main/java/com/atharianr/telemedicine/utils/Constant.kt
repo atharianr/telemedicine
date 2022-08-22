@@ -25,4 +25,9 @@ object Constant {
     const val USER_BLOOD = "user_blood"
     const val USER_PHONE = "user_phone"
     const val USER_ADDRESS = "user_address"
+
+    const val WEB_URL = "web_url"
+    const val WEB_URL_BPJS = "https://faskes.bpjs-kesehatan.go.id/aplicares/#/app/dashboard"
+    const val WEB_URL_APOTEK = "https://m.k24klik.com"
+    const val WEB_URL_RS = "https://www.siloamhospitals.com"
 }
