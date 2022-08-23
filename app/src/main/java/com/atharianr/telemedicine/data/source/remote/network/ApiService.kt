@@ -43,6 +43,10 @@ interface ApiService {
     ): Call<DoctorResponse>
 
     @Headers("Accept: application/json")
+    @GET("doctor/{doctorId}")
+    fun getDoctorDetail(@Path("doctorId") doctorId: String): Call<DoctorDetailResponse>
+
+    @Headers("Accept: application/json")
     @GET("article")
     fun getAllArticles(): Call<ArticleResponse>
 

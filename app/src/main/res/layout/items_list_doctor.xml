@@ -28,6 +28,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/profile_pic_placeholder"
+                app:civ_circle_background_color="@color/grey_979797"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

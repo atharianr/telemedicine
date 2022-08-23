@@ -159,7 +159,18 @@ class DoctorFragment : Fragment() {
     }
 
     private fun setupFilter() {
-        val filterList = arrayListOf("Dokter Umum", "Dokter Gigi", "Dokter Mata")
+        val filterList = arrayListOf(
+            "Dokter Umum",
+            "Dokter Gigi",
+            "Dokter Hewan",
+            "Spesialis Jantung",
+            "Spesialis Saraf",
+            "Spesialis Mata",
+            "Spesialis THT",
+            "Spesialis Kulit dan Kelamin",
+            "Spesialis Anak",
+            "Psikologi",
+        )
 
         val filterAdapter = ArrayAdapter(
             requireActivity(),

@@ -8,6 +8,7 @@ import com.atharianr.telemedicine.data.source.remote.response.DoctorData
 import com.atharianr.telemedicine.databinding.ItemsListDoctorBinding
 import com.atharianr.telemedicine.ui.main.consultation.doctor.profile.DoctorProfileActivity
 import com.atharianr.telemedicine.utils.Constant
+import com.bumptech.glide.Glide
 
 class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
 
@@ -35,11 +36,12 @@ class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
 
         fun bind(data: DoctorData) {
             binding.apply {
-//                Glide.with(itemView)
-//                    .load(data.profilePic)
-//                    .transition(DrawableTransitionOptions.withCrossFade())
-//                    .centerCrop()
-//                    .into(ivDoctor)
+                if (data.photo != null || data.photo != "") {
+                    Glide.with(itemView)
+                        .load(data.photo)
+                        .centerCrop()
+                        .into(ivDoctor)
+                }
 
                 tvName.text = data.name
                 tvCategory.text = data.specialist
@@ -47,12 +49,6 @@ class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
                 btnChoose.setOnClickListener {
                     with(Intent(itemView.context, DoctorProfileActivity::class.java)) {
                         this.putExtra(Constant.DOCTOR_ID, data.id)
-                        this.putExtra(Constant.DOCTOR_NAME, data.name)
-                        this.putExtra(Constant.DOCTOR_NAME, data.name)
-                        this.putExtra(Constant.DOCTOR_SP, data.specialist)
-                        this.putExtra(Constant.DOCTOR_EDU, data.education)
-                        this.putExtra(Constant.DOCTOR_EDU_YEAR, data.educationYear)
-                        this.putExtra(Constant.DOCTOR_PHONE, data.phoneNumber)
                         itemView.context.startActivity(this)
                     }
                 }
