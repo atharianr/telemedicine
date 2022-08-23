@@ -40,6 +40,11 @@ class DoctorProfileActivity : AppCompatActivity() {
         getDoctorDetail(doctorId)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     private fun getDoctorDetail(doctorId: String) {
         isLoading(loading = true)
         doctorViewModel.getDoctorDetail(doctorId).observe(this) {

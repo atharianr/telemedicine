@@ -11,6 +11,7 @@ class DoctorViewModel(private val remoteDataSource: RemoteDataSource) : ViewMode
     fun getAllDoctors(): LiveData<ApiResponse<DoctorResponse>> = remoteDataSource.getAllDoctors()
     fun getSearchDoctors(keyword: String, filter: String): LiveData<ApiResponse<DoctorResponse>> =
         remoteDataSource.getSearchDoctors(keyword, filter)
+
     fun getDoctorDetail(doctorId: String): LiveData<ApiResponse<DoctorDetailResponse>> =
         remoteDataSource.getDoctorDetail(doctorId)
 }

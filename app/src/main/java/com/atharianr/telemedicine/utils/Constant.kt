@@ -25,7 +25,10 @@ object Constant {
     const val USER_BLOOD = "user_blood"
     const val USER_PHONE = "user_phone"
     const val USER_ADDRESS = "user_address"
+    const val USER_PHOTO = "user_photo"
+    const val USER_PHOTO_BASE_URL = "http://202.157.176.228:9001/storage/"
 
+    const val ARTICLE_ID = "article_id"
     const val ARTICLE_TITLE = "article_title"
     const val ARTICLE_IMAGE = "article_image"
     const val ARTICLE_DEFINITION = "article_definition"

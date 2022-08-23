@@ -50,5 +50,8 @@ data class Data(
 	val id: Int? = null,
 
 	@field:SerializedName("email")
-	val email: String? = null
+	val email: String? = null,
+
+	@field:SerializedName("photo")
+	val photo: String? = null
 )

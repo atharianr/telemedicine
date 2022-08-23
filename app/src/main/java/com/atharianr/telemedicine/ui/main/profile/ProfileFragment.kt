@@ -2,7 +2,6 @@ package com.atharianr.telemedicine.ui.main.profile
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentProfileBinding
 import com.atharianr.telemedicine.ui.landing.LandingActivity
 import com.atharianr.telemedicine.utils.Constant
+import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,12 +50,10 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val window = activity!!.window
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.statusBarColor =
-                    ContextCompat.getColor(requireActivity(), R.color.white)
-            }
+            val window = requireActivity().window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor =
+                ContextCompat.getColor(requireActivity(), R.color.white)
 
             binding.apply {
                 btnLogout.setOnClickListener {
@@ -91,25 +89,35 @@ class ProfileFragment : Fragment() {
                     val genderArray = arrayOf("Laki-laki", "Perempuan")
                     val bloodArray = arrayOf("A", "B", "AB", "O")
 
-                    name = it.body?.data?.name
-                    email = it.body?.data?.email
-                    phoneNumber = it.body?.data?.phoneNumber
-                    gender = it.body?.data?.gender
-                    birthdate = it.body?.data?.birthdate
-                    bodyHeight = it.body?.data?.bodyHeight
-                    bodyWeight = it.body?.data?.bodyWeight
-                    bloodType = it.body?.data?.bloodType
-                    address = it.body?.data?.address
+                    val data = it.body?.data
+                    name = data?.name
+                    email = data?.email
+                    phoneNumber = data?.phoneNumber
+                    gender = data?.gender
+                    birthdate = data?.birthdate
+                    bodyHeight = data?.bodyHeight
+                    bodyWeight = data?.bodyWeight
+                    bloodType = data?.bloodType
+                    address = data?.address
 
-                    binding.tvName.text = name
-                    binding.tvEmail.text = email
-                    binding.tvPhoneNumber.text = phoneNumber.toString()
-                    binding.tvGender.text = genderArray[gender!!]
-                    binding.tvBirthday.text = birthdate?.let { date -> stringDateFormatter(date) }
-                    binding.tvHeight.text = "${bodyHeight.toString()} cm"
-                    binding.tvWeight.text = "${bodyWeight.toString()} kg"
-                    binding.tvBlood.text = bloodArray[bloodType!!]
-                    binding.tvAddress.text = address
+                    binding.apply {
+                        if (data?.photo != null || data?.photo != "") {
+                            Glide.with(requireActivity())
+                                .load(Constant.USER_PHOTO_BASE_URL + data?.photo)
+                                .centerCrop()
+                                .into(ivProfile)
+                        }
+
+                        tvName.text = name
+                        tvEmail.text = email
+                        tvPhoneNumber.text = phoneNumber.toString()
+                        tvGender.text = genderArray[gender!!]
+                        tvBirthday.text = birthdate?.let { date -> stringDateFormatter(date) }
+                        tvHeight.text = "${bodyHeight.toString()} cm"
+                        tvWeight.text = "${bodyWeight.toString()} kg"
+                        tvBlood.text = bloodArray[bloodType!!]
+                        tvAddress.text = address
+                    }
 
                     isLoading(false)
                 }

@@ -371,6 +371,42 @@ class RemoteDataSource(private val apiService: ApiService) {
         return resultResponse
     }
 
+    fun getArticleDetail(articleId: String): LiveData<ApiResponse<ArticleDetailResponse>> {
+        val resultResponse = MutableLiveData<ApiResponse<ArticleDetailResponse>>()
+
+        apiService.getArticleDetail(articleId).enqueue(object : Callback<ArticleDetailResponse> {
+            override fun onResponse(
+                call: Call<ArticleDetailResponse>,
+                response: Response<ArticleDetailResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d(TAG, "All Doctors Fetched.")
+                    resultResponse.postValue(ApiResponse.success(response.body()))
+                } else {
+                    try {
+                        val errorBody = response.errorBody()
+                        if (errorBody != null) {
+                            val jObjError = JSONObject(errorBody.string())
+                            Log.d(TAG, jObjError.getString("message"))
+                            resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                        }
+                    } catch (e: Exception) {
+                        Log.d(TAG, "${e.message}")
+                        resultResponse.postValue(ApiResponse.error(e.message))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ArticleDetailResponse>, t: Throwable) {
+                Log.d(TAG, t.message.toString())
+                resultResponse.postValue(ApiResponse.error(t.message.toString()))
+            }
+
+        })
+
+        return resultResponse
+    }
+
     companion object {
         private val TAG = RemoteDataSource::class.java.simpleName
     }

@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/article_not_found"
+        android:text="@string/doctor_not_found"
         android:textAlignment="center"
         android:textColor="@color/grey_A6A6A6"
         android:textSize="18sp"

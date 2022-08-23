@@ -54,4 +54,7 @@ interface ApiService {
     @GET("article/search")
     fun getSearchArticles(@Query("keyword") keyword: String): Call<ArticleResponse>
 
+    @Headers("Accept: application/json")
+    @GET("article/{articleId}")
+    fun getArticleDetail(@Path("articleId") articleId: String): Call<ArticleDetailResponse>
 }
