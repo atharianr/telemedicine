@@ -29,8 +29,11 @@
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_box_white.xml" value="0.204" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_button.xml" value="0.1985" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_button_8.xml" value="0.238" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_button_blue.xml" value="0.196" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_button_border.xml" value="0.196" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_button_border_8.xml" value="0.238" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_button_content_selector.xml" value="0.196" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_button_grey.xml" value="0.196" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_edit_text_background.xml" value="0.238" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_search_view_background.xml" value="0.1985" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/drawable/rounded_spinner_background.xml" value="0.196" />
@@ -47,12 +50,12 @@
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/activity_login_register.xml" value="0.32592592592592595" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/component_checked_text_view.xml" value="0.5" />
-        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/component_edit_text.xml" value="0.16712962962962963" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/component_edit_text.xml" value="0.25" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/component_spinner.xml" value="0.25" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/dialog_filter.xml" value="0.22" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_article.xml" value="0.25" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_consultation.xml" value="0.2" />
-        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_doctor.xml" value="0.18" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_doctor.xml" value="0.33" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_landing.xml" value="0.22" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/fragment_login.xml" value="0.33" />
@@ -63,6 +66,7 @@
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_article.xml" value="0.32592592592592595" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_chat_received.xml" value="0.25" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_chat_sent.xml" value="0.32592592592592595" />
+        <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_content.xml" value="0.16712962962962963" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_desease.xml" value="0.5" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_doctor.xml" value="0.33" />
         <entry key="..\:/Android Studio Save/telemedicine/app/src/main/res/layout/items_list_home.xml" value="0.32592592592592595" />

@@ -25,4 +25,12 @@ object Constant {
     const val USER_BLOOD = "user_blood"
     const val USER_PHONE = "user_phone"
     const val USER_ADDRESS = "user_address"
+
+    const val ARTICLE_TITLE = "article_title"
+    const val ARTICLE_IMAGE = "article_image"
+    const val ARTICLE_DEFINITION = "article_definition"
+    const val ARTICLE_SYMPTOM = "article_symptom"
+    const val ARTICLE_COMPLICATION = "article_complication"
+    const val ARTICLE_DIAGNOSIS = "article_diagnosis"
+    const val ARTICLE_TREATMENT = "article_treatment"
 }

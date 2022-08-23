@@ -35,7 +35,7 @@ data class ArticleData(
 	val name: String? = null,
 
 	@field:SerializedName("diagnosys")
-	val diagnosys: String? = null,
+	val diagnosis: String? = null,
 
 	@field:SerializedName("created_at")
 	val createdAt: Any? = null,

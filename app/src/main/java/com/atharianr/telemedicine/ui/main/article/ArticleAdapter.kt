@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.atharianr.telemedicine.data.source.remote.response.ArticleData
 import com.atharianr.telemedicine.databinding.ItemsListArticleBinding
 import com.atharianr.telemedicine.ui.main.article.detail.ArticleDetailActivity
+import com.atharianr.telemedicine.utils.Constant
 
 class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
@@ -38,6 +39,13 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
             itemView.setOnClickListener {
                 with(Intent(itemView.context, ArticleDetailActivity::class.java)) {
+                    putExtra(Constant.ARTICLE_TITLE, data.name)
+                    putExtra(Constant.ARTICLE_IMAGE, data.imageUrl)
+                    putExtra(Constant.ARTICLE_DEFINITION, data.definition)
+                    putExtra(Constant.ARTICLE_SYMPTOM, data.symptom)
+                    putExtra(Constant.ARTICLE_COMPLICATION, data.complication)
+                    putExtra(Constant.ARTICLE_DIAGNOSIS, data.diagnosis)
+                    putExtra(Constant.ARTICLE_TREATMENT, data.treatment)
                     itemView.context.startActivity(this)
                 }
             }

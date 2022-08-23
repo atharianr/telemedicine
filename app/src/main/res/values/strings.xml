@@ -57,4 +57,11 @@
     <string name="doctor_not_found">Belum ada dokter.</string>
     <string name="hint">hint</string>
     <string name="specialist_filter">Filter Spesialis</string>
+    <string name="disease_information">Informasi Penyakit</string>
+    <string name="treatment">Pengobatan</string>
+    <string name="diagnosis">Diagnosis</string>
+    <string name="cause">Penyebab</string>
+    <string name="complication">Komplikasi</string>
+    <string name="symptom">Gejala</string>
+    <string name="definition">Pengertian</string>
 </resources>
