@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_photo"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="24dp"
@@ -32,11 +33,15 @@
             android:id="@+id/tv_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unggah Foto"
+            android:gravity="center"
+            android:text="@string/upload_photo"
+            android:textAlignment="center"
             android:textColor="@color/grey_979797"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:drawableTint="@color/grey_979797"
-            app:drawableTopCompat="@drawable/ic_home"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_photo"
+            app:drawableTopCompat="@drawable/ic_baseline_cloud_upload_48"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +67,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button_8"
                 android:backgroundTint="@color/blue_2B95F6"
-                android:text="Ubah Foto"
+                android:text="@string/change_photo"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
@@ -75,7 +80,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button_8"
                 android:backgroundTint="@color/red_E12D43"
-                android:text="Hapus Foto"
+                android:text="@string/remove_photo"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
         </LinearLayout>

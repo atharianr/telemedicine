@@ -3,7 +3,6 @@ package com.atharianr.telemedicine.ui.main.profile
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.atharianr.telemedicine.ui.landing.LandingActivity
 import com.atharianr.telemedicine.utils.Constant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -111,6 +109,7 @@ class ProfileFragment : Fragment() {
                                 .load(Constant.USER_PHOTO_BASE_URL + photo)
                                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true)
+                                .placeholder(R.drawable.profile_pic_placeholder)
                                 .centerCrop()
                                 .into(ivProfile)
                         }

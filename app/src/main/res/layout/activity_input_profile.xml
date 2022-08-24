@@ -89,7 +89,8 @@
 
             <include
                 android:id="@+id/inc_photo"
-                layout="@layout/component_upload_image" />
+                layout="@layout/component_upload_image"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"

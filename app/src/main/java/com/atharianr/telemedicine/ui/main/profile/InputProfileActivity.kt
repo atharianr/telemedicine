@@ -233,12 +233,15 @@ class InputProfileActivity : AppCompatActivity() {
             incPhone.et.setText(intent.getStringExtra(Constant.USER_PHONE))
             incAddress.et.setText(intent.getStringExtra(Constant.USER_ADDRESS))
 
+            incPhoto.root.visibility = View.VISIBLE
+
             val photo = intent.getStringExtra(Constant.USER_PHOTO)
             if (photo != null || photo != "") {
                 Glide.with(this@InputProfileActivity)
                     .load(Constant.USER_PHOTO_BASE_URL + photo)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
+                    .placeholder(R.drawable.profile_pic_placeholder)
                     .centerCrop()
                     .into(incPhoto.ivPhoto)
 
@@ -247,6 +250,21 @@ class InputProfileActivity : AppCompatActivity() {
             } else {
                 incPhoto.tvUpload.visibility = View.VISIBLE
                 incPhoto.llEditPhoto.visibility = View.GONE
+            }
+
+            incPhoto.root.setOnClickListener {
+                if (ContextCompat.checkSelfPermission(
+                        this@InputProfileActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this@InputProfileActivity,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        Constant.REQUEST_CODE
+                    )
+                }
+                selectImage()
             }
 
             incPhoto.btnUpload.setOnClickListener {
@@ -262,6 +280,13 @@ class InputProfileActivity : AppCompatActivity() {
                     )
                 }
                 selectImage()
+            }
+
+            incPhoto.btnRemove.setOnClickListener {
+                base64String = null
+                incPhoto.ivPhoto.setImageResource(0)
+                incPhoto.tvUpload.visibility = View.VISIBLE
+                incPhoto.llEditPhoto.visibility = View.GONE
             }
         }
     }
@@ -485,13 +510,18 @@ class InputProfileActivity : AppCompatActivity() {
         bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, stream)
         val bytes = stream.toByteArray()
 
-        Glide.with(this)
-            .load(uri)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .centerCrop()
-            .into(binding.incPhoto.ivPhoto)
-//        binding.incPhoto.ivPhoto.setImageBitmap(bitmap)
         base64String = Base64.encodeToString(bytes, Base64.DEFAULT)
+
+        binding.apply {
+            Glide.with(this@InputProfileActivity)
+                .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.profile_pic_placeholder)
+                .centerCrop()
+                .into(incPhoto.ivPhoto)
+            incPhoto.tvUpload.visibility = View.GONE
+            incPhoto.llEditPhoto.visibility = View.VISIBLE
+        }
     }
 }

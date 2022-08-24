@@ -66,4 +66,7 @@
     <string name="definition">Pengertian</string>
     <string name="select_image">Pilih Gambar</string>
     <string name="permission_denied">Permission Denied</string>
+    <string name="upload_photo">Unggah Foto</string>
+    <string name="change_photo">Ubah Foto</string>
+    <string name="remove_photo">Hapus Foto</string>
 </resources>
