@@ -5,6 +5,8 @@ object Constant {
     const val FROM_AUTH = "from_auth"
     const val API_BASE_URL = "http://202.157.176.228:9001/api/"
     const val TOKEN = "token"
+    const val REQUEST_CODE = 100
+    const val SELECT_PICTURE = 200
     const val USER_DATA = "user_data"
 
     const val DOCTOR_ID = "doctor_id"

@@ -25,5 +25,8 @@ data class InputProfileRequest(
     val phoneNumber: String? = null,
 
     @field:SerializedName("address")
-    val address: String? = null
+    val address: String? = null,
+
+    @field:SerializedName("photo")
+    val photo: String? = null
 )

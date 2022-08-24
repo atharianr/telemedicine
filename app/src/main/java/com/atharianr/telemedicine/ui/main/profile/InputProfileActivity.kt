@@ -1,17 +1,25 @@
 package com.atharianr.telemedicine.ui.main.profile
 
-import android.app.Activity
+import android.Manifest
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.InputType
+import android.util.Base64
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
@@ -19,7 +27,9 @@ import com.atharianr.telemedicine.databinding.ActivityInputProfileBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
 import com.atharianr.telemedicine.utils.Constant
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -36,7 +46,8 @@ class InputProfileActivity : AppCompatActivity() {
 
     private var gender = 0
     private var bloodType = 0
-    private val REQUEST_CODE = 100
+
+    private var base64String: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,7 +134,8 @@ class InputProfileActivity : AppCompatActivity() {
                     bodyWeight.toInt(),
                     bloodType,
                     phoneNumber,
-                    address
+                    address,
+                    base64String
                 )
 
                 isLoading(true)
@@ -139,12 +151,35 @@ class InputProfileActivity : AppCompatActivity() {
         setupDatePicker()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-            Toast.makeText(this, data?.data.toString(), Toast.LENGTH_SHORT).show()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == Constant.REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            selectImage()
+        } else {
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            when (it.resultCode) {
+                RESULT_OK -> {
+                    val intent = it.data
+                    if (intent != null) {
+                        val uri = intent.data
+                        try {
+                            encodeImageToBase64(uri)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+        }
 
     private fun disableKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -202,6 +237,8 @@ class InputProfileActivity : AppCompatActivity() {
             if (photo != null || photo != "") {
                 Glide.with(this@InputProfileActivity)
                     .load(Constant.USER_PHOTO_BASE_URL + photo)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .centerCrop()
                     .into(incPhoto.ivPhoto)
 
@@ -212,7 +249,20 @@ class InputProfileActivity : AppCompatActivity() {
                 incPhoto.llEditPhoto.visibility = View.GONE
             }
 
-            incPhoto.btnUpload.setOnClickListener { openGalleryForImage() }
+            incPhoto.btnUpload.setOnClickListener {
+                if (ContextCompat.checkSelfPermission(
+                        this@InputProfileActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this@InputProfileActivity,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        Constant.REQUEST_CODE
+                    )
+                }
+                selectImage()
+            }
         }
     }
 
@@ -421,9 +471,27 @@ class InputProfileActivity : AppCompatActivity() {
         return dateFormat.parse(dateStr)
     }
 
-    private fun openGalleryForImage() {
+    private fun selectImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_CODE)
+        intent.action = Intent.ACTION_GET_CONTENT
+        startForResult.launch(intent)
+    }
+
+    private fun encodeImageToBase64(uri: Uri?) {
+        val compressQuality = 100
+        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, stream)
+        val bytes = stream.toByteArray()
+
+        Glide.with(this)
+            .load(uri)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .centerCrop()
+            .into(binding.incPhoto.ivPhoto)
+//        binding.incPhoto.ivPhoto.setImageBitmap(bitmap)
+        base64String = Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 }
