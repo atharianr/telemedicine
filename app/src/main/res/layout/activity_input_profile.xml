@@ -87,6 +87,10 @@
                 android:id="@+id/inc_address"
                 layout="@layout/component_edit_text" />
 
+            <include
+                android:id="@+id/inc_photo"
+                layout="@layout/component_upload_image" />
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

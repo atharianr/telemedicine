@@ -36,6 +36,7 @@ class ProfileFragment : Fragment() {
     private var bloodType: Int? = null
     private var phoneNumber: String? = null
     private var address: String? = null
+    private var photo: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,11 +100,12 @@ class ProfileFragment : Fragment() {
                     bodyWeight = data?.bodyWeight
                     bloodType = data?.bloodType
                     address = data?.address
+                    photo = data?.photo
 
                     binding.apply {
                         if (data?.photo != null || data?.photo != "") {
                             Glide.with(requireActivity())
-                                .load(Constant.USER_PHOTO_BASE_URL + data?.photo)
+                                .load(Constant.USER_PHOTO_BASE_URL + photo)
                                 .centerCrop()
                                 .into(ivProfile)
                         }
@@ -164,6 +166,7 @@ class ProfileFragment : Fragment() {
             this.putExtra(Constant.USER_BLOOD, bloodType)
             this.putExtra(Constant.USER_PHONE, phoneNumber)
             this.putExtra(Constant.USER_ADDRESS, address)
+            this.putExtra(Constant.USER_PHOTO, photo)
 
             startActivity(this)
         }

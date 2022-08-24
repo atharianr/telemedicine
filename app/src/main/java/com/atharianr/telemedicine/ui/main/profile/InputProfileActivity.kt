@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.ui.main.profile
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -17,6 +18,7 @@ import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.ActivityInputProfileBinding
 import com.atharianr.telemedicine.ui.main.MainActivity
 import com.atharianr.telemedicine.utils.Constant
+import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +36,7 @@ class InputProfileActivity : AppCompatActivity() {
 
     private var gender = 0
     private var bloodType = 0
+    private val REQUEST_CODE = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +139,13 @@ class InputProfileActivity : AppCompatActivity() {
         setupDatePicker()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+            Toast.makeText(this, data?.data.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun disableKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(
@@ -187,6 +197,22 @@ class InputProfileActivity : AppCompatActivity() {
             incBlood.tv.setText(bloodArray[intent.getIntExtra(Constant.USER_BLOOD, 0)], false)
             incPhone.et.setText(intent.getStringExtra(Constant.USER_PHONE))
             incAddress.et.setText(intent.getStringExtra(Constant.USER_ADDRESS))
+
+            val photo = intent.getStringExtra(Constant.USER_PHOTO)
+            if (photo != null || photo != "") {
+                Glide.with(this@InputProfileActivity)
+                    .load(Constant.USER_PHOTO_BASE_URL + photo)
+                    .centerCrop()
+                    .into(incPhoto.ivPhoto)
+
+                incPhoto.tvUpload.visibility = View.GONE
+                incPhoto.llEditPhoto.visibility = View.VISIBLE
+            } else {
+                incPhoto.tvUpload.visibility = View.VISIBLE
+                incPhoto.llEditPhoto.visibility = View.GONE
+            }
+
+            incPhoto.btnUpload.setOnClickListener { openGalleryForImage() }
         }
     }
 
@@ -393,5 +419,11 @@ class InputProfileActivity : AppCompatActivity() {
     private fun stringToDate(dateStr: String, format: String = "dd/MM/yyyy"): Date? {
         val dateFormat = SimpleDateFormat(format, Locale.getDefault())
         return dateFormat.parse(dateStr)
+    }
+
+    private fun openGalleryForImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_CODE)
     }
 }
