@@ -236,7 +236,7 @@ class InputProfileActivity : AppCompatActivity() {
             incPhoto.root.visibility = View.VISIBLE
 
             val photo = intent.getStringExtra(Constant.USER_PHOTO)
-            if (photo != null || photo != "") {
+            if (photo != null && photo != "") {
                 Glide.with(this@InputProfileActivity)
                     .load(Constant.USER_PHOTO_BASE_URL + photo)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -373,6 +373,15 @@ class InputProfileActivity : AppCompatActivity() {
                 incName.et.error = null
             }
 
+            // gender
+            if (incGender.tv.text.toString() == "") {
+                incGender.tv.error = "Pilih jenis kelamin anda."
+                isLoading(false)
+                return
+            } else {
+                incGender.tv.error = null
+            }
+
             // birthdate
             if (incBirthdate.et.text.toString().isEmpty()) {
                 incBirthdate.et.error = "Masukkan tanggal lahir anda."
@@ -408,6 +417,15 @@ class InputProfileActivity : AppCompatActivity() {
                 return
             } else {
                 incWeight.et.error = null
+            }
+
+            // gender
+            if (incBlood.tv.text.toString() == "") {
+                incBlood.tv.error = "Pilih golongan darah anda."
+                isLoading(false)
+                return
+            } else {
+                incBlood.tv.error = null
             }
 
             // phoneNumber
