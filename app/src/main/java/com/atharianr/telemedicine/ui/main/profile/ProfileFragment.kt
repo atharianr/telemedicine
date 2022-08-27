@@ -105,13 +105,16 @@ class ProfileFragment : Fragment() {
 
                         binding.apply {
                             if (data?.photo != null || data?.photo != "") {
-                                Glide.with(requireActivity())
-                                    .load(Constant.USER_PHOTO_BASE_URL + photo)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .placeholder(R.drawable.profile_pic_placeholder)
-                                    .centerCrop()
-                                    .into(ivProfile)
+                                val ctx = activity
+                                if (ctx != null) {
+                                    Glide.with(ctx)
+                                        .load(Constant.USER_PHOTO_BASE_URL + photo)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .placeholder(R.drawable.profile_pic_placeholder)
+                                        .centerCrop()
+                                        .into(ivProfile)
+                                }
                             }
 
                             tvName.text = name
