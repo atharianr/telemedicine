@@ -1,22 +1,19 @@
 package com.atharianr.telemedicine.ui.main.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.atharianr.telemedicine.R
-import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentHomeBinding
 import com.atharianr.telemedicine.utils.Constant
 import com.bumptech.glide.Glide
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 
 class HomeFragment : Fragment() {
@@ -98,17 +95,13 @@ class HomeFragment : Fragment() {
             if (photo != null || photo != "") {
                 Glide.with(this@HomeFragment)
                     .load(Constant.USER_PHOTO_BASE_URL + photo)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .centerCrop()
                     .into(ivProfile)
             }
             binding.tvGreetings.text = "Halo, $name"
         }
-    }
-
-    private fun getBearerToken(): String? {
-        val sharedPref =
-            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
-        return sharedPref.getString(Constant.TOKEN, "")
     }
 }

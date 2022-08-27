@@ -7,6 +7,7 @@ object Constant {
     const val TOKEN = "token"
     const val REQUEST_CODE = 100
     const val SELECT_PICTURE = 200
+    const val THERE_IS_IMAGE = "there_is_image"
     const val USER_DATA = "user_data"
 
     const val DOCTOR_ID = "doctor_id"

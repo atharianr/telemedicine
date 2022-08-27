@@ -12,7 +12,6 @@ import com.atharianr.telemedicine.databinding.ActivityMainBinding
 import com.atharianr.telemedicine.ui.main.article.ArticleFragment
 import com.atharianr.telemedicine.ui.main.consultation.ConsultationFragment
 import com.atharianr.telemedicine.ui.main.home.HomeFragment
-import com.atharianr.telemedicine.ui.main.home.HomeViewModel
 import com.atharianr.telemedicine.ui.main.profile.ProfileFragment
 import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,7 +24,8 @@ class MainActivity : AppCompatActivity() {
     private var integerDeque: Deque<Int> = ArrayDeque(3)
     private var flag = true
 
-    private val homeViewModel: HomeViewModel by viewModel()
+    private val mainViewModel: MainViewModel by viewModel()
+
     private var name: String? = null
     private var email: String? = null
     private var gender: Int = 0
@@ -47,6 +47,11 @@ class MainActivity : AppCompatActivity() {
 
         getUserDetail(getBearerToken())
         setupBottomNav()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getUserDetail(getBearerToken())
     }
 
     override fun onBackPressed() {
@@ -147,7 +152,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUserDetail(token: String?) {
         if (token != null) {
-            homeViewModel.getUserDetail(token).observe(this) {
+            mainViewModel.getUserDetail(token).observe(this) {
                 when (it.status) {
                     StatusResponse.SUCCESS -> {
                         name = it.body?.data?.name
@@ -155,7 +160,7 @@ class MainActivity : AppCompatActivity() {
                         if (it.body?.data?.gender != null) {
                             gender = it.body.data.gender.toInt()
                         }
-                        birthdate = it.body?.data?.name
+                        birthdate = it.body?.data?.birthdate
                         if (it.body?.data?.bodyHeight != null) {
                             bodyHeight = it.body.data.bodyHeight.toInt()
                         }
@@ -169,7 +174,7 @@ class MainActivity : AppCompatActivity() {
                         address = it.body?.data?.address
                         photo = it.body?.data?.photo
 
-                        loadFragment(HomeFragment())
+                        loadFragment(getFragment(integerDeque.peek()))
                     }
 
                     StatusResponse.ERROR -> {

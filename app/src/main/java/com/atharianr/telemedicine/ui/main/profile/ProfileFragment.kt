@@ -7,17 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.atharianr.telemedicine.R
-import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentProfileBinding
 import com.atharianr.telemedicine.ui.landing.LandingActivity
 import com.atharianr.telemedicine.utils.Constant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,19 +22,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding as FragmentProfileBinding
-
-    private val profileViewModel: ProfileViewModel by viewModel()
-
-    private var name: String? = null
-    private var email: String? = null
-    private var gender: Int? = null
-    private var birthdate: String? = null
-    private var bodyHeight: Int? = null
-    private var bodyWeight: Int? = null
-    private var bloodType: Int? = null
-    private var phoneNumber: String? = null
-    private var address: String? = null
-    private var photo: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,13 +52,14 @@ class ProfileFragment : Fragment() {
                 }
             }
 
-            getUserDetail(getBearerToken())
+            isLoading(true)
+            getBundle()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        getUserDetail(getBearerToken())
+        getBundle()
     }
 
 //    override fun onDestroy() {
@@ -82,68 +67,46 @@ class ProfileFragment : Fragment() {
 //        _binding = null
 //    }
 
-    private fun getUserDetail(token: String?) {
-        isLoading(true)
-        if (token != null) {
-            profileViewModel.getUserDetail(token).observe(requireActivity()) {
-                when (it.status) {
-                    StatusResponse.SUCCESS -> {
-                        val genderArray = arrayOf("Laki-laki", "Perempuan")
-                        val bloodArray = arrayOf("A", "B", "AB", "O")
+    private fun getBundle() {
+        val name = arguments?.getString(Constant.USER_NAME, "")
+        val email = arguments?.getString(Constant.USER_EMAIL, "")
+        val gender = arguments?.getInt(Constant.USER_GENDER, 0)
+        val birthdate = arguments?.getString(Constant.USER_BIRTHDATE, "")
+        val height = arguments?.getInt(Constant.USER_HEIGHT, 0)
+        val weight = arguments?.getInt(Constant.USER_WEIGHT, 0)
+        val blood = arguments?.getInt(Constant.USER_BLOOD, 0)
+        val address = arguments?.getString(Constant.USER_ADDRESS, "")
+        val phone = arguments?.getString(Constant.USER_PHONE, "")
+        val photo = arguments?.getString(Constant.USER_PHOTO, "")
 
-                        val data = it.body?.data
-                        name = data?.name
-                        email = data?.email
-                        phoneNumber = data?.phoneNumber
-                        gender = data?.gender
-                        birthdate = data?.birthdate
-                        bodyHeight = data?.bodyHeight
-                        bodyWeight = data?.bodyWeight
-                        bloodType = data?.bloodType
-                        address = data?.address
-                        photo = data?.photo
+        val genderArray = arrayOf("Laki-laki", "Perempuan")
+        val bloodArray = arrayOf("A", "B", "AB", "O")
 
-                        binding.apply {
-                            if (data?.photo != null || data?.photo != "") {
-                                val ctx = activity
-                                if (ctx != null) {
-                                    Glide.with(ctx)
-                                        .load(Constant.USER_PHOTO_BASE_URL + photo)
-                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                        .skipMemoryCache(true)
-                                        .placeholder(R.drawable.profile_pic_placeholder)
-                                        .centerCrop()
-                                        .into(ivProfile)
-                                }
-                            }
-
-                            tvName.text = name
-                            tvEmail.text = email
-                            tvPhoneNumber.text = phoneNumber.toString()
-                            tvGender.text = genderArray[gender!!]
-                            tvBirthday.text = birthdate?.let { date -> stringDateFormatter(date) }
-                            tvHeight.text = "${bodyHeight.toString()} cm"
-                            tvWeight.text = "${bodyWeight.toString()} kg"
-                            tvBlood.text = bloodArray[bloodType!!]
-                            tvAddress.text = address
-                        }
-
-                        isLoading(false)
-                    }
-
-                    StatusResponse.ERROR -> {
-                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                        isLoading(false)
-                        return@observe
-                    }
-
-                    else -> {
-                        isLoading(false)
-                        return@observe
-                    }
+        binding.apply {
+            if (phone != null || phone != "") {
+                val ctx = activity
+                if (ctx != null) {
+                    Glide.with(ctx)
+                        .load(Constant.USER_PHOTO_BASE_URL + photo)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .placeholder(R.drawable.profile_pic_placeholder)
+                        .centerCrop()
+                        .into(ivProfile)
                 }
             }
+
+            tvName.text = name
+            tvEmail.text = email
+            tvPhoneNumber.text = phone.toString()
+            tvGender.text = genderArray[gender!!]
+            tvBirthday.text = birthdate?.let { date -> stringDateFormatter(date) }
+            tvHeight.text = "${height.toString()} cm"
+            tvWeight.text = "${weight.toString()} kg"
+            tvBlood.text = bloodArray[blood!!]
+            tvAddress.text = address
         }
+        isLoading(false)
     }
 
     private fun removeToken() {
@@ -165,16 +128,10 @@ class ProfileFragment : Fragment() {
             this.putExtra(Constant.TOKEN, getBearerToken())
 
             /* user data */
-            this.putExtra(Constant.USER_NAME, name)
-            this.putExtra(Constant.USER_EMAIL, email)
-            this.putExtra(Constant.USER_GENDER, gender)
-            this.putExtra(Constant.USER_BIRTHDATE, birthdate)
-            this.putExtra(Constant.USER_HEIGHT, bodyHeight)
-            this.putExtra(Constant.USER_WEIGHT, bodyWeight)
-            this.putExtra(Constant.USER_BLOOD, bloodType)
-            this.putExtra(Constant.USER_PHONE, phoneNumber)
-            this.putExtra(Constant.USER_ADDRESS, address)
-            this.putExtra(Constant.USER_PHOTO, photo)
+            val bundle = arguments
+            if (bundle != null) {
+                this.putExtras(bundle)
+            }
 
             startActivity(this)
         }

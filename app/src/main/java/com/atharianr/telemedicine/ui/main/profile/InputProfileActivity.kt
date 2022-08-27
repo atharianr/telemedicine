@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputType
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
@@ -138,6 +139,11 @@ class InputProfileActivity : AppCompatActivity() {
                     base64String
                 )
 
+                Log.d(
+                    InputProfileActivity::class.simpleName,
+                    "inputProfileRequest -> $inputProfileRequest"
+                )
+
                 isLoading(true)
                 checkValidation(token, inputProfileRequest, fromAuth)
             }
@@ -237,6 +243,8 @@ class InputProfileActivity : AppCompatActivity() {
 
             val photo = intent.getStringExtra(Constant.USER_PHOTO)
             if (photo != null && photo != "") {
+                base64String = Constant.THERE_IS_IMAGE
+
                 Glide.with(this@InputProfileActivity)
                     .load(Constant.USER_PHOTO_BASE_URL + photo)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
