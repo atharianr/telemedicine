@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.response.DoctorData
 import com.atharianr.telemedicine.databinding.ItemsListDoctorBinding
 import com.atharianr.telemedicine.ui.main.consultation.doctor.profile.DoctorProfileActivity
@@ -39,6 +40,7 @@ class DoctorAdapter : RecyclerView.Adapter<DoctorAdapter.ViewHolder>() {
                 if (data.photo != null || data.photo != "") {
                     Glide.with(itemView)
                         .load(data.photo)
+                        .placeholder(R.drawable.profile_pic_placeholder)
                         .centerCrop()
                         .into(ivDoctor)
                 }

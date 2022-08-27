@@ -58,6 +58,7 @@ class DoctorProfileActivity : AppCompatActivity() {
                                 if (data.photo != null || data.photo != "") {
                                     Glide.with(this@DoctorProfileActivity)
                                         .load(data.photo)
+                                        .placeholder(R.drawable.profile_pic_placeholder)
                                         .centerCrop()
                                         .into(ivProfile)
                                 }

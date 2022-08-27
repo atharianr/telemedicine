@@ -53,6 +53,7 @@ class ArticleDetailActivity : AppCompatActivity() {
                                 if (data.imageUrl != null || data.imageUrl != "") {
                                     Glide.with(this@ArticleDetailActivity)
                                         .load(data.imageUrl)
+                                        .placeholder(R.drawable.image_placeholder)
                                         .centerCrop()
                                         .into(ivDisease)
                                 }

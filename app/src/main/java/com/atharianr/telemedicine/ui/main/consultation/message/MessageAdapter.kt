@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.local.entity.MessageEntity
 import com.atharianr.telemedicine.databinding.ItemsListMessageBinding
 import com.atharianr.telemedicine.ui.main.consultation.message.chatroom.ChatActivity
@@ -39,6 +40,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
             binding.apply {
                 Glide.with(itemView)
                     .load(data.profilePic)
+                    .placeholder(R.drawable.profile_pic_placeholder)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .centerCrop()
                     .into(ivDoctor)

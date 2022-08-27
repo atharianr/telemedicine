@@ -76,7 +76,6 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             binding.apply {
                 Glide.with(itemView)
                     .load(image)
-                    .transition(DrawableTransitionOptions.withCrossFade())
                     .centerInside()
                     .into(ivHome)
 
