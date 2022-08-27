@@ -207,10 +207,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveToken(token: String) {
+        val bearerToken = "Bearer $token"
         val sharedPref =
             requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
                 ?: return
-        sharedPref.edit().putString(Constant.TOKEN, token).apply()
+        sharedPref.edit().putString(Constant.TOKEN, bearerToken).apply()
     }
 
     private fun intentToInputProfile(token: String, name: String?) {

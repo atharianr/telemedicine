@@ -1,7 +1,6 @@
 package com.atharianr.telemedicine.ui.main.home
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,9 +37,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref =
-            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
-        val token = sharedPref.getString(Constant.TOKEN, null)
+        val token = getBearerToken()
 
         if (activity != null) {
             val window = requireActivity().window
@@ -97,21 +94,28 @@ class HomeFragment : Fragment() {
 //    }
 
     private fun getUserDetail(token: String?) {
-        val bearerToken = "Bearer $token"
-        homeViewModel.getUserDetail(bearerToken).observe(requireActivity()) {
-            when (it.status) {
-                StatusResponse.SUCCESS -> {
-                    val name = it.body?.data?.name
-                    binding.tvGreetings.text = "Halo, $name"
-                }
+        if (token != null) {
+            homeViewModel.getUserDetail(token).observe(requireActivity()) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        val name = it.body?.data?.name
+                        binding.tvGreetings.text = "Halo, $name"
+                    }
 
-                StatusResponse.ERROR -> {
-                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                    return@observe
-                }
+                    StatusResponse.ERROR -> {
+                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                        return@observe
+                    }
 
-                else -> return@observe
+                    else -> return@observe
+                }
             }
         }
+    }
+
+    private fun getBearerToken(): String? {
+        val sharedPref =
+            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.TOKEN, "")
     }
 }

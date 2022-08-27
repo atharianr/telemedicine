@@ -68,13 +68,13 @@ class ProfileFragment : Fragment() {
                 }
             }
 
-            getUserDetail(getToken())
+            getUserDetail(getBearerToken())
         }
     }
 
     override fun onResume() {
         super.onResume()
-        getUserDetail(getToken())
+        getUserDetail(getBearerToken())
     }
 
 //    override fun onDestroy() {
@@ -84,59 +84,60 @@ class ProfileFragment : Fragment() {
 
     private fun getUserDetail(token: String?) {
         isLoading(true)
-        val bearerToken = "Bearer $token"
-        profileViewModel.getUserDetail(bearerToken).observe(requireActivity()) {
-            when (it.status) {
-                StatusResponse.SUCCESS -> {
-                    val genderArray = arrayOf("Laki-laki", "Perempuan")
-                    val bloodArray = arrayOf("A", "B", "AB", "O")
+        if (token != null) {
+            profileViewModel.getUserDetail(token).observe(requireActivity()) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        val genderArray = arrayOf("Laki-laki", "Perempuan")
+                        val bloodArray = arrayOf("A", "B", "AB", "O")
 
-                    val data = it.body?.data
-                    name = data?.name
-                    email = data?.email
-                    phoneNumber = data?.phoneNumber
-                    gender = data?.gender
-                    birthdate = data?.birthdate
-                    bodyHeight = data?.bodyHeight
-                    bodyWeight = data?.bodyWeight
-                    bloodType = data?.bloodType
-                    address = data?.address
-                    photo = data?.photo
+                        val data = it.body?.data
+                        name = data?.name
+                        email = data?.email
+                        phoneNumber = data?.phoneNumber
+                        gender = data?.gender
+                        birthdate = data?.birthdate
+                        bodyHeight = data?.bodyHeight
+                        bodyWeight = data?.bodyWeight
+                        bloodType = data?.bloodType
+                        address = data?.address
+                        photo = data?.photo
 
-                    binding.apply {
-                        if (data?.photo != null || data?.photo != "") {
-                            Glide.with(requireActivity())
-                                .load(Constant.USER_PHOTO_BASE_URL + photo)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .placeholder(R.drawable.profile_pic_placeholder)
-                                .centerCrop()
-                                .into(ivProfile)
+                        binding.apply {
+                            if (data?.photo != null || data?.photo != "") {
+                                Glide.with(requireActivity())
+                                    .load(Constant.USER_PHOTO_BASE_URL + photo)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .placeholder(R.drawable.profile_pic_placeholder)
+                                    .centerCrop()
+                                    .into(ivProfile)
+                            }
+
+                            tvName.text = name
+                            tvEmail.text = email
+                            tvPhoneNumber.text = phoneNumber.toString()
+                            tvGender.text = genderArray[gender!!]
+                            tvBirthday.text = birthdate?.let { date -> stringDateFormatter(date) }
+                            tvHeight.text = "${bodyHeight.toString()} cm"
+                            tvWeight.text = "${bodyWeight.toString()} kg"
+                            tvBlood.text = bloodArray[bloodType!!]
+                            tvAddress.text = address
                         }
 
-                        tvName.text = name
-                        tvEmail.text = email
-                        tvPhoneNumber.text = phoneNumber.toString()
-                        tvGender.text = genderArray[gender!!]
-                        tvBirthday.text = birthdate?.let { date -> stringDateFormatter(date) }
-                        tvHeight.text = "${bodyHeight.toString()} cm"
-                        tvWeight.text = "${bodyWeight.toString()} kg"
-                        tvBlood.text = bloodArray[bloodType!!]
-                        tvAddress.text = address
+                        isLoading(false)
                     }
 
-                    isLoading(false)
-                }
+                    StatusResponse.ERROR -> {
+                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                        isLoading(false)
+                        return@observe
+                    }
 
-                StatusResponse.ERROR -> {
-                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                    isLoading(false)
-                    return@observe
-                }
-
-                else -> {
-                    isLoading(false)
-                    return@observe
+                    else -> {
+                        isLoading(false)
+                        return@observe
+                    }
                 }
             }
         }
@@ -158,7 +159,7 @@ class ProfileFragment : Fragment() {
     private fun intentToInputProfile() {
         with(Intent(requireActivity(), InputProfileActivity::class.java)) {
             this.putExtra(Constant.FROM_AUTH, false)
-            this.putExtra(Constant.TOKEN, getToken())
+            this.putExtra(Constant.TOKEN, getBearerToken())
 
             /* user data */
             this.putExtra(Constant.USER_NAME, name)
@@ -188,7 +189,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun getToken(): String? {
+    private fun getBearerToken(): String? {
         val sharedPref =
             requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
         return sharedPref.getString(Constant.TOKEN, "")

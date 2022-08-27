@@ -1,13 +1,13 @@
 package com.atharianr.telemedicine.ui.main.consultation.doctor
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +17,7 @@ import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.DialogFilterBinding
 import com.atharianr.telemedicine.databinding.FragmentDoctorBinding
 import com.atharianr.telemedicine.ui.main.article.ArticleFragment
+import com.atharianr.telemedicine.utils.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DoctorFragment : Fragment() {
@@ -70,7 +71,7 @@ class DoctorFragment : Fragment() {
                 }
             }
 
-            getAllDoctors()
+            getAllDoctors(getBearerToken())
             setupSearch()
             setupFilter()
         }
@@ -81,56 +82,58 @@ class DoctorFragment : Fragment() {
         _binding = null
     }
 
-    private fun getAllDoctors() {
+    private fun getAllDoctors(token: String?) {
         isLoading(loading = true, empty = false)
-        doctorViewModel.getAllDoctors().observe(viewLifecycleOwner) {
-            when (it.status) {
-                StatusResponse.SUCCESS -> {
-                    val data = it.body?.data
-                    if (data != null) {
-                        initRecyclerView(data)
-                        isLoading(loading = false, empty = false)
+        if (token != null) {
+            doctorViewModel.getAllDoctors(token).observe(viewLifecycleOwner) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        val data = it.body?.data
+                        if (data != null) {
+                            initRecyclerView(data)
+                            isLoading(loading = false, empty = false)
+                        }
                     }
-                }
 
-                StatusResponse.ERROR -> {
-                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                    isLoading(loading = false, empty = true)
-                    return@observe
-                }
+                    StatusResponse.ERROR -> {
+                        isLoading(loading = false, empty = true)
+                        return@observe
+                    }
 
-                else -> {
-                    isLoading(loading = false, empty = true)
-                    return@observe
+                    else -> {
+                        isLoading(loading = false, empty = true)
+                        return@observe
+                    }
                 }
             }
         }
     }
 
-    private fun getSearchArticles(keyword: String, filter: String = "") {
+    private fun getSearchArticles(token: String?, keyword: String, filter: String = "") {
         isLoading(loading = true, empty = false)
-        doctorViewModel.getSearchDoctors(keyword, filter).observe(viewLifecycleOwner) {
-            when (it.status) {
-                StatusResponse.SUCCESS -> {
-                    val data = it.body?.data
-                    if (data != null) {
-                        initRecyclerView(data)
-                        isLoading(loading = false, empty = false)
-                    } else {
-                        binding.tvEmptyDoctor.text = "Pencarian '$keyword' tidak ditemukan."
-                        isLoading(loading = false, empty = true)
+        if (token != null) {
+            doctorViewModel.getSearchDoctors(token, keyword, filter).observe(viewLifecycleOwner) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        val data = it.body?.data
+                        if (data != null) {
+                            initRecyclerView(data)
+                            isLoading(loading = false, empty = false)
+                        } else {
+                            binding.tvEmptyDoctor.text = "Pencarian '$keyword' tidak ditemukan."
+                            isLoading(loading = false, empty = true)
+                        }
                     }
-                }
 
-                StatusResponse.ERROR -> {
-                    Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                    isLoading(loading = false, empty = true)
-                    return@observe
-                }
+                    StatusResponse.ERROR -> {
+                        isLoading(loading = false, empty = true)
+                        return@observe
+                    }
 
-                else -> {
-                    isLoading(loading = false, empty = true)
-                    return@observe
+                    else -> {
+                        isLoading(loading = false, empty = true)
+                        return@observe
+                    }
                 }
             }
         }
@@ -142,7 +145,7 @@ class DoctorFragment : Fragment() {
                 if (query != null) {
                     searchKeyword = query
                     dialogBinding.lvFilter.clearChoices()
-                    getSearchArticles(query)
+                    getSearchArticles(getBearerToken(), query)
                 }
                 return true
             }
@@ -151,7 +154,7 @@ class DoctorFragment : Fragment() {
                 if (newText != null) {
                     searchKeyword = newText
                     dialogBinding.lvFilter.clearChoices()
-                    getSearchArticles(newText)
+                    getSearchArticles(getBearerToken(), newText)
                 }
                 return true
             }
@@ -191,13 +194,13 @@ class DoctorFragment : Fragment() {
             }
             filter = filter.dropLast(1)
             Log.d(DoctorFragment::class.simpleName, "filter -> $filter")
-            getSearchArticles(searchKeyword, filter)
+            getSearchArticles(getBearerToken(), searchKeyword, filter)
         }
     }
 
     private fun clearFilter() {
         dialogBinding.lvFilter.clearChoices()
-        getSearchArticles(searchKeyword)
+        getSearchArticles(getBearerToken(), searchKeyword)
     }
 
     private fun initRecyclerView(listDoctor: List<DoctorData>) {
@@ -229,5 +232,11 @@ class DoctorFragment : Fragment() {
                 progressBar.visibility = View.GONE
             }
         }
+    }
+
+    private fun getBearerToken(): String? {
+        val sharedPref =
+            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.TOKEN, "")
     }
 }

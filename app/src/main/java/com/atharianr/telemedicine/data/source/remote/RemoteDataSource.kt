@@ -191,10 +191,10 @@ class RemoteDataSource(private val apiService: ApiService) {
         return resultResponse
     }
 
-    fun getAllDoctors(): LiveData<ApiResponse<DoctorResponse>> {
+    fun getAllDoctors(token: String): LiveData<ApiResponse<DoctorResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<DoctorResponse>>()
 
-        apiService.getAllDoctors().enqueue(object : Callback<DoctorResponse> {
+        apiService.getAllDoctors(token).enqueue(object : Callback<DoctorResponse> {
             override fun onResponse(
                 call: Call<DoctorResponse>,
                 response: Response<DoctorResponse>
@@ -227,82 +227,91 @@ class RemoteDataSource(private val apiService: ApiService) {
         return resultResponse
     }
 
-    fun getSearchDoctors(keyword: String, filter: String): LiveData<ApiResponse<DoctorResponse>> {
+    fun getSearchDoctors(
+        token: String,
+        keyword: String,
+        filter: String
+    ): LiveData<ApiResponse<DoctorResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<DoctorResponse>>()
 
-        apiService.getSearchDoctors(keyword, filter).enqueue(object : Callback<DoctorResponse> {
-            override fun onResponse(
-                call: Call<DoctorResponse>,
-                response: Response<DoctorResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d(TAG, "Search Doctors Fetched.")
-                    resultResponse.postValue(ApiResponse.success(response.body()))
-                } else {
-                    try {
-                        val errorBody = response.errorBody()
-                        if (errorBody != null) {
-                            val jObjError = JSONObject(errorBody.string())
-                            Log.d(TAG, jObjError.getString("message"))
-                            resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+        apiService.getSearchDoctors(token, keyword, filter)
+            .enqueue(object : Callback<DoctorResponse> {
+                override fun onResponse(
+                    call: Call<DoctorResponse>,
+                    response: Response<DoctorResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d(TAG, "Search Doctors Fetched.")
+                        resultResponse.postValue(ApiResponse.success(response.body()))
+                    } else {
+                        try {
+                            val errorBody = response.errorBody()
+                            if (errorBody != null) {
+                                val jObjError = JSONObject(errorBody.string())
+                                Log.d(TAG, jObjError.getString("message"))
+                                resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "${e.message}")
+                            resultResponse.postValue(ApiResponse.error(e.message))
                         }
-                    } catch (e: Exception) {
-                        Log.d(TAG, "${e.message}")
-                        resultResponse.postValue(ApiResponse.error(e.message))
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<DoctorResponse>, t: Throwable) {
-                Log.d(TAG, t.message.toString())
-                resultResponse.postValue(ApiResponse.error(t.message.toString()))
-            }
+                override fun onFailure(call: Call<DoctorResponse>, t: Throwable) {
+                    Log.d(TAG, t.message.toString())
+                    resultResponse.postValue(ApiResponse.error(t.message.toString()))
+                }
 
-        })
+            })
 
         return resultResponse
     }
 
-    fun getDoctorDetail(doctorId: String): LiveData<ApiResponse<DoctorDetailResponse>> {
+    fun getDoctorDetail(
+        token: String,
+        doctorId: String
+    ): LiveData<ApiResponse<DoctorDetailResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<DoctorDetailResponse>>()
 
-        apiService.getDoctorDetail(doctorId).enqueue(object : Callback<DoctorDetailResponse> {
-            override fun onResponse(
-                call: Call<DoctorDetailResponse>,
-                response: Response<DoctorDetailResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d(TAG, "All Doctors Fetched.")
-                    resultResponse.postValue(ApiResponse.success(response.body()))
-                } else {
-                    try {
-                        val errorBody = response.errorBody()
-                        if (errorBody != null) {
-                            val jObjError = JSONObject(errorBody.string())
-                            Log.d(TAG, jObjError.getString("message"))
-                            resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+        apiService.getDoctorDetail(token, doctorId)
+            .enqueue(object : Callback<DoctorDetailResponse> {
+                override fun onResponse(
+                    call: Call<DoctorDetailResponse>,
+                    response: Response<DoctorDetailResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d(TAG, "All Doctors Fetched.")
+                        resultResponse.postValue(ApiResponse.success(response.body()))
+                    } else {
+                        try {
+                            val errorBody = response.errorBody()
+                            if (errorBody != null) {
+                                val jObjError = JSONObject(errorBody.string())
+                                Log.d(TAG, jObjError.getString("message"))
+                                resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "${e.message}")
+                            resultResponse.postValue(ApiResponse.error(e.message))
                         }
-                    } catch (e: Exception) {
-                        Log.d(TAG, "${e.message}")
-                        resultResponse.postValue(ApiResponse.error(e.message))
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<DoctorDetailResponse>, t: Throwable) {
-                Log.d(TAG, t.message.toString())
-                resultResponse.postValue(ApiResponse.error(t.message.toString()))
-            }
+                override fun onFailure(call: Call<DoctorDetailResponse>, t: Throwable) {
+                    Log.d(TAG, t.message.toString())
+                    resultResponse.postValue(ApiResponse.error(t.message.toString()))
+                }
 
-        })
+            })
 
         return resultResponse
     }
 
-    fun getAllArticle(): LiveData<ApiResponse<ArticleResponse>> {
+    fun getAllArticle(token: String): LiveData<ApiResponse<ArticleResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<ArticleResponse>>()
 
-        apiService.getAllArticles().enqueue(object : Callback<ArticleResponse> {
+        apiService.getAllArticles(token).enqueue(object : Callback<ArticleResponse> {
             override fun onResponse(
                 call: Call<ArticleResponse>,
                 response: Response<ArticleResponse>
@@ -335,10 +344,10 @@ class RemoteDataSource(private val apiService: ApiService) {
         return resultResponse
     }
 
-    fun getSearchArticles(keyword: String): LiveData<ApiResponse<ArticleResponse>> {
+    fun getSearchArticles(token: String, keyword: String): LiveData<ApiResponse<ArticleResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<ArticleResponse>>()
 
-        apiService.getSearchArticles(keyword).enqueue(object : Callback<ArticleResponse> {
+        apiService.getSearchArticles(token, keyword).enqueue(object : Callback<ArticleResponse> {
             override fun onResponse(
                 call: Call<ArticleResponse>,
                 response: Response<ArticleResponse>
@@ -371,38 +380,42 @@ class RemoteDataSource(private val apiService: ApiService) {
         return resultResponse
     }
 
-    fun getArticleDetail(articleId: String): LiveData<ApiResponse<ArticleDetailResponse>> {
+    fun getArticleDetail(
+        token: String,
+        articleId: String
+    ): LiveData<ApiResponse<ArticleDetailResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<ArticleDetailResponse>>()
 
-        apiService.getArticleDetail(articleId).enqueue(object : Callback<ArticleDetailResponse> {
-            override fun onResponse(
-                call: Call<ArticleDetailResponse>,
-                response: Response<ArticleDetailResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d(TAG, "All Doctors Fetched.")
-                    resultResponse.postValue(ApiResponse.success(response.body()))
-                } else {
-                    try {
-                        val errorBody = response.errorBody()
-                        if (errorBody != null) {
-                            val jObjError = JSONObject(errorBody.string())
-                            Log.d(TAG, jObjError.getString("message"))
-                            resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+        apiService.getArticleDetail(token, articleId)
+            .enqueue(object : Callback<ArticleDetailResponse> {
+                override fun onResponse(
+                    call: Call<ArticleDetailResponse>,
+                    response: Response<ArticleDetailResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d(TAG, "All Doctors Fetched.")
+                        resultResponse.postValue(ApiResponse.success(response.body()))
+                    } else {
+                        try {
+                            val errorBody = response.errorBody()
+                            if (errorBody != null) {
+                                val jObjError = JSONObject(errorBody.string())
+                                Log.d(TAG, jObjError.getString("message"))
+                                resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "${e.message}")
+                            resultResponse.postValue(ApiResponse.error(e.message))
                         }
-                    } catch (e: Exception) {
-                        Log.d(TAG, "${e.message}")
-                        resultResponse.postValue(ApiResponse.error(e.message))
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<ArticleDetailResponse>, t: Throwable) {
-                Log.d(TAG, t.message.toString())
-                resultResponse.postValue(ApiResponse.error(t.message.toString()))
-            }
+                override fun onFailure(call: Call<ArticleDetailResponse>, t: Throwable) {
+                    Log.d(TAG, t.message.toString())
+                    resultResponse.postValue(ApiResponse.error(t.message.toString()))
+                }
 
-        })
+            })
 
         return resultResponse
     }

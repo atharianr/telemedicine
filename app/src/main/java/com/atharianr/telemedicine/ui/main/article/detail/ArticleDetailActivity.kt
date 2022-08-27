@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.ui.main.article.detail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
@@ -32,7 +33,7 @@ class ArticleDetailActivity : AppCompatActivity() {
         val title = intent.getStringExtra(Constant.ARTICLE_TITLE)
         binding.tvTitle.text = title
 
-        getArticleDetail(articleId)
+        getArticleDetail(getBearerToken(), articleId)
     }
 
     override fun onDestroy() {
@@ -40,43 +41,45 @@ class ArticleDetailActivity : AppCompatActivity() {
         _binding = null
     }
 
-    private fun getArticleDetail(articleId: String) {
+    private fun getArticleDetail(token: String?, articleId: String) {
         isLoading(loading = true)
-        articleViewModel.getArticleDetail(articleId).observe(this) {
-            when (it.status) {
-                StatusResponse.SUCCESS -> {
-                    val data = it.body?.data
-                    if (data != null) {
-                        binding.apply {
-                            if (data.imageUrl != null || data.imageUrl != "") {
-                                Glide.with(this@ArticleDetailActivity)
-                                    .load(data.imageUrl)
-                                    .centerCrop()
-                                    .into(ivDisease)
+        if (token != null) {
+            articleViewModel.getArticleDetail(token, articleId).observe(this) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        val data = it.body?.data
+                        if (data != null) {
+                            binding.apply {
+                                if (data.imageUrl != null || data.imageUrl != "") {
+                                    Glide.with(this@ArticleDetailActivity)
+                                        .load(data.imageUrl)
+                                        .centerCrop()
+                                        .into(ivDisease)
+                                }
+
+                                setupRadioGroup(
+                                    data.definition,
+                                    data.symptom,
+                                    data.complication,
+                                    data.cause,
+                                    data.diagnosis,
+                                    data.treatment
+                                )
                             }
-
-                            setupRadioGroup(
-                                data.definition,
-                                data.symptom,
-                                data.complication,
-                                data.cause,
-                                data.diagnosis,
-                                data.treatment
-                            )
+                            isLoading(loading = false)
                         }
-                        isLoading(loading = false)
                     }
-                }
 
-                StatusResponse.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                    isLoading(loading = false)
-                    return@observe
-                }
+                    StatusResponse.ERROR -> {
+                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                        isLoading(loading = false)
+                        return@observe
+                    }
 
-                else -> {
-                    isLoading(loading = false)
-                    return@observe
+                    else -> {
+                        isLoading(loading = false)
+                        return@observe
+                    }
                 }
             }
         }
@@ -182,5 +185,10 @@ class ArticleDetailActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
             }
         }
+    }
+
+    private fun getBearerToken(): String? {
+        val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.TOKEN, "")
     }
 }

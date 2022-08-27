@@ -33,28 +33,38 @@ interface ApiService {
 
     @Headers("Accept: application/json")
     @GET("doctor")
-    fun getAllDoctors(): Call<DoctorResponse>
+    fun getAllDoctors(@Header("Authorization") token: String): Call<DoctorResponse>
 
     @Headers("Accept: application/json")
     @GET("doctor/search")
     fun getSearchDoctors(
+        @Header("Authorization") token: String,
         @Query("keyword") keyword: String,
         @Query("filter") filter: String
     ): Call<DoctorResponse>
 
     @Headers("Accept: application/json")
     @GET("doctor/{doctorId}")
-    fun getDoctorDetail(@Path("doctorId") doctorId: String): Call<DoctorDetailResponse>
+    fun getDoctorDetail(
+        @Header("Authorization") token: String,
+        @Path("doctorId") doctorId: String
+    ): Call<DoctorDetailResponse>
 
     @Headers("Accept: application/json")
     @GET("article")
-    fun getAllArticles(): Call<ArticleResponse>
+    fun getAllArticles(@Header("Authorization") token: String): Call<ArticleResponse>
 
     @Headers("Accept: application/json")
     @GET("article/search")
-    fun getSearchArticles(@Query("keyword") keyword: String): Call<ArticleResponse>
+    fun getSearchArticles(
+        @Header("Authorization") token: String,
+        @Query("keyword") keyword: String
+    ): Call<ArticleResponse>
 
     @Headers("Accept: application/json")
     @GET("article/{articleId}")
-    fun getArticleDetail(@Path("articleId") articleId: String): Call<ArticleDetailResponse>
+    fun getArticleDetail(
+        @Header("Authorization") token: String,
+        @Path("articleId") articleId: String
+    ): Call<ArticleDetailResponse>
 }

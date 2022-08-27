@@ -437,29 +437,30 @@ class InputProfileActivity : AppCompatActivity() {
         inputProfileRequest: InputProfileRequest,
         fromAuth: Boolean
     ) {
-        val bearerToken = "Bearer $token"
-        inputProfileViewModel.inputProfile(bearerToken, inputProfileRequest).observe(this) {
-            when (it.status) {
-                StatusResponse.SUCCESS -> {
-                    if (fromAuth) {
-                        saveToken(token)
-                        intentToMain()
-                    } else {
-                        onBackPressed()
+        if (token != null) {
+            inputProfileViewModel.inputProfile(token, inputProfileRequest).observe(this) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        if (fromAuth) {
+                            saveToken(token)
+                            intentToMain()
+                        } else {
+                            onBackPressed()
+                        }
+
+                        isLoading(false)
                     }
 
-                    isLoading(false)
-                }
+                    StatusResponse.ERROR -> {
+                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                        isLoading(false)
 
-                StatusResponse.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                    isLoading(false)
+                        return@observe
+                    }
 
-                    return@observe
-                }
-
-                else -> {
-                    isLoading(false)
+                    else -> {
+                        isLoading(false)
+                    }
                 }
             }
         }
@@ -480,8 +481,9 @@ class InputProfileActivity : AppCompatActivity() {
     }
 
     private fun saveToken(token: String?) {
+        val bearerToken = "Bearer $token"
         val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE) ?: return
-        sharedPref.edit().putString(Constant.TOKEN, token).apply()
+        sharedPref.edit().putString(Constant.TOKEN, bearerToken).apply()
     }
 
     private fun intentToMain() {

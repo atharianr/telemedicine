@@ -8,10 +8,19 @@ import com.atharianr.telemedicine.data.source.remote.response.DoctorResponse
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 
 class DoctorViewModel(private val remoteDataSource: RemoteDataSource) : ViewModel() {
-    fun getAllDoctors(): LiveData<ApiResponse<DoctorResponse>> = remoteDataSource.getAllDoctors()
-    fun getSearchDoctors(keyword: String, filter: String): LiveData<ApiResponse<DoctorResponse>> =
-        remoteDataSource.getSearchDoctors(keyword, filter)
+    fun getAllDoctors(token: String): LiveData<ApiResponse<DoctorResponse>> =
+        remoteDataSource.getAllDoctors(token)
 
-    fun getDoctorDetail(doctorId: String): LiveData<ApiResponse<DoctorDetailResponse>> =
-        remoteDataSource.getDoctorDetail(doctorId)
+    fun getSearchDoctors(
+        token: String,
+        keyword: String,
+        filter: String
+    ): LiveData<ApiResponse<DoctorResponse>> =
+        remoteDataSource.getSearchDoctors(token, keyword, filter)
+
+    fun getDoctorDetail(
+        token: String,
+        doctorId: String
+    ): LiveData<ApiResponse<DoctorDetailResponse>> =
+        remoteDataSource.getDoctorDetail(token, doctorId)
 }

@@ -1,5 +1,6 @@
 package com.atharianr.telemedicine.ui.main.consultation.doctor.profile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -37,7 +38,7 @@ class DoctorProfileActivity : AppCompatActivity() {
             }
         }
 
-        getDoctorDetail(doctorId)
+        getDoctorDetail(getBearerToken(), doctorId)
     }
 
     override fun onDestroy() {
@@ -45,40 +46,42 @@ class DoctorProfileActivity : AppCompatActivity() {
         _binding = null
     }
 
-    private fun getDoctorDetail(doctorId: String) {
+    private fun getDoctorDetail(token: String?, doctorId: String) {
         isLoading(loading = true)
-        doctorViewModel.getDoctorDetail(doctorId).observe(this) {
-            when (it.status) {
-                StatusResponse.SUCCESS -> {
-                    val data = it.body?.data
-                    if (data != null) {
-                        binding.apply {
-                            if (data.photo != null || data.photo != "") {
-                                Glide.with(this@DoctorProfileActivity)
-                                    .load(data.photo)
-                                    .centerCrop()
-                                    .into(ivProfile)
+        if (token != null) {
+            doctorViewModel.getDoctorDetail(token, doctorId).observe(this) {
+                when (it.status) {
+                    StatusResponse.SUCCESS -> {
+                        val data = it.body?.data
+                        if (data != null) {
+                            binding.apply {
+                                if (data.photo != null || data.photo != "") {
+                                    Glide.with(this@DoctorProfileActivity)
+                                        .load(data.photo)
+                                        .centerCrop()
+                                        .into(ivProfile)
+                                }
+
+                                tvName.text = data.name
+                                tvSpeciality.text = data.specialist
+                                tvEducation.text = data.education
+                                tvEducationYear.text = data.educationYear
+                                tvDoctorPhone.text = data.phoneNumber
                             }
-
-                            tvName.text = data.name
-                            tvSpeciality.text = data.specialist
-                            tvEducation.text = data.education
-                            tvEducationYear.text = data.educationYear
-                            tvDoctorPhone.text = data.phoneNumber
+                            isLoading(loading = false)
                         }
-                        isLoading(loading = false)
                     }
-                }
 
-                StatusResponse.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                    isLoading(loading = false)
-                    return@observe
-                }
+                    StatusResponse.ERROR -> {
+                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                        isLoading(loading = false)
+                        return@observe
+                    }
 
-                else -> {
-                    isLoading(loading = false)
-                    return@observe
+                    else -> {
+                        isLoading(loading = false)
+                        return@observe
+                    }
                 }
             }
         }
@@ -94,5 +97,10 @@ class DoctorProfileActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
             }
         }
+    }
+
+    private fun getBearerToken(): String? {
+        val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.TOKEN, "")
     }
 }

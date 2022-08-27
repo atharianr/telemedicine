@@ -8,10 +8,15 @@ import com.atharianr.telemedicine.data.source.remote.response.ArticleResponse
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 
 class ArticleViewModel(private val remoteDataSource: RemoteDataSource) : ViewModel() {
-    fun getAllArticles(): LiveData<ApiResponse<ArticleResponse>> = remoteDataSource.getAllArticle()
-    fun getSearchArticles(keyword: String): LiveData<ApiResponse<ArticleResponse>> =
-        remoteDataSource.getSearchArticles(keyword)
+    fun getAllArticles(token: String): LiveData<ApiResponse<ArticleResponse>> =
+        remoteDataSource.getAllArticle(token)
 
-    fun getArticleDetail(articleId: String): LiveData<ApiResponse<ArticleDetailResponse>> =
-        remoteDataSource.getArticleDetail(articleId)
+    fun getSearchArticles(token: String, keyword: String): LiveData<ApiResponse<ArticleResponse>> =
+        remoteDataSource.getSearchArticles(token, keyword)
+
+    fun getArticleDetail(
+        token: String,
+        articleId: String
+    ): LiveData<ApiResponse<ArticleDetailResponse>> =
+        remoteDataSource.getArticleDetail(token, articleId)
 }
