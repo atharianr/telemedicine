@@ -15,6 +15,7 @@ import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.FragmentHomeBinding
 import com.atharianr.telemedicine.utils.Constant
+import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -22,8 +23,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding as FragmentHomeBinding
-
-    private val homeViewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +35,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val token = getBearerToken()
 
         if (activity != null) {
             val window = requireActivity().window
@@ -84,7 +81,7 @@ class HomeFragment : Fragment() {
                 isFocusable = false
             }
 
-            getUserDetail(token)
+            getBundle()
         }
     }
 
@@ -93,23 +90,19 @@ class HomeFragment : Fragment() {
 //        _binding = null
 //    }
 
-    private fun getUserDetail(token: String?) {
-        if (token != null) {
-            homeViewModel.getUserDetail(token).observe(requireActivity()) {
-                when (it.status) {
-                    StatusResponse.SUCCESS -> {
-                        val name = it.body?.data?.name
-                        binding.tvGreetings.text = "Halo, $name"
-                    }
+    private fun getBundle() {
+        val name = arguments?.getString(Constant.USER_NAME, "")
+        val photo = arguments?.getString(Constant.USER_PHOTO, "")
 
-                    StatusResponse.ERROR -> {
-                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                        return@observe
-                    }
-
-                    else -> return@observe
-                }
+        binding.apply {
+            if (photo != null || photo != "") {
+                Glide.with(this@HomeFragment)
+                    .load(Constant.USER_PHOTO_BASE_URL + photo)
+                    .placeholder(R.drawable.profile_pic_placeholder)
+                    .centerCrop()
+                    .into(ivProfile)
             }
+            binding.tvGreetings.text = "Halo, $name"
         }
     }
 
