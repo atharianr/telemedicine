@@ -72,12 +72,11 @@
                         <RadioButton
                             android:id="@+id/rb_definition"
                             android:layout_width="wrap_content"
-                            android:layout_height="32dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:background="@drawable/rounded_button_content_selector"
                             android:button="@null"
                             android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
                             android:text="@string/definition"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
@@ -85,7 +84,7 @@
                         <RadioButton
                             android:id="@+id/rb_symptom"
                             android:layout_width="wrap_content"
-                            android:layout_height="32dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:background="@drawable/rounded_button_content_selector"
                             android:button="@null"
@@ -98,7 +97,7 @@
                         <RadioButton
                             android:id="@+id/rb_complication"
                             android:layout_width="wrap_content"
-                            android:layout_height="32dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:background="@drawable/rounded_button_content_selector"
                             android:button="@null"
@@ -111,7 +110,7 @@
                         <RadioButton
                             android:id="@+id/rb_cause"
                             android:layout_width="wrap_content"
-                            android:layout_height="32dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:background="@drawable/rounded_button_content_selector"
                             android:button="@null"
@@ -124,7 +123,7 @@
                         <RadioButton
                             android:id="@+id/rb_diagnosis"
                             android:layout_width="wrap_content"
-                            android:layout_height="32dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:background="@drawable/rounded_button_content_selector"
                             android:button="@null"
@@ -137,7 +136,7 @@
                         <RadioButton
                             android:id="@+id/rb_treatment"
                             android:layout_width="wrap_content"
-                            android:layout_height="32dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:background="@drawable/rounded_button_content_selector"
                             android:button="@null"
