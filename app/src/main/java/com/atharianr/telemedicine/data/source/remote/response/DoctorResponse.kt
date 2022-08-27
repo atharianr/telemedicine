@@ -49,9 +49,24 @@ data class DoctorData(
     @field:SerializedName("photo")
     val photo: String? = null,
 
+    @field:SerializedName("experience")
+    val experience: List<DoctorExperience>? = null,
+
     @field:SerializedName("updated_at")
     val updatedAt: Any? = null,
 
     @field:SerializedName("created_at")
     val createdAt: Any? = null
+)
+
+data class DoctorExperience(
+
+    @field:SerializedName("location")
+    val location: String? = null,
+
+    @field:SerializedName("first_year")
+    val firstYear: String? = null,
+
+    @field:SerializedName("last_year")
+    val lastYear: String? = null
 )

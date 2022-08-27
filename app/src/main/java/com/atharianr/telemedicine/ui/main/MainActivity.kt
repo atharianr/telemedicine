@@ -2,6 +2,7 @@ package com.atharianr.telemedicine.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -51,7 +52,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        getUserDetail(getBearerToken())
+        if (integerDeque.peek() == R.id.home || integerDeque.peek() == R.id.profile) {
+            getUserDetail(getBearerToken())
+        }
     }
 
     override fun onBackPressed() {

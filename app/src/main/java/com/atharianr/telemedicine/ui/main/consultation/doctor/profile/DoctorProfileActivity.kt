@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.atharianr.telemedicine.R
+import com.atharianr.telemedicine.data.source.remote.response.DoctorExperience
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.ActivityDoctorProfileBinding
+import com.atharianr.telemedicine.ui.main.consultation.doctor.DoctorExperienceAdapter
 import com.atharianr.telemedicine.ui.main.consultation.doctor.DoctorViewModel
 import com.atharianr.telemedicine.ui.main.consultation.message.chatroom.ChatActivity
 import com.atharianr.telemedicine.utils.Constant
@@ -68,6 +71,18 @@ class DoctorProfileActivity : AppCompatActivity() {
                                 tvEducation.text = data.education
                                 tvEducationYear.text = data.educationYear
                                 tvDoctorPhone.text = data.phoneNumber
+
+                                val experience = data.experience
+                                if (experience != null) {
+                                    if (experience.isNotEmpty()) {
+                                        initRecyclerView(data.experience)
+                                        tvExperienceInfo.visibility = View.GONE
+                                        rvExperience.visibility = View.VISIBLE
+                                    } else {
+                                        tvExperienceInfo.visibility = View.VISIBLE
+                                        rvExperience.visibility = View.GONE
+                                    }
+                                }
                             }
                             isLoading(loading = false)
                         }
@@ -85,6 +100,17 @@ class DoctorProfileActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun initRecyclerView(listExperience: List<DoctorExperience>) {
+        val doctorExperienceAdapter = DoctorExperienceAdapter()
+        doctorExperienceAdapter.setData(listExperience)
+
+        binding.rvExperience.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = doctorExperienceAdapter
         }
     }
 

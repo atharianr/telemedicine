@@ -155,34 +155,33 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_education_year" />
 
             <TextView
-                android:id="@+id/tv_experience"
+                android:id="@+id/tv_experience_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:text="@string/experience"
-                android:textColor="@color/black"
+                android:text="@string/experience_not_found"
+                android:textColor="@color/grey_979797"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_experience_title" />
 
-            <TextView
-                android:id="@+id/tv_experience_year"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_experience"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:text="@string/experience"
-                android:textColor="@color/grey_979797"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_experience" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_experience_title"
+                tools:listitem="@layout/items_list_experience" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_chat"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_button_border_8"
@@ -197,7 +196,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_experience_year"
+                app:layout_constraintTop_toBottomOf="@+id/rv_experience"
                 app:layout_constraintVertical_bias="1.0"
                 tools:targetApi="m" />
         </androidx.constraintlayout.widget.ConstraintLayout>
