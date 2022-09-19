@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "326060247282",
+    "firebase_url": "https://telemedicine-id-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "telemedicine-id",
+    "storage_bucket": "telemedicine-id.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326060247282:android:81f654d35e64cb787ba86b",
+        "android_client_info": {
+          "package_name": "com.atharianr.telemedicine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326060247282-d7bc3ekflrocqte1ae28ahsi8tj7kc40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3dMFl9dKsmOtldECckrviirdjFgUnN4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326060247282-d7bc3ekflrocqte1ae28ahsi8tj7kc40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
