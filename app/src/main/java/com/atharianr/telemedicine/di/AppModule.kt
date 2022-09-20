@@ -8,10 +8,12 @@ import com.atharianr.telemedicine.ui.landing.verify.VerifyViewModel
 import com.atharianr.telemedicine.ui.main.MainViewModel
 import com.atharianr.telemedicine.ui.main.article.ArticleViewModel
 import com.atharianr.telemedicine.ui.main.consultation.doctor.DoctorViewModel
+import com.atharianr.telemedicine.ui.main.consultation.message.chatroom.ChatViewModel
 import com.atharianr.telemedicine.ui.main.home.HomeViewModel
 import com.atharianr.telemedicine.ui.main.profile.InputProfileViewModel
 import com.atharianr.telemedicine.ui.main.profile.ProfileViewModel
 import com.atharianr.telemedicine.utils.Constant
+import com.google.firebase.database.FirebaseDatabase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -37,10 +39,14 @@ val networkModule = module {
             .build()
         retrofit.create(ApiService::class.java)
     }
+
+    single {
+        FirebaseDatabase.getInstance()
+    }
 }
 
 val remoteDataSourceModule = module {
-    factory { RemoteDataSource(get()) }
+    factory { RemoteDataSource(get(), get()) }
 }
 
 val viewModelModule = module {
@@ -53,4 +59,5 @@ val viewModelModule = module {
     viewModel { DoctorViewModel(get()) }
     viewModel { ArticleViewModel(get()) }
     viewModel { MainViewModel(get()) }
+    viewModel { ChatViewModel(get()) }
 }

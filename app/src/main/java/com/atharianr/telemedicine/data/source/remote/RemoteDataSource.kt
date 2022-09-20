@@ -7,14 +7,21 @@ import com.atharianr.telemedicine.data.source.remote.network.ApiService
 import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
+import com.atharianr.telemedicine.data.source.remote.request.firebase.Chat
 import com.atharianr.telemedicine.data.source.remote.response.*
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
+import com.atharianr.telemedicine.utils.Constant
+import com.google.firebase.database.FirebaseDatabase
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
-class RemoteDataSource(private val apiService: ApiService) {
+class RemoteDataSource(
+    private val apiService: ApiService,
+    private val firebaseDatabase: FirebaseDatabase
+) {
     fun register(registerRequest: RegisterRequest): LiveData<ApiResponse<RegisterResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<RegisterResponse>>()
 
@@ -418,6 +425,27 @@ class RemoteDataSource(private val apiService: ApiService) {
             })
 
         return resultResponse
+    }
+
+    fun createChatRoom(doctorId: String, userId: String) {
+        firebaseDatabase.getReference(Constant.CHATROOM).child("$doctorId-$userId").apply {
+            child(Constant.ID_DOCTOR).setValue(doctorId)
+            child(Constant.ID_USER).setValue(userId)
+            child(Constant.CHATROOM).setValue(null)
+        }
+    }
+
+    fun sendChat(doctorId: String, userId: String, chatBody: String) {
+        firebaseDatabase.getReference(Constant.CHATROOM)
+            .child("$doctorId-$userId")
+            .child(Constant.CHAT)
+            .apply {
+                val chatId = push().key
+                chatId?.let {
+                    val message = Chat("user", chatBody, Date().toString())
+                    child(it).setValue(message)
+                }
+            }
     }
 
     companion object {

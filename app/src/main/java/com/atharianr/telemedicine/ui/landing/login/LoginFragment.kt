@@ -106,7 +106,7 @@ class LoginFragment : Fragment() {
             when (it.status) {
                 StatusResponse.SUCCESS -> {
                     if (it.body?.data?.emailVerifiedAt != null) {
-                        checkIsProfileFilled(it.body.token)
+                        checkIsProfileFilled(it.body.token, it.body.data.id)
                     } else {
                         val toVerifyFragment =
                             LoginFragmentDirections.actionLoginFragmentToVerifyFragment(
@@ -161,8 +161,8 @@ class LoginFragment : Fragment() {
         login()
     }
 
-    private fun checkIsProfileFilled(token: String?) {
-        if (token != null) {
+    private fun checkIsProfileFilled(token: String?, userId: Int?) {
+        if (token != null && userId != null) {
             val bearerToken = "Bearer $token"
             loginViewModel.getUserDetail(bearerToken).observe(requireActivity()) {
                 when (it.status) {
@@ -178,9 +178,9 @@ class LoginFragment : Fragment() {
 
                         if (phoneNumber != null || gender != null || birthdate != null || bodyHeight != null || bodyWeight != null || bloodType != null || address != null) {
                             intentToMain()
-                            saveToken(token)
+                            saveToken(token, userId)
                         } else {
-                            intentToInputProfile(token, name)
+                            intentToInputProfile(token, userId, name)
                         }
 
                         isLoading(false)
@@ -206,18 +206,20 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun saveToken(token: String) {
+    private fun saveToken(token: String, userId: Int) {
         val bearerToken = "Bearer $token"
         val sharedPref =
             requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
                 ?: return
         sharedPref.edit().putString(Constant.TOKEN, bearerToken).apply()
+        sharedPref.edit().putString(Constant.USER_ID, userId.toString()).apply()
     }
 
-    private fun intentToInputProfile(token: String, name: String?) {
+    private fun intentToInputProfile(token: String, userId: Int, name: String?) {
         with(Intent(requireActivity(), InputProfileActivity::class.java)) {
             putExtra(Constant.FROM_AUTH, true)
             putExtra(Constant.TOKEN, token)
+            putExtra(Constant.USER_ID, userId)
             putExtra(Constant.NAME, name)
             startActivity(this)
             requireActivity().finish()

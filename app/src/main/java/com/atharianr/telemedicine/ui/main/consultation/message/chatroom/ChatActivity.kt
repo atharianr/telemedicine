@@ -11,10 +11,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class ChatActivity : AppCompatActivity() {
 
+    private val chatViewModel: ChatViewModel by viewModel()
     private lateinit var firebaseDatabase: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,14 +30,24 @@ class ChatActivity : AppCompatActivity() {
 
         binding.apply {
             btnSend.setOnClickListener {
+                sendChat("2", "3", etMessage.text.toString())
                 etMessage.text = null
             }
 
             tvName.text = doctorName
         }
 
+//        createChatRoom("2", "3")
 //        postMessage("4", "1")
-        getMessage("4", "1")
+//        getMessage("4", "1")
+    }
+
+    private fun createChatRoom(doctorId: String, userId: String) {
+        chatViewModel.createChatRoom(doctorId, userId)
+    }
+
+    private fun sendChat(doctorId: String, userId: String, chatBody: String) {
+        chatViewModel.sendChat(doctorId, userId, chatBody)
     }
 
     private fun postMessage(doctorId: String, userId: String) {

@@ -58,6 +58,7 @@ class InputProfileActivity : AppCompatActivity() {
 
         val fromAuth = intent.getBooleanExtra(Constant.FROM_AUTH, true)
         val token = intent.getStringExtra(Constant.TOKEN)
+        val userId = intent.getIntExtra(Constant.USER_ID, 0)
         var name = intent.getStringExtra(Constant.NAME)
 
         binding.apply {
@@ -145,7 +146,7 @@ class InputProfileActivity : AppCompatActivity() {
                 )
 
                 isLoading(true)
-                checkValidation(token, inputProfileRequest, fromAuth)
+                checkValidation(token, userId, inputProfileRequest, fromAuth)
             }
 
             if (!fromAuth) {
@@ -359,6 +360,7 @@ class InputProfileActivity : AppCompatActivity() {
 
     private fun checkValidation(
         token: String?,
+        userId: Int,
         inputProfileRequest: InputProfileRequest,
         fromAuth: Boolean
     ) {
@@ -455,20 +457,21 @@ class InputProfileActivity : AppCompatActivity() {
             }
         }
 
-        inputProfile(token, inputProfileRequest, fromAuth)
+        inputProfile(token, userId, inputProfileRequest, fromAuth)
     }
 
     private fun inputProfile(
         token: String?,
+        userId: Int?,
         inputProfileRequest: InputProfileRequest,
         fromAuth: Boolean
     ) {
-        if (token != null) {
+        if (token != null && userId != null) {
             inputProfileViewModel.inputProfile(token, inputProfileRequest).observe(this) {
                 when (it.status) {
                     StatusResponse.SUCCESS -> {
                         if (fromAuth) {
-                            saveToken(token)
+                            saveToken(token, userId)
                             intentToMain()
                         } else {
                             onBackPressed()
@@ -506,10 +509,11 @@ class InputProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveToken(token: String?) {
+    private fun saveToken(token: String?, userId: Int) {
         val bearerToken = "Bearer $token"
         val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE) ?: return
         sharedPref.edit().putString(Constant.TOKEN, bearerToken).apply()
+        sharedPref.edit().putString(Constant.USER_ID, userId.toString()).apply()
     }
 
     private fun intentToMain() {

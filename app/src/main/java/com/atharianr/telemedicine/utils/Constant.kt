@@ -19,6 +19,7 @@ object Constant {
     const val DOCTOR_EXP_YEAR = "doctor_exp_year"
     const val DOCTOR_PHONE = "doctor_phone"
 
+    const val USER_ID = "user_id"
     const val USER_NAME = "user_name"
     const val USER_EMAIL = "user_email"
     const val USER_GENDER = "user_gender"
@@ -44,4 +45,9 @@ object Constant {
     const val WEB_URL_BPJS = "https://faskes.bpjs-kesehatan.go.id/aplicares/#/app/dashboard"
     const val WEB_URL_APOTEK = "https://m.k24klik.com"
     const val WEB_URL_RS = "https://www.siloamhospitals.com"
+
+    const val CHATROOM = "chatroom"
+    const val CHAT = "chat"
+    const val ID_DOCTOR = "id_doctor"
+    const val ID_USER = "id_user"
 }
