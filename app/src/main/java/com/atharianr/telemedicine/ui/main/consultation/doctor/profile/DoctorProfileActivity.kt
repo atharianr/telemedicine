@@ -33,14 +33,6 @@ class DoctorProfileActivity : AppCompatActivity() {
 
         val doctorId = intent.getIntExtra(Constant.DOCTOR_ID, 0).toString()
 
-        binding.apply {
-            btnChat.setOnClickListener {
-                with(Intent(this@DoctorProfileActivity, ChatActivity::class.java)) {
-                    startActivity(this)
-                }
-            }
-        }
-
         getDoctorDetail(getBearerToken(), doctorId)
     }
 
@@ -81,6 +73,15 @@ class DoctorProfileActivity : AppCompatActivity() {
                                     } else {
                                         tvExperienceInfo.visibility = View.VISIBLE
                                         rvExperience.visibility = View.GONE
+                                    }
+                                }
+
+                                btnChat.setOnClickListener {
+                                    with(Intent(this@DoctorProfileActivity, ChatActivity::class.java)) {
+                                        putExtra(Constant.DOCTOR_ID, doctorId)
+                                        putExtra(Constant.DOCTOR_NAME, data.name)
+                                        putExtra(Constant.DOCTOR_PHOTO, data.photo)
+                                        startActivity(this)
                                     }
                                 }
                             }

@@ -18,6 +18,7 @@ object Constant {
     const val DOCTOR_EXP = "doctor_exp"
     const val DOCTOR_EXP_YEAR = "doctor_exp_year"
     const val DOCTOR_PHONE = "doctor_phone"
+    const val DOCTOR_PHOTO = "doctor_phone"
 
     const val USER_ID = "user_id"
     const val USER_NAME = "user_name"

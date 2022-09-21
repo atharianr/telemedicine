@@ -11,7 +11,10 @@ import com.atharianr.telemedicine.data.source.remote.request.firebase.Chat
 import com.atharianr.telemedicine.data.source.remote.response.*
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 import com.atharianr.telemedicine.utils.Constant
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -429,8 +432,8 @@ class RemoteDataSource(
 
     fun createChatRoom(doctorId: String, userId: String) {
         firebaseDatabase.getReference(Constant.CHATROOM).child("$doctorId-$userId").apply {
-            child(Constant.ID_DOCTOR).setValue(doctorId)
-            child(Constant.ID_USER).setValue(userId)
+            child(Constant.DOCTOR_ID).setValue(doctorId)
+            child(Constant.USER_ID).setValue(userId)
             child(Constant.CHATROOM).setValue(null)
         }
     }
@@ -446,6 +449,32 @@ class RemoteDataSource(
                     child(it).setValue(message)
                 }
             }
+    }
+
+    fun getChat(doctorId: String, userId: String): LiveData<ApiResponse<List<Chat>>> {
+        val resultResponse = MutableLiveData<ApiResponse<List<Chat>>>()
+
+        firebaseDatabase.getReference(Constant.CHATROOM).child("$doctorId-$userId").child("chat")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d(TAG, snapshot.value.toString())
+                    val list = mutableListOf<Chat>()
+                    for (d in snapshot.children) {
+                        val data = d.getValue(Chat::class.java)
+                        data?.let { list.add(it) }
+                    }
+                    Log.d(TAG, list.toString())
+                    resultResponse.postValue(ApiResponse.success(list))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", error.toException())
+                    resultResponse.postValue(ApiResponse.error(error.toException().message))
+                }
+
+            })
+
+        return resultResponse
     }
 
     companion object {

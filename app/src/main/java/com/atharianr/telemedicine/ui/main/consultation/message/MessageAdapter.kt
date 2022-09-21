@@ -52,7 +52,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ChatActivity::class.java)
-                intent.putExtra(Constant.NAME, data.name)
+                intent.putExtra(Constant.DOCTOR_NAME, data.name)
                 itemView.context.startActivity(intent)
             }
         }
