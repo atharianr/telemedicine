@@ -8,8 +8,10 @@ object Constant {
     const val REQUEST_CODE = 100
     const val SELECT_PICTURE = 200
     const val THERE_IS_IMAGE = "there_is_image"
+    const val LAST_CHAT = "last_chat"
     const val USER_DATA = "user_data"
 
+    const val DOCTOR = "doctor"
     const val DOCTOR_ID = "doctor_id"
     const val DOCTOR_NAME = "doctor_name"
     const val DOCTOR_SP = "doctor_sp"
@@ -18,8 +20,9 @@ object Constant {
     const val DOCTOR_EXP = "doctor_exp"
     const val DOCTOR_EXP_YEAR = "doctor_exp_year"
     const val DOCTOR_PHONE = "doctor_phone"
-    const val DOCTOR_PHOTO = "doctor_phone"
+    const val DOCTOR_PHOTO = "doctor_photo"
 
+    const val USER = "user"
     const val USER_ID = "user_id"
     const val USER_NAME = "user_name"
     const val USER_EMAIL = "user_email"
@@ -49,6 +52,4 @@ object Constant {
 
     const val CHATROOM = "chatroom"
     const val CHAT = "chat"
-    const val ID_DOCTOR = "id_doctor"
-    const val ID_USER = "id_user"
 }

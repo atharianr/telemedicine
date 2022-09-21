@@ -8,6 +8,7 @@ import com.atharianr.telemedicine.ui.landing.verify.VerifyViewModel
 import com.atharianr.telemedicine.ui.main.MainViewModel
 import com.atharianr.telemedicine.ui.main.article.ArticleViewModel
 import com.atharianr.telemedicine.ui.main.consultation.doctor.DoctorViewModel
+import com.atharianr.telemedicine.ui.main.consultation.message.MessageViewModel
 import com.atharianr.telemedicine.ui.main.consultation.message.chatroom.ChatViewModel
 import com.atharianr.telemedicine.ui.main.home.HomeViewModel
 import com.atharianr.telemedicine.ui.main.profile.InputProfileViewModel
@@ -60,4 +61,5 @@ val viewModelModule = module {
     viewModel { ArticleViewModel(get()) }
     viewModel { MainViewModel(get()) }
     viewModel { ChatViewModel(get()) }
+    viewModel { MessageViewModel(get()) }
 }

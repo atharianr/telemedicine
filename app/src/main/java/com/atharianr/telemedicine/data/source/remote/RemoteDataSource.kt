@@ -9,6 +9,7 @@ import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
 import com.atharianr.telemedicine.data.source.remote.request.firebase.Chat
 import com.atharianr.telemedicine.data.source.remote.response.*
+import com.atharianr.telemedicine.data.source.remote.response.firebase.ChatResponse
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 import com.atharianr.telemedicine.utils.Constant
 import com.atharianr.telemedicine.utils.getCurrentTimeStamp
@@ -430,11 +431,12 @@ class RemoteDataSource(
         return resultResponse
     }
 
-    fun createChatRoom(doctorId: String, userId: String) {
+    fun createChatRoom(doctorId: String, doctorName: String, doctorPhoto: String, userId: String) {
         firebaseDatabase.getReference(Constant.CHATROOM).child("$doctorId-$userId").apply {
             child(Constant.DOCTOR_ID).setValue(doctorId)
+            child(Constant.DOCTOR_NAME).setValue(doctorName)
+            child(Constant.DOCTOR_PHOTO).setValue(doctorPhoto)
             child(Constant.USER_ID).setValue(userId)
-            child(Constant.CHATROOM).setValue(null)
         }
     }
 
@@ -445,7 +447,7 @@ class RemoteDataSource(
             .apply {
                 val chatId = push().key
                 chatId?.let {
-                    val message = Chat("user", chatBody, getCurrentTimeStamp())
+                    val message = Chat(Constant.USER, chatBody, getCurrentTimeStamp())
                     child(it).setValue(message)
                 }
             }
@@ -472,6 +474,37 @@ class RemoteDataSource(
                     resultResponse.postValue(ApiResponse.error(error.toException().message))
                 }
 
+            })
+
+        return resultResponse
+    }
+
+    fun getRecentChat(userId: String): LiveData<ApiResponse<List<ChatResponse>>> {
+        val resultResponse = MutableLiveData<ApiResponse<List<ChatResponse>>>()
+
+        firebaseDatabase.getReference(Constant.CHATROOM)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val list = mutableListOf<ChatResponse>()
+                    for (d in snapshot.children) {
+                        if (d.hasChild(Constant.CHAT)) {
+                            val userIdFromDb = d.child(Constant.USER_ID).value
+                            if (userIdFromDb != null) {
+                                if (userIdFromDb == userId) {
+                                    val data = d.getValue(ChatResponse::class.java)
+                                    data?.let { list.add(it) }
+                                }
+                            }
+                        }
+                        Log.d(TAG, list.toString())
+                        resultResponse.postValue(ApiResponse.success(list))
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", error.toException())
+                    resultResponse.postValue(ApiResponse.error(error.toException().message))
+                }
             })
 
         return resultResponse

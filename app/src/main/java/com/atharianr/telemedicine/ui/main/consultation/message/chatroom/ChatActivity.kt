@@ -65,11 +65,9 @@ class ChatActivity : AppCompatActivity() {
             tvName.text = doctorName
         }
 
-        createChatRoom(doctorId, userId)
+        createChatRoom(doctorId, doctorName, doctorPhoto, userId)
         getChat(doctorId, userId)
         initRecyclerView()
-//        postMessage("4", "1")
-//        getMessage("4", "1")
     }
 
     override fun onDestroy() {
@@ -77,12 +75,21 @@ class ChatActivity : AppCompatActivity() {
         _binding = null
     }
 
-    private fun createChatRoom(doctorId: String?, userId: String?) {
-        if (doctorId != null && userId != null) chatViewModel.createChatRoom(doctorId, userId)
+    private fun createChatRoom(
+        doctorId: String?,
+        doctorName: String?,
+        doctorPhoto: String?,
+        userId: String?
+    ) {
+        if (doctorId != null && doctorName != null && doctorPhoto != null && userId != null) {
+            chatViewModel.createChatRoom(doctorId, doctorName, doctorPhoto, userId)
+        }
     }
 
     private fun sendChat(doctorId: String?, userId: String?, chatBody: String) {
-        if (doctorId != null && userId != null) chatViewModel.sendChat(doctorId, userId, chatBody)
+        if (doctorId != null && userId != null) {
+            chatViewModel.sendChat(doctorId, userId, chatBody)
+        }
     }
 
     private fun getChat(doctorId: String?, userId: String?) {
@@ -97,7 +104,6 @@ class ChatActivity : AppCompatActivity() {
                             chatAdapter.setData(listChat)
                             binding.rvChat.scrollToPosition(listChat.size - 1)
                         }
-                        Toast.makeText(this, "success bos", Toast.LENGTH_SHORT).show()
                         isLoading(false)
                     }
                     StatusResponse.ERROR -> {
@@ -112,39 +118,6 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun postMessage(doctorId: String, userId: String) {
-        val dbRef = firebaseDatabase.getReference("chatroom")
-        val chatRoomRef = dbRef.child("$doctorId-$userId")
-        chatRoomRef.child("id_doctor").setValue("4")
-        chatRoomRef.child("id_user").setValue("1")
-
-        val messageId = chatRoomRef.child("chat").push().key
-        messageId?.let {
-            val message = Chat("user", "pesan", Date().toString())
-            chatRoomRef.child("chat").child(it).setValue(message)
-        }
-    }
-
-    private fun getMessage(doctorId: String, userId: String) {
-        val dbRef = firebaseDatabase.getReference("chatroom")
-        val chatRef = dbRef.child("$doctorId-$userId").child("chat")
-        chatRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d(ChatActivity::class.simpleName, snapshot.value.toString())
-                val list = mutableListOf<Chat>()
-                for (d in snapshot.children) {
-                    val data = d.getValue(Chat::class.java)
-                    data?.let { list.add(it) }
-                }
-                Log.d(ChatActivity::class.simpleName, list.toString())
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(ChatActivity::class.simpleName, "loadPost:onCancelled", error.toException())
-            }
-        })
     }
 
     private fun initRecyclerView() {

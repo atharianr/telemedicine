@@ -7,8 +7,8 @@ import com.atharianr.telemedicine.data.source.remote.request.firebase.Chat
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 
 class ChatViewModel(private val remoteDataSource: RemoteDataSource) : ViewModel() {
-    fun createChatRoom(doctorId: String, userId: String) {
-        remoteDataSource.createChatRoom(doctorId, userId)
+    fun createChatRoom(doctorId: String, doctorName: String, doctorPhoto: String, userId: String) {
+        remoteDataSource.createChatRoom(doctorId, doctorName, doctorPhoto, userId)
     }
 
     fun sendChat(doctorId: String, userId: String, chatBody: String) {
