@@ -67,6 +67,7 @@ class ChatActivity : AppCompatActivity() {
 
         createChatRoom(doctorId, userId)
         getChat(doctorId, userId)
+        initRecyclerView()
 //        postMessage("4", "1")
 //        getMessage("4", "1")
     }
@@ -93,7 +94,8 @@ class ChatActivity : AppCompatActivity() {
                         val listChat = it.body
                         Log.d(ChatActivity::class.simpleName, listChat.toString())
                         if (listChat != null) {
-                            initRecyclerView(listChat)
+                            chatAdapter.setData(listChat)
+                            binding.rvChat.scrollToPosition(listChat.size - 1)
                         }
                         Toast.makeText(this, "success bos", Toast.LENGTH_SHORT).show()
                         isLoading(false)
@@ -145,8 +147,7 @@ class ChatActivity : AppCompatActivity() {
         })
     }
 
-    private fun initRecyclerView(listChat: List<Chat>) {
-        chatAdapter.setData(listChat)
+    private fun initRecyclerView() {
         binding.rvChat.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)

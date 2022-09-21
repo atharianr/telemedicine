@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rounded_box_4">
+            android:background="@drawable/rounded_box_chat_receive">
 
             <TextView
                 android:id="@+id/tv_message"
@@ -35,7 +35,7 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/time"

@@ -1,6 +1,5 @@
 package com.atharianr.telemedicine.ui.main.consultation.message.chatroom
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +16,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun setData(data: List<Chat>) {
         this.listChat.clear()
         this.listChat.addAll(data)
-        Log.d(ChatAdapter::class.simpleName, listChat.toString())
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -56,7 +55,6 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private inner class SenderViewHolder(private val binding: ItemsListChatSentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Chat) {
-            Log.d(ChatAdapter::class.simpleName, data.toString())
             with(binding) {
                 tvMessage.text = data.message
                 if (data.time != null) {
