@@ -11,6 +11,7 @@ import com.atharianr.telemedicine.data.source.remote.request.firebase.Chat
 import com.atharianr.telemedicine.data.source.remote.response.*
 import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 import com.atharianr.telemedicine.utils.Constant
+import com.atharianr.telemedicine.utils.getCurrentTimeStamp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -19,7 +20,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class RemoteDataSource(
     private val apiService: ApiService,
@@ -445,7 +445,7 @@ class RemoteDataSource(
             .apply {
                 val chatId = push().key
                 chatId?.let {
-                    val message = Chat("user", chatBody, Date().toString())
+                    val message = Chat("user", chatBody, getCurrentTimeStamp())
                     child(it).setValue(message)
                 }
             }

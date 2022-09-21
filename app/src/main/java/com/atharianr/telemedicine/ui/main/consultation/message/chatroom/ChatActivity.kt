@@ -3,8 +3,10 @@ package com.atharianr.telemedicine.ui.main.consultation.message.chatroom
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.request.firebase.Chat
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
@@ -21,16 +23,23 @@ import java.util.*
 
 class ChatActivity : AppCompatActivity() {
 
+    private var _binding: ActivityChatBinding? = null
+    private val binding get() = _binding as ActivityChatBinding
+
     private val chatViewModel: ChatViewModel by viewModel()
+
+    private lateinit var chatAdapter: ChatAdapter
     private lateinit var firebaseDatabase: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityChatBinding.inflate(layoutInflater)
+        _binding = ActivityChatBinding.inflate(layoutInflater)
         setTheme(R.style.Theme_Telemedicine)
         setContentView(binding.root)
 
         firebaseDatabase = FirebaseDatabase.getInstance()
+        chatAdapter = ChatAdapter()
+
         val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
         val userId = sharedPref.getString(Constant.USER_ID, "")
         val doctorId = intent.getStringExtra(Constant.DOCTOR_ID)
@@ -62,6 +71,11 @@ class ChatActivity : AppCompatActivity() {
 //        getMessage("4", "1")
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     private fun createChatRoom(doctorId: String?, userId: String?) {
         if (doctorId != null && userId != null) chatViewModel.createChatRoom(doctorId, userId)
     }
@@ -72,16 +86,27 @@ class ChatActivity : AppCompatActivity() {
 
     private fun getChat(doctorId: String?, userId: String?) {
         if (doctorId != null && userId != null) {
+            isLoading(true)
             chatViewModel.getChat(doctorId, userId).observe(this) {
                 when (it.status) {
                     StatusResponse.SUCCESS -> {
+                        val listChat = it.body
+                        Log.d(ChatActivity::class.simpleName, listChat.toString())
+                        if (listChat != null) {
+                            initRecyclerView(listChat)
+                        }
                         Toast.makeText(this, "success bos", Toast.LENGTH_SHORT).show()
+                        isLoading(false)
                     }
                     StatusResponse.ERROR -> {
                         Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                        isLoading(false)
                         return@observe
                     }
-                    else -> return@observe
+                    else -> {
+                        isLoading(false)
+                        return@observe
+                    }
                 }
             }
         }
@@ -118,5 +143,26 @@ class ChatActivity : AppCompatActivity() {
                 Log.w(ChatActivity::class.simpleName, "loadPost:onCancelled", error.toException())
             }
         })
+    }
+
+    private fun initRecyclerView(listChat: List<Chat>) {
+        chatAdapter.setData(listChat)
+        binding.rvChat.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = chatAdapter
+        }
+    }
+
+    private fun isLoading(loading: Boolean) {
+        binding.apply {
+            if (loading) {
+                rvChat.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            } else {
+                rvChat.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
+        }
     }
 }
