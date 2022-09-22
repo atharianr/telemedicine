@@ -1,8 +1,8 @@
 package com.atharianr.telemedicine.ui.main
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -38,11 +38,15 @@ class MainActivity : AppCompatActivity() {
     private var address: String? = null
     private var photo: String? = null
 
+    private lateinit var sharedPref: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setTheme(R.style.Theme_Telemedicine)
         setContentView(binding.root)
+
+        sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
 
         integerDeque.push(R.id.home)
 
@@ -177,6 +181,7 @@ class MainActivity : AppCompatActivity() {
                         address = it.body?.data?.address
                         photo = it.body?.data?.photo
 
+                        saveUserId(it.body?.data?.id.toString())
                         loadFragment(getFragment(integerDeque.peek()))
                     }
 
@@ -192,7 +197,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getBearerToken(): String? {
-        val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
         return sharedPref.getString(Constant.TOKEN, "")
+    }
+
+    private fun saveUserId(userId: String?) {
+        sharedPref.edit().putString(Constant.USER_ID, userId).apply()
     }
 }
