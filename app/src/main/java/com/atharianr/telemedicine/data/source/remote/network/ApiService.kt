@@ -5,6 +5,7 @@ import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
 import com.atharianr.telemedicine.data.source.remote.response.*
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
@@ -30,6 +31,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body inputProfileRequest: InputProfileRequest
     ): Call<UserResponse>
+
+    @Headers("Accept: application/json")
+    @PUT("user/edit/fcm_token")
+    suspend fun putTokenFCM(
+        @Header("Authorization") token: String,
+        @Body inputProfileRequest: InputProfileRequest
+    ): Response<UserResponse>
 
     @Headers("Accept: application/json")
     @GET("doctor")

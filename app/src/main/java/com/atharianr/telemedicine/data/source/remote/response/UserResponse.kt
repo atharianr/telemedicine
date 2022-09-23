@@ -53,5 +53,8 @@ data class Data(
 	val email: String? = null,
 
 	@field:SerializedName("photo")
-	val photo: String? = null
+	val photo: String? = null,
+
+	@field:SerializedName("fcm_token")
+	val fcmToken: String? = null
 )

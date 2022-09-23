@@ -2,6 +2,7 @@ package com.atharianr.telemedicine.di
 
 import com.atharianr.telemedicine.data.source.remote.RemoteDataSource
 import com.atharianr.telemedicine.data.source.remote.network.ApiService
+import com.atharianr.telemedicine.service.FCMService
 import com.atharianr.telemedicine.ui.landing.login.LoginViewModel
 import com.atharianr.telemedicine.ui.landing.register.RegisterViewModel
 import com.atharianr.telemedicine.ui.landing.verify.VerifyViewModel
@@ -48,6 +49,10 @@ val networkModule = module {
 
 val remoteDataSourceModule = module {
     factory { RemoteDataSource(get(), get()) }
+}
+
+val serviceModule = module {
+    factory { FCMService(get()) }
 }
 
 val viewModelModule = module {

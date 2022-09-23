@@ -202,6 +202,18 @@ class RemoteDataSource(
         return resultResponse
     }
 
+    suspend fun putTokenFCM(
+        token: String,
+        inputProfileRequest: InputProfileRequest
+    ): ApiResponse<UserResponse> {
+        val response = apiService.putTokenFCM(token, inputProfileRequest)
+        return if (response.isSuccessful) {
+            ApiResponse.success(response.body())
+        } else {
+            ApiResponse.error("Terjadi kesalahan.")
+        }
+    }
+
     fun getAllDoctors(token: String): LiveData<ApiResponse<DoctorResponse>> {
         val resultResponse = MutableLiveData<ApiResponse<DoctorResponse>>()
 
