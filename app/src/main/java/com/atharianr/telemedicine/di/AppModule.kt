@@ -51,9 +51,9 @@ val remoteDataSourceModule = module {
     factory { RemoteDataSource(get(), get()) }
 }
 
-val serviceModule = module {
-    factory { FCMService(get()) }
-}
+//val serviceModule = module {
+//    factory { FCMService(get()) }
+//}
 
 val viewModelModule = module {
     viewModel { RegisterViewModel(get()) }

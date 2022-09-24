@@ -1,13 +1,13 @@
 package com.atharianr.telemedicine.ui.main
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.content.*
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.atharianr.telemedicine.R
+import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.ActivityMainBinding
 import com.atharianr.telemedicine.ui.main.article.ArticleFragment
@@ -15,6 +15,9 @@ import com.atharianr.telemedicine.ui.main.consultation.ConsultationFragment
 import com.atharianr.telemedicine.ui.main.home.HomeFragment
 import com.atharianr.telemedicine.ui.main.profile.ProfileFragment
 import com.atharianr.telemedicine.utils.Constant
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var phoneNumber: String? = null
     private var address: String? = null
     private var photo: String? = null
+    private var fcmTokenBroadcast: BroadcastReceiver? = null
 
     private lateinit var sharedPref: SharedPreferences
 
@@ -52,6 +56,8 @@ class MainActivity : AppCompatActivity() {
 
         getUserDetail(getBearerToken())
         setupBottomNav()
+        receiveBroadcast()
+        sendTokenToServer(getFCMToken(), getBearerToken())
     }
 
     override fun onResume() {
@@ -196,8 +202,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun receiveBroadcast() {
+        fcmTokenBroadcast = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val fcmToken = intent.extras?.getString(Constant.FCM_TOKEN, "")
+                sendTokenToServer(fcmToken, getBearerToken())
+            }
+        }
+        registerReceiver(fcmTokenBroadcast, IntentFilter(Constant.ON_NEW_TOKEN))
+    }
+
+    private fun sendTokenToServer(fcmToken: String?, bearerToken: String?) {
+        val inputProfileRequest = InputProfileRequest(fcmToken = fcmToken)
+        if (bearerToken != null && bearerToken != "") {
+            if (fcmToken != null && fcmToken != "") {
+                CoroutineScope(Dispatchers.IO).launch {
+                    mainViewModel.putTokenFCM(bearerToken, inputProfileRequest)
+                }
+            }
+        }
+    }
+
     private fun getBearerToken(): String? {
         return sharedPref.getString(Constant.TOKEN, "")
+    }
+
+    private fun getFCMToken(): String? {
+        return sharedPref.getString(Constant.FCM_TOKEN, "")
     }
 
     private fun saveUserId(userId: String?) {
