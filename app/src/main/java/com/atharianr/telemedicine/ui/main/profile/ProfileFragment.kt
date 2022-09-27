@@ -10,11 +10,17 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.atharianr.telemedicine.R
+import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.databinding.FragmentProfileBinding
 import com.atharianr.telemedicine.ui.landing.LandingActivity
+import com.atharianr.telemedicine.ui.main.MainViewModel
 import com.atharianr.telemedicine.utils.Constant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,6 +28,8 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding as FragmentProfileBinding
+
+    private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +51,7 @@ class ProfileFragment : Fragment() {
 
             binding.apply {
                 btnLogout.setOnClickListener {
+                    removeTokenOnServer(getBearerToken())
                     removeToken()
                     intentToLanding()
                 }
@@ -107,6 +116,15 @@ class ProfileFragment : Fragment() {
             tvAddress.text = address
         }
         isLoading(false)
+    }
+
+    private fun removeTokenOnServer(bearerToken: String?) {
+        val inputProfileRequest = InputProfileRequest(fcmToken = null)
+        if (bearerToken != null && bearerToken != "") {
+            CoroutineScope(Dispatchers.IO).launch {
+                profileViewModel.putTokenFCM(bearerToken, inputProfileRequest)
+            }
+        }
     }
 
     private fun removeToken() {

@@ -10,6 +10,7 @@ object Constant {
     const val THERE_IS_IMAGE = "there_is_image"
     const val LAST_CHAT = "last_chat"
     const val USER_DATA = "user_data"
+    const val DEVICE_DATA = "device_data"
     const val FCM_TOKEN = "fcm_token"
     const val ON_NEW_TOKEN = "on_new_token"
 

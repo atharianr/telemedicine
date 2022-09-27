@@ -14,8 +14,8 @@ android {
         applicationId "com.atharianr.telemedicine"
         minSdk 21
         targetSdk 32
-        versionCode 10
-        versionName "0.4.1"
+        versionCode 13
+        versionName "0.4.4"
 
         def type = "dev"
 
