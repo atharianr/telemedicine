@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.atharianr.telemedicine.data.source.remote.network.ApiService
+import com.atharianr.telemedicine.data.source.remote.network.FcmApiService
+import com.atharianr.telemedicine.data.source.remote.request.FcmChatRequest
 import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.data.source.remote.request.LoginRequest
 import com.atharianr.telemedicine.data.source.remote.request.RegisterRequest
@@ -24,6 +26,7 @@ import retrofit2.Response
 
 class RemoteDataSource(
     private val apiService: ApiService,
+    private val fcmApiService: FcmApiService,
     private val firebaseDatabase: FirebaseDatabase
 ) {
     fun register(registerRequest: RegisterRequest): LiveData<ApiResponse<RegisterResponse>> {
@@ -443,26 +446,136 @@ class RemoteDataSource(
         return resultResponse
     }
 
-    fun createChatRoom(doctorId: String, doctorName: String, doctorPhoto: String, userId: String) {
+    fun sendFcmChat(
+        apiKey: String,
+        fcmChatRequest: FcmChatRequest
+    ): LiveData<ApiResponse<FcmResponse>> {
+        val resultResponse = MutableLiveData<ApiResponse<FcmResponse>>()
+
+        fcmApiService.sendFcmChat(apiKey, fcmChatRequest)
+            .enqueue(object : Callback<FcmResponse> {
+                override fun onResponse(
+                    call: Call<FcmResponse>,
+                    response: Response<FcmResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d(TAG, "FCM Success.")
+                        resultResponse.postValue(ApiResponse.success(response.body()))
+                    } else {
+                        try {
+                            val errorBody = response.errorBody()
+                            if (errorBody != null) {
+                                val jObjError = JSONObject(errorBody.string())
+                                Log.d(TAG, jObjError.getString("message"))
+                                resultResponse.postValue(ApiResponse.error(jObjError.getString("message")))
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "${e.message}")
+                            resultResponse.postValue(ApiResponse.error(e.message))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<FcmResponse>, t: Throwable) {
+                    Log.d(TAG, t.message.toString())
+                    resultResponse.postValue(ApiResponse.error(t.message.toString()))
+                }
+
+            })
+
+        return resultResponse
+    }
+
+    fun createChatRoom(
+        doctorId: String,
+        doctorName: String,
+        doctorPhoto: String,
+        userId: String,
+        userName: String,
+        userPhoto: String,
+    ) {
         firebaseDatabase.getReference(Constant.CHATROOM).child("$doctorId-$userId").apply {
             child(Constant.DOCTOR_ID).setValue(doctorId)
             child(Constant.DOCTOR_NAME).setValue(doctorName)
             child(Constant.DOCTOR_PHOTO).setValue(doctorPhoto)
             child(Constant.USER_ID).setValue(userId)
+            child(Constant.USER_NAME).setValue(userName)
+            child(Constant.USER_PHOTO).setValue(userPhoto)
         }
     }
 
-    fun sendChat(doctorId: String, userId: String, chatBody: String) {
+    fun saveUserFcmToken(userId: String, fcmToken: String) {
+        firebaseDatabase.getReference(Constant.FCM_TOKEN).child(Constant.USER).child(userId)
+            .child(Constant.TOKEN).setValue(fcmToken)
+    }
+
+    fun getUserFcmToken(userId: String): LiveData<String> {
+        val resultResponse = MutableLiveData<String>()
+
+        firebaseDatabase.getReference(Constant.FCM_TOKEN).child(Constant.USER).child(userId)
+            .child(Constant.TOKEN)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d(TAG, snapshot.value as String)
+                    resultResponse.postValue(snapshot.value as String)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", error.toException())
+                    resultResponse.postValue("")
+                }
+            })
+
+        return resultResponse
+    }
+
+    fun saveDoctorFcmToken(doctorId: String, fcmToken: String) {
+        firebaseDatabase.getReference(Constant.FCM_TOKEN).child(Constant.DOCTOR).child(doctorId)
+            .child(Constant.TOKEN).setValue(fcmToken)
+    }
+
+    fun getDoctorFcmToken(doctorId: String): LiveData<String> {
+        val resultResponse = MutableLiveData<String>()
+
+        firebaseDatabase.getReference(Constant.FCM_TOKEN).child(Constant.DOCTOR).child(doctorId)
+            .child(Constant.TOKEN)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d(TAG, snapshot.value as String)
+                    resultResponse.postValue(snapshot.value as String)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", error.toException())
+                    resultResponse.postValue("")
+                }
+            })
+
+        return resultResponse
+    }
+
+    fun sendChat(
+        doctorId: String,
+        userId: String,
+        chatBody: String,
+        appType: String
+    ): LiveData<Boolean> {
+        val resultResponse = MutableLiveData<Boolean>()
+
         firebaseDatabase.getReference(Constant.CHATROOM)
             .child("$doctorId-$userId")
             .child(Constant.CHAT)
             .apply {
                 val chatId = push().key
                 chatId?.let {
-                    val message = Chat(Constant.USER, chatBody, getCurrentTimeStamp())
-                    child(it).setValue(message)
+                    val message = Chat(appType, chatBody, getCurrentTimeStamp())
+                    child(it).setValue(message).addOnCompleteListener { response ->
+                        resultResponse.postValue(response.isSuccessful)
+                    }
                 }
             }
+
+        return resultResponse
     }
 
     fun getChat(doctorId: String, userId: String): LiveData<ApiResponse<List<Chat>>> {
@@ -503,6 +616,37 @@ class RemoteDataSource(
                             val userIdFromDb = d.child(Constant.USER_ID).value
                             if (userIdFromDb != null) {
                                 if (userIdFromDb == userId) {
+                                    val data = d.getValue(ChatResponse::class.java)
+                                    data?.let { list.add(it) }
+                                }
+                            }
+                        }
+                        Log.d(TAG, list.toString())
+                        resultResponse.postValue(ApiResponse.success(list))
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", error.toException())
+                    resultResponse.postValue(ApiResponse.error(error.toException().message))
+                }
+            })
+
+        return resultResponse
+    }
+
+    fun getRecentChatDoctor(doctorId: String): LiveData<ApiResponse<List<ChatResponse>>> {
+        val resultResponse = MutableLiveData<ApiResponse<List<ChatResponse>>>()
+
+        firebaseDatabase.getReference(Constant.CHATROOM)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val list = mutableListOf<ChatResponse>()
+                    for (d in snapshot.children) {
+                        if (d.hasChild(Constant.CHAT)) {
+                            val doctorIdFromDb = d.child(Constant.DOCTOR_ID).value
+                            if (doctorIdFromDb != null) {
+                                if (doctorIdFromDb == doctorId) {
                                     val data = d.getValue(ChatResponse::class.java)
                                     data?.let { list.add(it) }
                                 }

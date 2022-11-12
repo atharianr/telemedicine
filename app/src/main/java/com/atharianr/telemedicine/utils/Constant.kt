@@ -4,6 +4,9 @@ object Constant {
     const val NAME = "name"
     const val FROM_AUTH = "from_auth"
     const val API_BASE_URL = "http://202.157.176.228:9001/api/"
+    const val API_FCM_BASE_URL = "https://fcm.googleapis.com/fcm/"
+    const val FCM_API_KEY =
+        "Bearer AAAAS-q0iPI:APA91bHE6ymUFeerElIf84CZyvbqefbnxKiabDw1ErZHEh8_RiPr87NyeGGt6oyXOQ8dAGj95OBQUzvq3GPkX6n0nW2I-_IdruqBwxEPrNBZzpYNHMAcHdGJMDd-tlnT3LHktKJKTXZY"
     const val TOKEN = "token"
     const val REQUEST_CODE = 100
     const val SELECT_PICTURE = 200
@@ -24,6 +27,7 @@ object Constant {
     const val DOCTOR_EXP_YEAR = "doctor_exp_year"
     const val DOCTOR_PHONE = "doctor_phone"
     const val DOCTOR_PHOTO = "doctor_photo"
+    const val DOCTOR_FCM_TOKEN = "doctor_fcm_token"
 
     const val USER = "user"
     const val USER_ID = "user_id"
@@ -37,6 +41,7 @@ object Constant {
     const val USER_PHONE = "user_phone"
     const val USER_ADDRESS = "user_address"
     const val USER_PHOTO = "user_photo"
+    const val USER_FCM_TOKEN = "user_fcm_token"
     const val USER_PHOTO_BASE_URL = "http://202.157.176.228:9001/storage/"
 
     const val ARTICLE_ID = "article_id"

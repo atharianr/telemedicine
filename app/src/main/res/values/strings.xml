@@ -71,4 +71,6 @@
     <string name="change_photo">Ubah Foto</string>
     <string name="remove_photo">Hapus Foto</string>
     <string name="experience_not_found">Belum memiliki pengalaman</string>
+    <string name="login_as_doctor_info">Atau masuk sebagai dokter</string>
+    <string name="login_as_doctor">Masuk sebagai dokter</string>
 </resources>

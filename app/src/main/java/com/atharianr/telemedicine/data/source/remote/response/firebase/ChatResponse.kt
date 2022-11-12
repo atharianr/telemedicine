@@ -8,6 +8,8 @@ data class ChatResponse(
     val doctor_name: String? = null,
     val doctor_photo: String? = null,
     val user_id: String? = null,
+    val user_name: String? = null,
+    val user_photo: String? = null,
     val time: String? = null,
     val chat: Map<String, Chat>? = null
 )

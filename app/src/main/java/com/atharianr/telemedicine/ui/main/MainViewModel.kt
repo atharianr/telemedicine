@@ -15,4 +15,12 @@ class MainViewModel(private val remoteDataSource: RemoteDataSource) : ViewModel(
         token: String,
         inputProfileRequest: InputProfileRequest
     ): ApiResponse<UserResponse> = remoteDataSource.putTokenFCM(token, inputProfileRequest)
+
+    fun saveUserFcmToken(userId: String, fcmToken: String) {
+        remoteDataSource.saveUserFcmToken(userId, fcmToken)
+    }
+
+    fun saveDoctorFcmToken(doctorId: String, fcmToken: String) {
+        remoteDataSource.saveDoctorFcmToken(doctorId, fcmToken)
+    }
 }

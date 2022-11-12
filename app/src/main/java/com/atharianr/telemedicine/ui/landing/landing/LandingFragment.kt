@@ -43,6 +43,11 @@ class LandingFragment : Fragment() {
                         .navigate(R.id.action_landingFragment_to_loginFragment)
                 }
 
+                btnLoginDoctor.setOnClickListener {
+                    view.findNavController()
+                        .navigate(R.id.action_landingFragment_to_loginDoctorFragment)
+                }
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val appName =
                         getColoredSpanned("Tele", "#D44090") + getColoredSpanned(

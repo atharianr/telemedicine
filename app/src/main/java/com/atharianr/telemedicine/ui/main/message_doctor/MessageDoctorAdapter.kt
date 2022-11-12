@@ -1,6 +1,5 @@
-package com.atharianr.telemedicine.ui.main.consultation.message
+package com.atharianr.telemedicine.ui.main.message_doctor
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +14,7 @@ import com.atharianr.telemedicine.utils.getDateFromString
 import com.atharianr.telemedicine.utils.toFormat
 import com.bumptech.glide.Glide
 
-class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+class MessageDoctorAdapter : RecyclerView.Adapter<MessageDoctorAdapter.ViewHolder>() {
 
     private var listData = ArrayList<ChatResponse>()
 
@@ -43,16 +42,16 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
         fun bind(data: ChatResponse) {
             binding.apply {
                 val lastChat = data.chat?.toSortedMap(compareByDescending { it })?.entries?.first()?.value?.message
-                Log.d(MessageAdapter::class.simpleName, lastChat.toString())
+                Log.d(MessageDoctorAdapter::class.simpleName, lastChat.toString())
                 val time = data.chat?.toSortedMap(compareByDescending { it })?.entries?.first()?.value?.time
 
                 Glide.with(itemView)
-                    .load(data.doctor_photo)
+                    .load(data.user_photo)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .centerCrop()
                     .into(ivDoctor)
 
-                tvName.text = data.doctor_name
+                tvName.text = data.user_name
                 tvMessage.text = lastChat
                 if (time != null) {
                     tvTime.text = getDateFromString("yyyy-MM-dd HH:mm:ss", time).toFormat("HH:mm")

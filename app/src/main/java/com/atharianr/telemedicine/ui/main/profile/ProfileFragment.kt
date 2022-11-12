@@ -121,7 +121,7 @@ class ProfileFragment : Fragment() {
     private fun removeTokenOnServer(bearerToken: String?) {
         val inputProfileRequest = InputProfileRequest(fcmToken = null)
         if (bearerToken != null && bearerToken != "") {
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 profileViewModel.putTokenFCM(bearerToken, inputProfileRequest)
             }
         }

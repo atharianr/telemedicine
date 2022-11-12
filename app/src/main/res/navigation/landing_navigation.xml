@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/landing_navigation"
     app:startDestination="@id/landingFragment">
 
@@ -14,6 +15,9 @@
         <action
             android:id="@+id/action_landingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_landingFragment_to_loginDoctorFragment"
+            app:destination="@id/loginDoctorFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -43,4 +47,9 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/loginDoctorFragment"
+        android:name="com.atharianr.telemedicine.ui.landing.login_doctor.LoginDoctorFragment"
+        android:label="fragment_login_doctor"
+        tools:layout="@layout/fragment_login_doctor" />
 </navigation>

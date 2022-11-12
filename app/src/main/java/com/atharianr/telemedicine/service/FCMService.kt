@@ -13,7 +13,6 @@ import androidx.core.app.Person
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.ui.main.consultation.message.chatroom.ChatActivity
 import com.atharianr.telemedicine.utils.Constant
-import com.bumptech.glide.Glide
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.json.JSONObject
@@ -42,38 +41,52 @@ class FCMService : FirebaseMessagingService() {
         val jsonObject = JSONObject(message.data[NOTIFICATION].toString())
         when (jsonObject.getString(NOTIFICATION_TYPE)) {
             TYPE_CHAT -> {
+                val appType =
+                    if (getToken() != null && getToken() != "") Constant.USER else Constant.DOCTOR
                 val body = jsonObject.getString(MESSAGE)
-                val doctorId = jsonObject.getString(Constant.DOCTOR_ID)
-                val doctorName = jsonObject.getString(Constant.DOCTOR_NAME)
-                val doctorPhoto = jsonObject.getString(Constant.DOCTOR_PHOTO)
-                buildChatNotification(doctorId, doctorName, doctorPhoto, body)
+                when (appType) {
+                    Constant.USER -> {
+                        val doctorId = jsonObject.getString(Constant.DOCTOR_ID)
+                        val doctorName = jsonObject.getString(Constant.DOCTOR_NAME)
+                        val doctorPhoto = jsonObject.getString(Constant.DOCTOR_PHOTO)
+                        buildChatNotification(doctorId, doctorName, doctorPhoto, body)
+                    }
+                    Constant.DOCTOR -> {
+                        val userId = jsonObject.getString(Constant.USER_ID)
+                        val userName = jsonObject.getString(Constant.USER_NAME)
+                        val userPhoto = jsonObject.getString(Constant.USER_PHOTO)
+                        buildChatNotification(userId, userName, userPhoto, body)
+                    }
+                }
             }
         }
     }
 
     private fun buildChatNotification(
-        doctorId: String,
-        doctorName: String,
-        doctorPhoto: String,
+        id: String,
+        name: String,
+        photo: String,
         body: String
     ) {
         try {
-            val notificationId = doctorId.toInt()
+            val notificationId = id.toInt()
 
             intent = Intent(this, ChatActivity::class.java).apply {
-                putExtra(Constant.DOCTOR_ID, doctorId)
-                putExtra(Constant.DOCTOR_NAME, doctorName)
-                putExtra(Constant.DOCTOR_PHOTO, doctorPhoto)
+                putExtra(Constant.DOCTOR_ID, id)
+                putExtra(Constant.DOCTOR_NAME, name)
+                putExtra(Constant.DOCTOR_PHOTO, photo)
             }
 
             val pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
             val sender = Person.Builder()
-                .setName(doctorName)
+                .setName(name)
                 .build()
 
-            val url = URL(doctorPhoto)
+            val placeholderUrl =
+                "https://images.squarespace-cdn.com/content/v1/5fa980cf68aef57ff2659cd7/1605041847907-UR82MHF4PVDVPBTM1O63/headshot+of+a+smiling+man"
+            val url = URL(if (photo != "" && photo != "null") photo else placeholderUrl)
             val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
 
             val notificationBuilder = NotificationCompat.Builder(this@FCMService, CHANNEL_ID_CHAT)
@@ -102,6 +115,11 @@ class FCMService : FirebaseMessagingService() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun getToken(): String? {
+        val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.TOKEN, null)
     }
 
     companion object {

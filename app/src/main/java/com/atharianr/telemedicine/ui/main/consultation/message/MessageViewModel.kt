@@ -9,4 +9,7 @@ import com.atharianr.telemedicine.data.source.remote.response.vo.ApiResponse
 class MessageViewModel(private val remoteDataSource: RemoteDataSource) : ViewModel() {
     fun getRecentChat(userId: String): LiveData<ApiResponse<List<ChatResponse>>> =
         remoteDataSource.getRecentChat(userId)
+
+    fun getRecentChatDoctor(doctorId: String): LiveData<ApiResponse<List<ChatResponse>>> =
+        remoteDataSource.getRecentChatDoctor(doctorId)
 }

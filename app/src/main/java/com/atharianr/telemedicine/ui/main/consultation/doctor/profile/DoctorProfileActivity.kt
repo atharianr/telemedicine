@@ -3,6 +3,7 @@ package com.atharianr.telemedicine.ui.main.consultation.doctor.profile
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -77,7 +78,29 @@ class DoctorProfileActivity : AppCompatActivity() {
                                 }
 
                                 btnChat.setOnClickListener {
-                                    with(Intent(this@DoctorProfileActivity, ChatActivity::class.java)) {
+                                    with(
+                                        Intent(
+                                            this@DoctorProfileActivity,
+                                            ChatActivity::class.java
+                                        )
+                                    ) {
+                                        val sharedPref = getSharedPreferences(
+                                            Constant.USER_DATA,
+                                            Context.MODE_PRIVATE
+                                        )
+                                        val userId =
+                                            sharedPref.getString(Constant.USER_ID, "") ?: ""
+                                        val userName =
+                                            sharedPref.getString(Constant.USER_NAME, "") ?: ""
+                                        val userPhoto =
+                                            sharedPref.getString(Constant.USER_PHOTO, "") ?: ""
+
+                                        Log.d("cobacoba dpa", "$userId, $userName, $userPhoto")
+
+                                        putExtra(Constant.USER_ID, userId)
+                                        putExtra(Constant.USER_NAME, userName)
+                                        putExtra(Constant.USER_PHOTO, userPhoto)
+
                                         putExtra(Constant.DOCTOR_ID, doctorId)
                                         putExtra(Constant.DOCTOR_NAME, data.name)
                                         putExtra(Constant.DOCTOR_PHOTO, data.photo)

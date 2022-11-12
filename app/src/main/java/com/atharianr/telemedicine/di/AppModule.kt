@@ -2,7 +2,7 @@ package com.atharianr.telemedicine.di
 
 import com.atharianr.telemedicine.data.source.remote.RemoteDataSource
 import com.atharianr.telemedicine.data.source.remote.network.ApiService
-import com.atharianr.telemedicine.service.FCMService
+import com.atharianr.telemedicine.data.source.remote.network.FcmApiService
 import com.atharianr.telemedicine.ui.landing.login.LoginViewModel
 import com.atharianr.telemedicine.ui.landing.register.RegisterViewModel
 import com.atharianr.telemedicine.ui.landing.verify.VerifyViewModel
@@ -43,17 +43,22 @@ val networkModule = module {
     }
 
     single {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Constant.API_FCM_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(get())
+            .build()
+        retrofit.create(FcmApiService::class.java)
+    }
+
+    single {
         FirebaseDatabase.getInstance()
     }
 }
 
 val remoteDataSourceModule = module {
-    factory { RemoteDataSource(get(), get()) }
+    factory { RemoteDataSource(get(), get(), get()) }
 }
-
-//val serviceModule = module {
-//    factory { FCMService(get()) }
-//}
 
 val viewModelModule = module {
     viewModel { RegisterViewModel(get()) }

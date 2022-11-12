@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.atharianr.telemedicine.data.source.remote.request.firebase.Chat
 import com.atharianr.telemedicine.databinding.ItemsListChatReceivedBinding
 import com.atharianr.telemedicine.databinding.ItemsListChatSentBinding
+import com.atharianr.telemedicine.utils.Constant
 import com.atharianr.telemedicine.utils.getDateFromString
 import com.atharianr.telemedicine.utils.toFormat
 
-class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(private val appType: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listChat = ArrayList<Chat>()
 
@@ -49,7 +50,17 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = listChat.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (listChat[position].sender == "user") TYPE_SENDER else TYPE_RECEIVER
+        return when (appType) {
+            Constant.USER -> {
+                if (listChat[position].sender == Constant.USER) TYPE_SENDER else TYPE_RECEIVER
+            }
+            Constant.DOCTOR -> {
+                if (listChat[position].sender == Constant.DOCTOR) TYPE_SENDER else TYPE_RECEIVER
+            }
+            else -> {
+                if (listChat[position].sender == Constant.USER) TYPE_SENDER else TYPE_RECEIVER // default return
+            }
+        }
     }
 
     private inner class SenderViewHolder(private val binding: ItemsListChatSentBinding) :

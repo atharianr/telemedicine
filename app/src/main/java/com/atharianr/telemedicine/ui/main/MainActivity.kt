@@ -1,7 +1,11 @@
 package com.atharianr.telemedicine.ui.main
 
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -183,7 +187,15 @@ class MainActivity : AppCompatActivity() {
                         address = it.body?.data?.address
                         photo = it.body?.data?.photo
 
-                        saveUserId(it.body?.data?.id.toString())
+                        saveUserData(
+                            it.body?.data?.id.toString(),
+                            it.body?.data?.name.toString(),
+                            it.body?.data?.photo.toString()
+                        )
+                        saveUserFcmToken(
+                            it.body?.data?.id.toString(),
+                            getFCMToken().toString()
+                        )
                         loadFragment(getFragment(integerDeque.peek()))
                     }
 
@@ -219,6 +231,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun saveUserFcmToken(userId: String, fcmToken: String) {
+        mainViewModel.saveUserFcmToken(userId, fcmToken)
+    }
+
     private fun getBearerToken(): String? {
         val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
         return sharedPref.getString(Constant.TOKEN, "")
@@ -229,8 +245,11 @@ class MainActivity : AppCompatActivity() {
         return sharedPref.getString(Constant.FCM_TOKEN, "")
     }
 
-    private fun saveUserId(userId: String?) {
+    private fun saveUserData(userId: String?, userName: String, userPhoto: String) {
+        Log.d("cobacoba", "$userId, $userName, $userPhoto")
         val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
         sharedPref.edit().putString(Constant.USER_ID, userId).apply()
+        sharedPref.edit().putString(Constant.USER_NAME, userName).apply()
+        sharedPref.edit().putString(Constant.USER_PHOTO, userPhoto).apply()
     }
 }

@@ -23,6 +23,7 @@
         android:layout_height="0dp"
         android:layout_above="@id/btn_register"
         android:layout_below="@id/tv_app_name"
+        android:scaleType="fitXY"
         android:src="@drawable/get_started"
         tools:ignore="ContentDescription" />
 
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/btn_login"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/rounded_button_8"
         android:backgroundTint="@color/blue_2B95F6"
         android:text="@string/register"
@@ -46,14 +47,26 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/btn_login_doctor"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_button_border_8"
         android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/blue_2B95F6"
         android:textSize="18sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login_doctor"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:text="@string/login_as_doctor"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:textStyle="normal" />
 
 </RelativeLayout>
