@@ -30,6 +30,11 @@ android {
         }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        def localProperties = new Properties()
+        localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
+        buildConfigField "String", "FCM_API_KEY", "\"" + localProperties['apiKey'] + "\""
     }
 
     buildTypes {

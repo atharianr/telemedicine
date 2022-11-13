@@ -41,40 +41,56 @@ class FCMService : FirebaseMessagingService() {
         val jsonObject = JSONObject(message.data[NOTIFICATION].toString())
         when (jsonObject.getString(NOTIFICATION_TYPE)) {
             TYPE_CHAT -> {
-                val appType =
-                    if (getToken() != null && getToken() != "") Constant.USER else Constant.DOCTOR
                 val body = jsonObject.getString(MESSAGE)
-                when (appType) {
-                    Constant.USER -> {
-                        val doctorId = jsonObject.getString(Constant.DOCTOR_ID)
-                        val doctorName = jsonObject.getString(Constant.DOCTOR_NAME)
-                        val doctorPhoto = jsonObject.getString(Constant.DOCTOR_PHOTO)
-                        buildChatNotification(doctorId, doctorName, doctorPhoto, body)
-                    }
-                    Constant.DOCTOR -> {
-                        val userId = jsonObject.getString(Constant.USER_ID)
-                        val userName = jsonObject.getString(Constant.USER_NAME)
-                        val userPhoto = jsonObject.getString(Constant.USER_PHOTO)
-                        buildChatNotification(userId, userName, userPhoto, body)
-                    }
-                }
+
+                val userId = jsonObject.getString(Constant.USER_ID)
+                val userName = jsonObject.getString(Constant.USER_NAME)
+                val userPhoto = jsonObject.getString(Constant.USER_PHOTO)
+
+                val doctorId = jsonObject.getString(Constant.DOCTOR_ID)
+                val doctorName = jsonObject.getString(Constant.DOCTOR_NAME)
+                val doctorPhoto = jsonObject.getString(Constant.DOCTOR_PHOTO)
+
+                buildChatNotification(
+                    userId,
+                    userName,
+                    userPhoto,
+                    doctorId,
+                    doctorName,
+                    doctorPhoto,
+                    body
+                )
             }
         }
     }
 
     private fun buildChatNotification(
-        id: String,
-        name: String,
-        photo: String,
+        userId: String,
+        userName: String,
+        userPhoto: String,
+        doctorId: String,
+        doctorName: String,
+        doctorPhoto: String,
         body: String
     ) {
+        val appType =
+            if (getToken() != null && getToken() != "") Constant.USER else Constant.DOCTOR
+
+        val id = if (appType == Constant.USER) doctorId else userId
+        val name = if (appType == Constant.USER) doctorName else userName
+        val photo = if (appType == Constant.USER) doctorPhoto else userPhoto
+
         try {
             val notificationId = id.toInt()
 
             intent = Intent(this, ChatActivity::class.java).apply {
-                putExtra(Constant.DOCTOR_ID, id)
-                putExtra(Constant.DOCTOR_NAME, name)
-                putExtra(Constant.DOCTOR_PHOTO, photo)
+                putExtra(Constant.USER_ID, userId)
+                putExtra(Constant.USER_NAME, userName)
+                putExtra(Constant.USER_PHOTO, userPhoto)
+
+                putExtra(Constant.DOCTOR_ID, doctorId)
+                putExtra(Constant.DOCTOR_NAME, doctorName)
+                putExtra(Constant.DOCTOR_PHOTO, doctorPhoto)
             }
 
             val pendingIntent =

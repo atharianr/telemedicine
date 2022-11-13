@@ -1,12 +1,13 @@
 package com.atharianr.telemedicine.utils
 
+import com.atharianr.telemedicine.BuildConfig
+
 object Constant {
     const val NAME = "name"
     const val FROM_AUTH = "from_auth"
     const val API_BASE_URL = "http://202.157.176.228:9001/api/"
     const val API_FCM_BASE_URL = "https://fcm.googleapis.com/fcm/"
-    const val FCM_API_KEY =
-        "Bearer AAAAS-q0iPI:APA91bHE6ymUFeerElIf84CZyvbqefbnxKiabDw1ErZHEh8_RiPr87NyeGGt6oyXOQ8dAGj95OBQUzvq3GPkX6n0nW2I-_IdruqBwxEPrNBZzpYNHMAcHdGJMDd-tlnT3LHktKJKTXZY"
+    const val FCM_API_KEY = BuildConfig.FCM_API_KEY
     const val TOKEN = "token"
     const val REQUEST_CODE = 100
     const val SELECT_PICTURE = 200
