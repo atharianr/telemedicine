@@ -11,4 +11,8 @@ class ProfileViewModel(private val remoteDataSource: RemoteDataSource) : ViewMod
         token: String,
         inputProfileRequest: InputProfileRequest
     ): ApiResponse<UserResponse> = remoteDataSource.putTokenFCM(token, inputProfileRequest)
+
+    fun saveUserFcmToken(userId: String, fcmToken: String) {
+        remoteDataSource.saveUserFcmToken(userId, fcmToken)
+    }
 }

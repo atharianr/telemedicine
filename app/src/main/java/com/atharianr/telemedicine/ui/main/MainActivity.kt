@@ -246,7 +246,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveUserData(userId: String?, userName: String, userPhoto: String) {
-        Log.d("cobacoba", "$userId, $userName, $userPhoto")
         val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
         sharedPref.edit().putString(Constant.USER_ID, userId).apply()
         sharedPref.edit().putString(Constant.USER_NAME, userName).apply()

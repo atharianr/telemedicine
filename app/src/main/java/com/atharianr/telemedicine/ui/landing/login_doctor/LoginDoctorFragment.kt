@@ -3,6 +3,7 @@ package com.atharianr.telemedicine.ui.landing.login_doctor
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,6 @@ class LoginDoctorFragment : Fragment() {
         val sharedPref =
             requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
                 ?: return
-        sharedPref.edit().putString(Constant.DOCTOR_ID, doctorId).apply()
+        sharedPref.edit().putString(DOCTOR_ID, doctorId).apply()
     }
 }

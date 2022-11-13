@@ -48,8 +48,6 @@ class ChatActivity : AppCompatActivity() {
         val doctorName = intent.getStringExtra(Constant.DOCTOR_NAME) ?: ""
         val doctorPhoto = intent.getStringExtra(Constant.DOCTOR_PHOTO) ?: ""
 
-        Log.d("cobacoba ca", "$userId, $userName, $userPhoto")
-
         binding.apply {
             Glide.with(this@ChatActivity)
                 .load(if (appType == Constant.USER) doctorPhoto else userPhoto)
@@ -254,7 +252,6 @@ class ChatActivity : AppCompatActivity() {
         message: String
     ) {
         chatViewModel.getDoctorFcmToken(doctorId).observe(this) {
-            Log.d("cobacoba fcmtoken", it)
             sendFcmChat(
                 it,
                 doctorId,

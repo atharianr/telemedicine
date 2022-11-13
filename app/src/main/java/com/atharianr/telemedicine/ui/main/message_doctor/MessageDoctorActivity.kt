@@ -1,6 +1,7 @@
 package com.atharianr.telemedicine.ui.main.message_doctor
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.response.vo.StatusResponse
 import com.atharianr.telemedicine.databinding.ActivityMessageDoctorBinding
+import com.atharianr.telemedicine.ui.landing.LandingActivity
 import com.atharianr.telemedicine.ui.main.MainViewModel
 import com.atharianr.telemedicine.ui.main.consultation.message.MessageViewModel
 import com.atharianr.telemedicine.ui.main.consultation.message.chatroom.ChatActivity
@@ -37,10 +39,18 @@ class MessageDoctorActivity : AppCompatActivity() {
         messageDoctorAdapter = MessageDoctorAdapter()
         firebaseDatabase = FirebaseDatabase.getInstance()
 
-        binding.rvMessage.apply {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = messageDoctorAdapter
+        with(binding) {
+            rvMessage.apply {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = messageDoctorAdapter
+            }
+
+            btnLogout.setOnClickListener {
+                saveDoctorFcmToken(getDoctorId().toString(), "") // Clear Doctor FCM Token
+                removePreference()
+                intentToLanding()
+            }
         }
 
         saveDoctorFcmToken(getDoctorId().toString(), getFCMToken().toString())
@@ -115,5 +125,17 @@ class MessageDoctorActivity : AppCompatActivity() {
     private fun getFCMToken(): String? {
         val sharedPref = getSharedPreferences(Constant.DEVICE_DATA, Context.MODE_PRIVATE)
         return sharedPref.getString(Constant.FCM_TOKEN, "")
+    }
+
+    private fun removePreference() {
+        val sharedPref = getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        sharedPref.edit().clear().apply()
+    }
+
+    private fun intentToLanding() {
+        with(Intent(this, LandingActivity::class.java)) {
+            startActivity(this)
+            finish()
+        }
     }
 }

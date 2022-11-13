@@ -95,8 +95,6 @@ class DoctorProfileActivity : AppCompatActivity() {
                                         val userPhoto =
                                             sharedPref.getString(Constant.USER_PHOTO, "") ?: ""
 
-                                        Log.d("cobacoba dpa", "$userId, $userName, $userPhoto")
-
                                         putExtra(Constant.USER_ID, userId)
                                         putExtra(Constant.USER_NAME, userName)
                                         putExtra(Constant.USER_PHOTO, userPhoto)

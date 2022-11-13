@@ -13,7 +13,6 @@ import com.atharianr.telemedicine.R
 import com.atharianr.telemedicine.data.source.remote.request.InputProfileRequest
 import com.atharianr.telemedicine.databinding.FragmentProfileBinding
 import com.atharianr.telemedicine.ui.landing.LandingActivity
-import com.atharianr.telemedicine.ui.main.MainViewModel
 import com.atharianr.telemedicine.utils.Constant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -51,6 +50,7 @@ class ProfileFragment : Fragment() {
 
             binding.apply {
                 btnLogout.setOnClickListener {
+                    saveUserFcmToken(getUserId().toString(), "") // Clear User FCM Token
                     removeTokenOnServer(getBearerToken())
                     removeToken()
                     intentToLanding()
@@ -183,5 +183,15 @@ class ProfileFragment : Fragment() {
         val date = dateFormat.parse(dateStr)
 
         return date?.let { newDateFormat.format(it) }
+    }
+
+    private fun saveUserFcmToken(userId: String, fcmToken: String) {
+        profileViewModel.saveUserFcmToken(userId, fcmToken)
+    }
+
+    private fun getUserId(): String? {
+        val sharedPref =
+            requireActivity().getSharedPreferences(Constant.USER_DATA, Context.MODE_PRIVATE)
+        return sharedPref.getString(Constant.USER_ID, null)
     }
 }
