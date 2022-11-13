@@ -66,6 +66,7 @@
         android:background="@android:color/transparent"
         android:text="@string/login_as_doctor"
         android:textAllCaps="false"
+        android:textColor="@color/grey_A6A6A6"
         android:textSize="12sp"
         android:textStyle="normal" />
 

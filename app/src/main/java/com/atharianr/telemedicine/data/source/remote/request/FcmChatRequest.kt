@@ -7,11 +7,16 @@ data class FcmChatRequest(
     val registrationIds: List<String?>? = null,
 
     @field:SerializedName("data")
-    val data: Data? = null
+    val data: Data? = null,
+
+    @field:SerializedName("android")
+    val android: AndroidData = AndroidData("high"),
+
+    @field:SerializedName("priority")
+    val priority: Int = 10
 )
 
 data class Notification(
-
     @field:SerializedName("notification_type")
     val notificationType: String? = null,
 
@@ -38,7 +43,11 @@ data class Notification(
 )
 
 data class Data(
-
     @field:SerializedName("notification")
     val notification: Notification? = null
+)
+
+data class AndroidData(
+    @field:SerializedName("priority")
+    val priority: String = "high"
 )

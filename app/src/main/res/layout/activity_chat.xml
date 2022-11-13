@@ -37,6 +37,8 @@
         android:id="@+id/rv_chat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:clipToPadding="false"
         android:paddingTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/et_message"

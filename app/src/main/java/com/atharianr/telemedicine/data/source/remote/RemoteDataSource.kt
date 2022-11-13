@@ -541,8 +541,9 @@ class RemoteDataSource(
             .child(Constant.TOKEN)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d(TAG, snapshot.value as String)
-                    resultResponse.postValue(snapshot.value as String)
+                    val fcmToken = snapshot.value ?: ""
+                    Log.d(TAG, fcmToken as String)
+                    resultResponse.postValue(fcmToken)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
