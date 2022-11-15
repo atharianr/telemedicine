@@ -23,7 +23,7 @@ android {
             variant.outputs.all { output ->
                 def outputFile = output.outputFile
                 if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                    def fileName = applicationId + "-" + type + "-v" + versionName + "-c" + versionCode + ".apk"
+                    def fileName = applicationId + "-" + type + "-v" + versionName + "-c" + versionCode + "-" + variant.buildType.name + ".apk"
                     outputFileName = fileName
                 }
             }
