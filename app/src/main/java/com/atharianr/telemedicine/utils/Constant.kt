@@ -55,7 +55,7 @@ object Constant {
     const val ARTICLE_TREATMENT = "article_treatment"
 
     const val WEB_URL = "web_url"
-    const val WEB_URL_BPJS = "https://faskes.bpjs-kesehatan.go.id/aplicares/#/app/dashboard"
+    const val WEB_URL_BPJS = "https://fiki.gerda.my.id"
     const val WEB_URL_APOTEK = "https://m.k24klik.com"
     const val WEB_URL_RS = "https://www.siloamhospitals.com"
 

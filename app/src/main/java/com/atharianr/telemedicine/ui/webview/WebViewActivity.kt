@@ -1,7 +1,9 @@
 package com.atharianr.telemedicine.ui.webview
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.atharianr.telemedicine.databinding.ActivityWebViewBinding
@@ -36,10 +38,14 @@ class WebViewActivity : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView(url: String?) {
+        Log.d("cobacoba", "$url")
         if (url != null) {
             binding.apply {
                 webView.webViewClient = WebViewClient()
                 webView.loadUrl(url)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    webView.settings.safeBrowsingEnabled = false
+                }
 
                 val webViewSettings = webView.settings
                 webViewSettings.javaScriptEnabled = true

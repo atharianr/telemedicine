@@ -91,7 +91,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                                 .commit()
                         }
 
-                        "Resum Medis" -> {
+                        "Layanan BPJS" -> {
                             with(Intent(ctx, WebViewActivity::class.java)) {
                                 putExtra(Constant.WEB_URL, Constant.WEB_URL_BPJS)
                                 ctx.startActivity(this)

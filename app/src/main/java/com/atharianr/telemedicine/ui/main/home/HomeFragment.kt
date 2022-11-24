@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
 
             val listTitles = arrayListOf<String>()
             listTitles.add("Konsultasi")
-            listTitles.add("Resum Medis")
+            listTitles.add("Layanan BPJS")
             listTitles.add("Rumah Sakit")
             listTitles.add("Apotek")
 
